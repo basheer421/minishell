@@ -6,14 +6,25 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2022/12/25 18:13:34 by bammar           ###   ########.fr        #
+#    Updated: 2022/12/25 22:33:31 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
-FILES	=	minishell.c 	\
-			ms_line_read.c	\
+FILES	=		minishell.c \
+				hashtable/ht_get.c \
+				hashtable/ht_hash.c \
+				hashtable/ht_new.c \
+				hashtable/ht_set.c \
+				hashtable/ht_remove.c \
+				hashtable/ht_isempty.c \
+				hashtable/ht_contains.c \
+				hashtable/ht_replace.c \
+				hashtable/ht_clear.c \
+				hashtable/ht_destroy.c \
+				ms_line/ms_line_read.c \
+				ms_line/ms_line_contains_commands.c	\
 
 CC		=	cc
 
