@@ -6,19 +6,27 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:28:48 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/25 16:40:29 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/25 20:21:46 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Reads the command line and returns the output
-char	*ms_line_read(const char *prompt)
+int	ms_line_read(const char *prompt)
 {
 	char	*line;
 
-	line = readline(prompt);
-	if (!line)
-		return (NULL);
-	return (line);
+	while (1)
+	{
+		line = readline(prompt);
+		if (line && *line)
+    	{
+			add_history(line);
+			// if (ms_line_containscommands(line))
+			// 	ms_line_excute_commands(line);
+		}
+		
+	}
+	return (free(line), 0);
 }
