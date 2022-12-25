@@ -3,37 +3,58 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
+#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/12/23 18:39:59 by bammar            #+#    #+#              #
-#    Updated: 2022/12/24 23:17:13 by bammar           ###   ########.fr        #
+#    Created: 2022/07/12 11:10:32 by mfirdous          #+#    #+#              #
+#    Updated: 2022/07/18 11:48:18 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
-FILES = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
-ft_isdigit.c ft_isprint.c ft_itoa.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c \
-ft_memset.c ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c ft_split.c \
-ft_strchr.c ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c \
-ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_strtrim.c \
-ft_substr.c ft_tolower.c ft_toupper.c \
-ft_lstnew.c ft_lstadd_front.c ft_lstsize.c \
-ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c \
-ft_lstiter.c ft_lstmap.c \
-ft_strcmp.c
-CC = cc	
-CFLAGS = -Wall -Wextra -Werror
-OBJS = $(FILES:.c=.o)
+SRCS	=	ft_isalpha.c	ft_isdigit.c	ft_isalnum.c	ft_isascii.c \
+			ft_isprint.c 	ft_strlen.c		ft_memset.c		ft_bzero.c ft_memcpy.c \
+			ft_memmove.c	ft_strlcpy.c	ft_strlcat.c	ft_toupper.c \
+			ft_tolower.c	ft_strchr.c		ft_strrchr.c	ft_strncmp.c \
+			ft_memchr.c		ft_memcmp.c		ft_strnstr.c	ft_atoi.c ft_calloc.c \
+			ft_strdup.c		ft_substr.c		ft_strjoin.c	ft_strtrim.c ft_split.c \
+			ft_itoa.c		ft_strmapi.c	ft_striteri.c	ft_putchar_fd.c \
+			ft_putstr_fd.c	ft_putendl_fd.c	ft_putnbr_fd.c \
+			ft_printf.c		ft_printf_utils.c \
+			get_next_line.c	get_next_line_utils.c
 
-all: $(NAME)
+BSRCS 	=	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
+			ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c \
+			ft_lstmap.c 
 
-$(NAME): $(OBJS)
-	ar rc $(NAME) $(OBJS) 
+HEADER	=	../../include
+
+OBJS		= ${SRCS:.c=.o}
+
+BOBJS 		= ${BSRCS:.c=.o}
+
+NAME		= libft.a
+
+CC			= cc
+
+CFLAGS		= -Wall -Wextra -Werror
+
+.c.o:
+	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${HEADER}
+
+${NAME}:	${OBJS}
+			ar crs ${NAME} ${OBJS}
+
+all:		${NAME}
 
 clean:
-	rm -f $(OBJS) $(BONUS_OBJS)
+			rm -f ${OBJS}
+			rm -f ${BOBJS}
 
-fclean:	clean
-	rm -f $(NAME)
+fclean:		clean
+			rm -f ${NAME}
 
-re:	fclean all
+re:			fclean all
+
+bonus:		${OBJS} ${BOBJS}
+			ar crs ${NAME} ${OBJS} ${BOBJS}
+			
+.PHONY:		all clean fclean re

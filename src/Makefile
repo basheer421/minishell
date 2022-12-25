@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2022/12/24 23:23:56 by bammar           ###   ########.fr        #
+#    Updated: 2022/12/25 17:16:29 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,16 +16,26 @@ FILES = minishell.c 	\
 		ms_line_read.c	\
 
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-LINKS = -lreadline
-OBJS = $(FILES:.c=.o)
-LIBFT = libft/libft.a
+CC		= cc
+
+CFLAGS	= -Wall -Wextra -Werror
+
+LINKS	= -lreadline
+
+OBJS	= $(FILES:.c=.o)
+
+HEADER	=	../include
+
+LIBFT	= libft/libft.a
+
+.c.o:
+	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${HEADER}
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	(cd libft && make)
+	(cd pipex && make)
 	$(CC) $(LINKS) $(OBJS) $(CFLAGS) $(LIBFT) -o $(NAME)
 
 clean:
