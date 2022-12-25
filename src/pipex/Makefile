@@ -6,11 +6,9 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 17:34:11 by mfirdous          #+#    #+#              #
-#    Updated: 2022/12/25 17:17:12 by bammar           ###   ########.fr        #
+#    Updated: 2022/12/25 18:13:49 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# maybe do gcc with libft 
 
 SRCS	=	pipex.c pipex_utils.c error_check.c
 
@@ -47,11 +45,9 @@ bonus:		${LIBFT} ${B_OBJS}
 clean:	
 			rm -f ${OBJS}
 			rm -f ${B_OBJS}
-			${MAKE} -C ../libft clean
 
 fclean:		clean
 			rm -f ${NAME}
-			${MAKE} -C ../libft fclean
 
 re:			fclean all
 

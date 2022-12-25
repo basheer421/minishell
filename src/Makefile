@@ -6,46 +6,47 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2022/12/25 17:33:22 by bammar           ###   ########.fr        #
+#    Updated: 2022/12/25 18:13:34 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+NAME	=	minishell
 
-FILES = minishell.c 	\
-		ms_line_read.c	\
+FILES	=	minishell.c 	\
+			ms_line_read.c	\
 
+CC		=	cc
 
-CC		= cc
+CFLAGS	=	-Wall -Wextra -Werror
 
-CFLAGS	= -Wall -Wextra -Werror
-
-LINKS	= -lreadline
+LINKS	=	-lreadline
 
 OBJS	= $(FILES:.c=.o)
 
 HEADER	=	../include
 
-LIBFT	= libft/libft.a
+LIBFT	=	libft/libft.a
 
 .c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${HEADER}
+			${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I ${HEADER}
 
-all: $(NAME)
+all: 		$(NAME)
 
-$(NAME): $(OBJS)
-	(cd libft && make)
-	(cd pipex && make)
-	$(CC) $(LINKS) $(OBJS) $(CFLAGS) $(LIBFT) -o $(NAME)
+$(NAME):	$(OBJS)
+			${MAKE} -C libft
+			${MAKE} -C pipex
+			$(CC) $(LINKS) $(OBJS) $(CFLAGS) $(LIBFT) -o $(NAME)
 
 clean:
-	(cd libft && make clean)
-	(cd pipex && make clean)
-	rm -f $(OBJS)
+			${MAKE} -C libft clean
+			${MAKE} -C pipex clean
+			rm -f $(OBJS)
 
 fclean:	clean
-	(cd libft && make fclean)
-	(cd pipex && make fclean)
-	rm -f $(NAME)
+			${MAKE} -C libft fclean
+			${MAKE} -C pipex fclean
+			rm -f $(NAME)
 
-re:	fclean all
+re:			fclean all
+
+.PHONY:		all clean fclean re bonus
