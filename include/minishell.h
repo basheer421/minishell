@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/26 16:05:15 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/26 19:52:43 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@
 # include "ht.h"
 # include "libft.h"
 # include "pipex.h"
-
-# include <stdio.h>
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 # include <stdbool.h>
+# include <stdio.h>
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -29,9 +28,9 @@
  */
 typedef struct s_ms
 {
-	t_ht	*env_vars;
-	char	*current_dir;
-	bool	is_interactive_mode;
+	t_ht		*env_vars;
+	char		*current_dir;
+	bool		is_interactive_mode;
 }				t_ms;
 
 /**
@@ -44,12 +43,12 @@ typedef struct s_ms
  */
 typedef struct s_command_chunk
 {
-	char	*cmd;
-	bool	input_isheredoc;
-	bool	output_isheredoc;
-	char	*input;
-	char	*output;
-}			t_command_chunk;
+	char		*cmd;
+	bool		input_isheredoc;
+	bool		output_isheredoc;
+	char		*input;
+	char		*output;
+}				t_command_chunk;
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
@@ -57,7 +56,7 @@ typedef struct s_command_chunk
  * @param envp enviroment variables from main() fucntion
  * @return mini shell struct pointer (t_ms *)
  */
-t_ms	*ms_init(char **envp);
+t_ms			*ms_init(char **envp);
 
 /**
  * @brief Reads the command line and does the main functions,
@@ -66,7 +65,7 @@ t_ms	*ms_init(char **envp);
  * @param prompt desired prompt
  * @return Error code
  */
-int		ms_line_read(const char *prompt);
+int				ms_line_read(const char *prompt, t_ms *shell);
 
 /**
  * @brief Tells if the line has at least one command.
@@ -74,7 +73,7 @@ int		ms_line_read(const char *prompt);
  * @param line user input
  * @return boolean
  */
-bool	ms_line_contains_commands(char *line);
+bool			ms_line_contains_commands(char *line, t_ms *shell);
 
 /**
  * @brief Execute the valid commands in parallel as
@@ -83,7 +82,7 @@ bool	ms_line_contains_commands(char *line);
  * @param line user input
  * @return 0 on success or error code
  */
-int		ms_line_execute_commands(char *line);
+int				ms_line_execute_commands(char *line);
 
 /**
  * @brief Counts how many pipes which is not contained inside quotations.
@@ -91,7 +90,7 @@ int		ms_line_execute_commands(char *line);
  * @param line user input
  * @return pipes count 
  */
-size_t	ms_pipes_count(char *line);
+size_t			ms_pipes_count(char *line);
 
 /**
  * @brief Divides contents between pipes to a 2d array.
@@ -100,14 +99,26 @@ size_t	ms_pipes_count(char *line);
  * @param line user input
  * @return 2d array contents (might be commands)
  */
-char	**ms_pipes_divie(char *line);
+char			**ms_pipes_divie(char *line);
+
+/**
+ * @brief Gets the command chunks from the divided line.
+ * 	might contain invalid commands
+ * 
+ * @param line_pieces 
+ * @param shell 
+ * @return array of chunks
+ */
+t_command_chunk	**ms_command_chunk_get(char **line_pieces, t_ms *shell);
 
 /**
  * @brief Executes a command chunk.
+ * Make sure everything is done in new temporary shell.
  * 
  * @param command_chunk 
  * @return {int} Error code
  */
-int		execute_command_chunk(t_command_chunk *command_chunk);
+int				ms_command_chunk_execute(t_command_chunk *command_chunk,
+					t_ms *shell);
 
 #endif

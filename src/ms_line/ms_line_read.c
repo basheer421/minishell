@@ -6,25 +6,23 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:28:48 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/26 15:33:41 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/26 20:04:10 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ms_line_read(const char *prompt)
+int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char	*line;
 
-	while (1)
+	(void)shell;
+	line = readline(prompt);
+	if (line && *line)
 	{
-		line = readline(prompt);
-		if (line && *line)
-		{
-			add_history(line);
-			if (ms_line_contains_commands(line))
-				break ;
-		}
+		add_history(line);
+		if (!ms_line_contains_commands(line, shell))
+			return (free(line), 1);
 	}
 	return (free(line), 0);
 }
