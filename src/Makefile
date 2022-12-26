@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2022/12/26 20:04:57 by bammar           ###   ########.fr        #
+#    Updated: 2022/12/26 20:55:10 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,10 @@ FILES	=		minishell.c \
 				hashtable/ht_clear.c \
 				hashtable/ht_destroy.c \
 				ms_line/ms_line_read.c \
+				ms_init.c \
 				ms_line/ms_line_contains_commands.c	\
-				ms_init.c
+				ms_pipes/ms_pipes_count.c \
+				ms_pipes/ms_pipes_divide.c \
 
 CC		=	cc
 

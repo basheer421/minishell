@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/26 19:52:43 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/26 20:53:52 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/readline.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <signal.h>
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -99,7 +100,7 @@ size_t			ms_pipes_count(char *line);
  * @param line user input
  * @return 2d array contents (might be commands)
  */
-char			**ms_pipes_divie(char *line);
+char			**ms_pipes_divide(char *line);
 
 /**
  * @brief Gets the command chunks from the divided line.
