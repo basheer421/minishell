@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2022/12/25 22:33:31 by bammar           ###   ########.fr        #
+#    Updated: 2022/12/26 15:32:36 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ clean:
 fclean:	clean
 			${MAKE} -C libft fclean
 			${MAKE} -C pipex fclean
-			rm -f $(NAME)
+			/bin/rm -f $(NAME)
 
 re:			fclean all
 

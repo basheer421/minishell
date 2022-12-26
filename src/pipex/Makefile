@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 17:34:11 by mfirdous          #+#    #+#              #
-#    Updated: 2022/12/25 18:13:49 by bammar           ###   ########.fr        #
+#    Updated: 2022/12/26 15:33:06 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,11 +43,11 @@ bonus:		${LIBFT} ${B_OBJS}
 			${CC} ${B_OBJS} ${LIBFT} -o ${NAME}
 
 clean:	
-			rm -f ${OBJS}
-			rm -f ${B_OBJS}
+			/bin/rm -f ${OBJS}
+			/bin/rm -f ${B_OBJS}
 
 fclean:		clean
-			rm -f ${NAME}
+			/bin/rm -f ${NAME}
 
 re:			fclean all
 

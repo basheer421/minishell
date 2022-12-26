@@ -45,11 +45,11 @@ ${NAME}:	${OBJS}
 all:		${NAME}
 
 clean:
-			rm -f ${OBJS}
-			rm -f ${BOBJS}
+			/bin/rm -f ${OBJS}
+			/bin/rm -f ${BOBJS}
 
 fclean:		clean
-			rm -f ${NAME}
+			/bin/rm -f ${NAME}
 
 re:			fclean all
 			
