@@ -6,11 +6,19 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 20:50:23 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/26 22:04:20 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/27 22:04:45 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static bool	is_pipe(char *line, int i, bool inside_quotes)
+{
+	if (line[i] == '|' && !inside_quotes && line[i + 1] != '|')
+		if (i == 0 || (i != 0 && line[i - 1] != '|'))
+			return (true);
+	return (false);
+}
 
 size_t	ms_pipes_count(char *line)
 {
@@ -29,10 +37,8 @@ size_t	ms_pipes_count(char *line)
 			inside_dquotes = !inside_dquotes;
 		else if (line[i] == '\'')
 			inside_quotes = !inside_quotes;
-		else if (line[i] == '|' && !inside_quotes && !inside_dquotes
-			&& line[i + 1] != '|')
-			if (i == 0 || (i != 0 && line[i - 1] != '|'))
-				count++;
+		else if (is_pipe(line, i, inside_quotes || inside_dquotes))
+			count++;
 	}
 	return (count);
 }
