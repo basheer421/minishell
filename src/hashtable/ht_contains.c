@@ -14,5 +14,7 @@
 
 int	ht_contains(t_ht *table, const char *key)
 {
+	if (!key)
+		return (0);
 	return (ht_get(table, key) != NULL);
 }
