@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/26 20:10:59 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/28 16:50:15 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ t_ms	*ms_init(char **envp)
 	shell = malloc(sizeof(t_ms));
 	if (!shell)
 		return (NULL);
-	shell->current_dir = NULL; // Change this to be something
+	shell->current_dir = NULL;
+	shell->current_dir = getcwd(shell->current_dir, 0);
+	if (!shell->current_dir)
+		return (NULL);
 	shell->is_interactive_mode = true;
 	shell->env_vars = ht_new(53);
 	if (!shell->env_vars)
@@ -45,4 +48,16 @@ t_ms	*ms_init(char **envp)
 	if (!set_inside_ht(envp, shell->env_vars))
 		return (free(shell), NULL);
 	return (shell);
+}
+
+
+void	ms_destroy(t_ms *shell)
+{
+	if (!shell)
+		return ;
+	if (shell->current_dir)
+		free(shell->current_dir);
+	if (shell->env_vars)
+		ht_destroy(shell->env_vars);
+	free(shell);
 }

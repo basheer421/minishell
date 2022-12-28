@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:28:48 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/28 16:22:01 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/28 16:45:00 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 		{
 			printf("%s\n", chunks[i]);
 		}
-		
+		printf("dir: %s\n", shell->current_dir);
 	}
 	return (free(line), 0);
 }

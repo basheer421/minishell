@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/28 15:49:14 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/28 16:51:07 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,27 @@ typedef struct s_command_chunk
 {
 	char		*cmd;
 	bool		input_isheredoc;
-	bool		output_isheredoc;
+	bool		output_append;
 	char		*input;
 	char		*output;
 }				t_command_chunk;
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
+ * 	Also gets the current working dir
  * 
  * @param envp enviroment variables from main() fucntion
  * @return mini shell struct pointer (t_ms *)
  */
 t_ms			*ms_init(char **envp);
+
+
+/**
+ * @brief Destroys and frees everything inside the given shell (t_ms).
+ * 
+ * @param shell 
+ */
+void			ms_destroy(t_ms *shell);
 
 /**
  * @brief Reads the command line and does the main functions,
