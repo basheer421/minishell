@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 00:52:51 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/24 17:05:12 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/28 21:46:43 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	*ht_get(t_ht *table, const char *key)
 	while (node && node->key != NULL)
 	{
 		string_length = ft_strlen(node->key);
-		if ((string_length != ft_strlen(key_value))
-			||ft_strncmp(node->key, key_value, string_length) == 0)
+		if ((string_length == ft_strlen(key_value))
+			&& ft_strncmp(node->key, key_value, string_length) == 0)
 			return (free(key_value), node->value);
 		node = node->next;
 	}
