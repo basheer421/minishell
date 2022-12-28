@@ -26,12 +26,11 @@ void	*ht_get(t_ht *table, const char *key)
 		return (NULL);
 	index = ht_hash(table, ft_strdup(key));
 	node = table->array[index];
-	while (node && node->key)
+	while (node && node->key != NULL)
 	{
 		string_length = ft_strlen(node->key);
-		if (string_length < ft_strlen(key_value))
-			string_length = ft_strlen(key_value);
-		if (ft_strncmp(node->key, key_value, string_length) == 0)
+		if ((string_length != ft_strlen(key_value))
+			||ft_strncmp(node->key, key_value, string_length) == 0)
 			return (free(key_value), node->value);
 		node = node->next;
 	}

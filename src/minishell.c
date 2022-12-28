@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (ms_line_read("minishell$ ", shell) == 0)
 		;
-	printf("%s\n", ht_get(shell->env_vars, "SHELL"));
+	printf("%s\n", (char *)ht_get(shell->env_vars, "SDKMAN_PLATFORM"));
 	(void)argc;
 	(void)argv;
 	(void)envp;

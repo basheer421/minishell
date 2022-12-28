@@ -15,6 +15,8 @@
 static int	set_key_and_value(t_ht *table, char *key,
 			char *value, t_node *node)
 {
+	if (!key || !value)
+		return (0);
 	node->key = ft_strdup(key);
 	if (!node->key)
 		return (0);
