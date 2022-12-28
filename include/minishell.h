@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/26 20:53:52 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/28 15:49:14 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,15 @@ bool			ms_line_contains_commands(char *line, t_ms *shell);
  * @return 0 on success or error code
  */
 int				ms_line_execute_commands(char *line);
+
+/**
+ * @brief Gets the positions of pipes to make it easier
+ * 	when dividing the contents.
+ * 
+ * @param line user input
+ * @return int* pipes positions, ends with (-1) for termination
+ */
+int				*ms_pipes_positions(char *line);
 
 /**
  * @brief Counts how many pipes which is not contained inside quotations.
