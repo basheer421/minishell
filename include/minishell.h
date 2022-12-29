@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/28 16:51:07 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/29 21:21:46 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include "pipex.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
-# include <signal.h>
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -46,7 +46,7 @@ typedef struct s_command_chunk
 {
 	char		*cmd;
 	bool		input_isheredoc;
-	bool		output_append;
+	bool		append_to_output;
 	char		*input;
 	char		*output;
 }				t_command_chunk;
@@ -59,7 +59,6 @@ typedef struct s_command_chunk
  * @return mini shell struct pointer (t_ms *)
  */
 t_ms			*ms_init(char **envp);
-
 
 /**
  * @brief Destroys and frees everything inside the given shell (t_ms).
@@ -128,7 +127,8 @@ char			**ms_pipes_divide(char *line);
  * @param shell 
  * @return array of chunks
  */
-t_command_chunk	**ms_command_chunk_get(char **line_pieces, t_ms *shell);
+t_command_chunk	**ms_command_chunks_get(char **line_pieces, t_ms *shell,
+					size_t amount);
 
 /**
  * @brief Executes a command chunk.
@@ -137,7 +137,7 @@ t_command_chunk	**ms_command_chunk_get(char **line_pieces, t_ms *shell);
  * @param command_chunk 
  * @return {int} Error code
  */
-int				ms_command_chunk_execute(t_command_chunk *command_chunk,
-					t_ms *shell);
+int	ms_command_chunk_execute(t_command_chunk *command_chunk,
+								t_ms *shell);
 
 #endif
