@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static bool	set_inside_ht(char **envp, t_ht *table)
+static bool	fill_ht(char **envp, t_ht *table)
 {
 	int		i;
 	char	**splited_env_value;
@@ -22,8 +22,17 @@ static bool	set_inside_ht(char **envp, t_ht *table)
 	{
 		splited_env_value = ft_split(envp[i], '=');
 		if (!splited_env_value)
-			return (NULL);
+			return (false);
+		if ((splited_env_value[1]) == NULL)
+		{
+			free(splited_env_value[1]);
+			splited_env_value[1] = ft_strdup("\0");
+		}
+		if (!splited_env_value[1])
+			return (free(splited_env_value), false);
 		ht_set(table, splited_env_value[0], splited_env_value[1]);
+		free(splited_env_value[0]);
+		free(splited_env_value[1]);
 	}
 	return (free(splited_env_value), true);
 }
@@ -45,7 +54,7 @@ t_ms	*ms_init(char **envp)
 	shell->env_vars = ht_new(53);
 	if (!shell->env_vars)
 		return (NULL);
-	if (!set_inside_ht(envp, shell->env_vars))
+	if (!fill_ht(envp, shell->env_vars))
 		return (free(shell), NULL);
 	return (shell);
 }

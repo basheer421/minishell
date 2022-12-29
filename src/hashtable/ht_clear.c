@@ -24,7 +24,7 @@ void	ht_clear(t_ht *table)
 	{
 		reached_key = table->array[i]->key;
 		while (reached_key != NULL)
-		{			
+		{
 			ht_remove(table, reached_key);
 			reached_key = table->array[i]->key;
 		}
