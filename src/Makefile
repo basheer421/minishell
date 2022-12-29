@@ -51,7 +51,7 @@ all: 		$(NAME)
 $(NAME):	$(OBJS)
 			${MAKE} -C libft
 			${MAKE} -C pipex
-			$(CC) $(LINKS) $(OBJS) $(CFLAGS) $(LIBFT) -o $(NAME)
+			$(CC) $(OBJS) $(CFLAGS) $(LIBFT) $(LINKS) -o $(NAME)
 
 clean:
 			${MAKE} -C libft clean
