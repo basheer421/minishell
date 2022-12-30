@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 02:10:28 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/24 17:04:45 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/30 17:08:15 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	remove_first_node(t_ht *table, unsigned int index)
 		table->array[index] = table->array[index]->next;
 		free(node->key);
 		free(node->value);
+		free(node);
 	}
 	else
 	{

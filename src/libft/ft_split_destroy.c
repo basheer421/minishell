@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ht_clear.c                                         :+:      :+:    :+:   */
+/*   ft_split_destroy.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 14:16:37 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/30 15:27:21 by bammar           ###   ########.fr       */
+/*   Created: 2022/12/30 16:37:51 by bammar            #+#    #+#             */
+/*   Updated: 2022/12/30 16:38:50 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ht.h"
+#include "libft.h"
 
-void	ht_clear(t_ht *table)
+void	ft_split_destroy(char **a)
 {
-	char	*reached_key;
-	int		i;
+	int	i;
 
-	if (ht_isempty(table))
-		return ;
-	i = 0;
-	while (table->array[i] && table->size > 0)
-	{
-		reached_key = table->array[i]->key;
-		while (reached_key != NULL)
-		{
-			ht_remove(table, reached_key);
-			reached_key = table->array[i]->key;
-		}
-		i++;
-	}
+	i = -1;
+	while (a[++i])
+		free(a[i]);
+	free(a);
 }
