@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2022/12/30 17:03:46 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/01 01:26:21 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ $(NAME):	$(OBJS)
 clean:
 			${MAKE} -C libft clean
 			${MAKE} -C pipex clean
-			rm -f $(OBJS)
+			/bin/rm -f $(OBJS)
 
 fclean:	clean
 			${MAKE} -C libft fclean
