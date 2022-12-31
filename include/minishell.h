@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/29 21:21:46 by bammar           ###   ########.fr       */
+/*   Updated: 2022/12/31 16:14:12 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 /**
  * @brief Stores a hash map of environment variables,
  *  and stores the current dir.
+ * 	Note that current_dir is malloced and should be freed.
  *
  */
 typedef struct s_ms
@@ -127,8 +128,7 @@ char			**ms_pipes_divide(char *line);
  * @param shell 
  * @return array of chunks
  */
-t_command_chunk	**ms_command_chunks_get(char **line_pieces, t_ms *shell,
-					size_t amount);
+t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
 
 /**
  * @brief Executes a command chunk.
