@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/01 01:26:21 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/01 18:21:48 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ FILES	=		minishell.c \
 				ms_pipes/ms_pipes_count.c \
 				ms_pipes/ms_pipes_positions.c	\
 				ms_pipes/ms_pipes_divide.c \
+				ms_signal/ms_signal.c
 
 
 CC		=	cc
