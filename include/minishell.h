@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 16:23:23 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/02 21:42:18 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <string.h>
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -33,24 +34,31 @@ typedef struct s_ms
 	t_ht		*env_vars;
 	char		*current_dir;
 	bool		is_interactive_mode;
+	int			error_code;
 }				t_ms;
 
 /**
  * @brief This is a command chunk, should be like this
  * {{ "< input cmd  >  output" }}, Note: input should be the LIMITER incase
  * "input_isheredoc" is true.
- * Also, "input" can be NULL, and if "output" is NULL
- * 	then the default is "stdout {fd = 1}".
  * 
  */
 typedef struct s_command_chunk
 {
-	char		*cmd;
+	char		**cmd;
 	bool		input_isheredoc;
 	bool		append_to_output;
-	char		*input;
-	char		*output;
+	int			input_fd;
+	int			output_fd;
 }				t_command_chunk;
+
+/**
+ * @brief Detect if "\" or ";" is found.
+ * 
+ * @param line user input
+ * @return int error code or 0
+ */
+int				ms_invalid_char(char *line);
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
@@ -92,7 +100,8 @@ bool			ms_line_contains_commands(char *line, t_ms *shell);
  * @param line user input
  * @return 0 on success or error code
  */
-int				ms_line_execute_commands(char *line);
+// int				ms_line_execute_commands(char *line);
+// idk, u handle this
 
 /**
  * @brief Gets the positions of pipes to make it easier
@@ -139,12 +148,5 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
  */
 int				ms_command_chunk_execute(t_command_chunk *command_chunk,
 					t_ms *shell);
-
-/**
- * @brief Changes the behavior of this program when receiving signals.
- * 
- * @param sig The received signal.
- */
-void			ms_signal(void);
 
 #endif

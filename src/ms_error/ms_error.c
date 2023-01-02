@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ms_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 21:53:30 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/02 19:02:43 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/02 21:35:45 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+int	ms_invalid_char(char *line)
 {
-	t_ms	*shell;
+	int		i;
+	bool	inside_quotes;
+	bool	inside_dquotes;
 
-	shell = ms_init(envp);
-	if (!shell)
-		return (1);
-	while (1)
+	inside_quotes = false;
+	inside_dquotes = false;
+	i = -1;
+	while (line[++i])
 	{
-		shell->error_code = ms_line_read("minishell$ ", shell);
-		// print_error_function_here
+		if (line[i] == '\'')
+			inside_quotes = !inside_quotes;
+		else if (line[i] == '\"')
+			inside_dquotes = !inside_dquotes;
+		else if (!inside_quotes && !inside_dquotes 
+			&& (line[i] == '\\' || line[i] == ';'))
+			return (127);
 	}
-	printf("%s\n", (char *)ht_get(shell->env_vars, "PATH"));
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	
-	ms_destroy(shell);
 	return (0);
 }

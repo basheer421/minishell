@@ -6,13 +6,22 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/31 18:07:39 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/02 18:27:21 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_list	*get_inputs(char *line_segment);
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (line_segment[++i])
+// 	{
+// 		if (line_segment[i] == '<')
+// 	}
+// }
 
 static char	*get_cmd(char *line_segment);
 

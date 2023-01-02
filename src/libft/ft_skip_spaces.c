@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_skip_spaces.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 21:53:30 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/02 21:29:47 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/02 21:32:12 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char **argv, char **envp)
+static int	is_space(int c)
 {
-	t_ms	*shell;
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r');
+}
 
-	shell = ms_init(envp);
-	if (!shell)
-		return (1);
-	while (1)
-	{
-		shell->error_code = ms_line_read("minishell$ ", shell);
-		// print_error_function_here
-	}
-	printf("%s\n", (char *)ht_get(shell->env_vars, "PATH"));
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	
-	ms_destroy(shell);
-	return (0);
+char	*ft_skip_spaces(char *str)
+{
+	while (is_space(*str))
+		str++;
+	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 16:22:05 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/02 19:16:20 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,9 @@ t_ms	*ms_init(char **envp)
 
 	if (!envp || !*envp)
 		return (NULL);
-	shell = malloc(sizeof(t_ms));
+	shell = ft_calloc(1, sizeof(t_ms));
 	if (!shell)
 		return (NULL);
-	shell->current_dir = NULL;
 	shell->current_dir = getcwd(shell->current_dir, 0);
 	if (!shell->current_dir)
 		return (NULL);
