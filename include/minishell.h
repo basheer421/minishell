@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/01 17:56:13 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/02 16:23:23 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,6 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
-
-typedef enum line_state
-{
-	NORMAL_LINE = 0,
-	NEW_LINE = 1,
-	EXIT_LINE = -1
-}	t_line_state;
-
-/**
- * @brief normal: 0, new_line: 1, exit: -1.
- * 
- */
-unsigned int	g_signal_state = 0;
 
 /**
  * @brief Stores a hash map of environment variables,
