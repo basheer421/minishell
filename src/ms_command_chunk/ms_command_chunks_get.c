@@ -6,27 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 18:27:21 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/03 16:15:53 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_list	*get_inputs(char *line_segment);
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (line_segment[++i])
-// 	{
-// 		if (line_segment[i] == '<')
-// 	}
-// }
-
-static char	*get_cmd(char *line_segment);
-
-static t_list	*get_outputs(char *line_segment);
-
 
 static t_command_chunk	**chunk_init(char **line_pieces,
 									size_t amount)

@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 21:42:18 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/03 16:44:30 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,14 @@ void			ms_destroy(t_ms *shell);
 int				ms_line_read(const char *prompt, t_ms *shell);
 
 /**
+ * @brief Tells if the line is empty.
+ * 
+ * @param line user input
+ * @return boolean, true if it's empty.
+ */
+bool			ms_line_isempty(char *line);
+
+/**
  * @brief Tells if the line has at least one command.
  * 
  * @param line user input
@@ -128,6 +136,15 @@ size_t			ms_pipes_count(char *line);
  * @return 2d array contents (might be commands)
  */
 char			**ms_pipes_divide(char *line);
+
+
+/**
+ * @brief Reads the inputs and checks if they exist.
+ * 
+ * @param line user input 
+ * @return The last input file name incase no errors, otherwise NULL.
+ */
+char			*ms_get_input(char *line);
 
 /**
  * @brief Gets the command chunks from the divided line.

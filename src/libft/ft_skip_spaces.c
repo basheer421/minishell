@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 21:29:47 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 21:32:12 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/03 16:23:11 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static int	is_space(int c)
 
 char	*ft_skip_spaces(char *str)
 {
-	while (is_space(*str))
-		str++;
-	return (str);
+	int	i;
+
+	i = 0;
+	while (is_space(str[i]))
+		i++;
+	return (str + i);
 }

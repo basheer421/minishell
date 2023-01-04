@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 19:16:20 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/03 18:29:52 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ t_ms	*ms_init(char **envp)
 
 void	ms_destroy(t_ms *shell)
 {
-	if (!shell)
-		return ;
 	if (shell->current_dir)
 		free(shell->current_dir);
 	if (shell->env_vars)

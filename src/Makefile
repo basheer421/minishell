@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/02 19:03:15 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/04 15:41:07 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,13 +23,15 @@ FILES	=		minishell.c \
 				hashtable/ht_replace.c \
 				hashtable/ht_clear.c \
 				hashtable/ht_destroy.c \
-				ms_line/ms_line_read.c \
 				ms_init.c \
+				ms_line/ms_line_read.c \
+				ms_line/ms_line_isempty.c \
 				ms_line/ms_line_contains_commands.c	\
 				ms_pipes/ms_pipes_count.c \
 				ms_pipes/ms_pipes_positions.c	\
 				ms_pipes/ms_pipes_divide.c \
-				ms_error/ms_error.c
+				ms_error/ms_error.c \
+				ms_tokenization/ms_get_input.c
 
 
 CC		=	cc
@@ -56,7 +58,7 @@ $(NAME):	$(OBJS)
 
 clean:
 			${MAKE} -C libft clean
-			${MAKE} -C pipex clean
+			${MAKE} -C piepex clean
 			/bin/rm -f $(OBJS)
 
 fclean:	clean
@@ -64,6 +66,6 @@ fclean:	clean
 			${MAKE} -C pipex fclean
 			/bin/rm -f $(NAME)
 
-re:			fclean all
+re:			fclean all001011q
 
 .PHONY:		all clean fclean re bonus
