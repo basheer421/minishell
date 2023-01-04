@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_error.c                                         :+:      :+:    :+:   */
+/*   ms_contains_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 19:02:43 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 21:35:45 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/04 18:59:26 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/04 19:16:31 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ms_invalid_char(char *line)
+bool	ms_contains_cmd(char *line_chunk)
 {
-	int		i;
-	bool	inside_quotes;
-	bool	inside_dquotes;
-
-	inside_quotes = false;
-	inside_dquotes = false;
-	i = -1;
-	while (line[++i])
-	{
-		if (line[i] == '\'')
-			inside_quotes = !inside_quotes;
-		else if (line[i] == '\"')
-			inside_dquotes = !inside_dquotes;
-		else if (!inside_quotes && !inside_dquotes 
-			&& (line[i] == '\\' || line[i] == ';'))
-			return (127);
-	}
-	return (0);
+	if (ms_contains_input(line_chunk))
+		return (false);
+	if (ms_contains_output(line_chunk))
+		return (false);
+	if (!(*ft_skip_spaces(line_chunk)))
+		return (false);
+	return (false);
 }

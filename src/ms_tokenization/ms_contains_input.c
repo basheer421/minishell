@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skip_spaces.c                                   :+:      :+:    :+:   */
+/*   ms_contains_input.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 21:29:47 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 17:29:42 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/04 15:58:44 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/04 17:04:06 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_skip_spaces(char *str)
+bool	ms_contains_input(char *line_chunk)
 {
-	int	i;
-
-	i = 0;
-	while (ft_is_space(str[i]))
-		i++;
-	return (str + i);
+	if (!line_chunk || !*line_chunk)
+		return (false);
+	if (*(ft_skip_spaces(line_chunk)) == '<')
+		return (true);
+	return (false);
 }

@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skip_spaces.c                                   :+:      :+:    :+:   */
+/*   ms_get_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 21:29:47 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 17:29:42 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/04 19:14:02 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/04 20:20:47 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_skip_spaces(char *str)
+char	*ms_get_cmd(char *line_chunk)
 {
-	int	i;
+	char	*cmd;
+	char	*line;
+	int		len;
+	int		i;
 
-	i = 0;
-	while (ft_is_space(str[i]))
-		i++;
-	return (str + i);
+	if (!line_chunk)
+		return (NULL);
+	line  = ft_skip_spaces(line_chunk);
+	if (!line || !*line)
+		return (NULL);
+	len = 0;
+	while (line[len] && !ft_is_space(line[len]))
+		len++;
+	cmd = malloc(len + 1);
+	if (cmd)
+		return (NULL);
+	i = -1;
+	while (++i < len)
+		cmd[i] = line[i];
+	return (cmd);
 }

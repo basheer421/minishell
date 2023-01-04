@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/04 15:41:07 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/04 21:50:50 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,13 @@ FILES	=		minishell.c \
 				ms_pipes/ms_pipes_count.c \
 				ms_pipes/ms_pipes_positions.c	\
 				ms_pipes/ms_pipes_divide.c \
-				ms_error/ms_error.c \
-				ms_tokenization/ms_get_input.c
-
+				ms_error/ms_error_invalid_char.c \
+				ms_tokenization/ms_contains_input.c \
+				ms_tokenization/ms_get_next_input.c \
+				ms_tokenization/ms_contains_cmd.c \
+				ms_tokenization/ms_get_cmd.c \
+				ms_tokenization/ms_contains_output.c \
+				ms_tokenization/ms_get_next_output.c \
 
 CC		=	cc
 
@@ -58,7 +62,7 @@ $(NAME):	$(OBJS)
 
 clean:
 			${MAKE} -C libft clean
-			${MAKE} -C piepex clean
+			${MAKE} -C pipex clean
 			/bin/rm -f $(OBJS)
 
 fclean:	clean
@@ -66,6 +70,6 @@ fclean:	clean
 			${MAKE} -C pipex fclean
 			/bin/rm -f $(NAME)
 
-re:			fclean all001011q
+re:			fclean all
 
 .PHONY:		all clean fclean re bonus

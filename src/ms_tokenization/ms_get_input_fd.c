@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skip_spaces.c                                   :+:      :+:    :+:   */
+/*   ms_get_input_fd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 21:29:47 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 17:29:42 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/04 21:46:05 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/04 22:14:33 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_skip_spaces(char *str)
+int	ms_get_input_fd(char *file_name)
 {
-	int	i;
-
-	i = 0;
-	while (ft_is_space(str[i]))
-		i++;
-	return (str + i);
+	if (!file_name || access(file_name, F_OK) != 0)
+		return (-1);
+	return (open(file_name, O_RDONLY));
 }
