@@ -6,14 +6,13 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 22:58:20 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/06 23:02:06 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_command_chunk	**chunk_init(char **line_pieces,
-									size_t amount)
+static t_command_chunk	**chunk_init(size_t amount)
 {
 	t_command_chunk	**chunks;
 	size_t			i;
@@ -36,30 +35,21 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces,
 										size_t amount)
 {
 	t_command_chunk **chunks;
-	size_t i;
-	char	*input;
-	int		in_fd;
+	size_t 			i;
 
-	chunks = chunk_init(line_pieces, amount);
+	chunks = chunk_init(amount);
 	if (!chunks)
 		return (NULL);
 	i = 0;
 	while (i < amount)
 	{
-		while (*line_pieces[i])
-		{
-			while (ms_contains_input(*line_pieces[i]))
-			{
-				input = ms_get_next_input(*line_pieces[i]);
-				if (access(input, F_OK) != 0)
-					return (NULL); // WRONG FILE NAME
-				in_fd = open(input, O_RDONLY);
-				if (in_fd < 0)
-					return (NULL);
-				chunks[i]->input_fd = in_fd;
-			}
-		}
+		chunks[i]->input_fd = ms_get_input_fd(&line_pieces[i],
+			chunks[i]);
+		if (chunks[i]->input_fd == -1)
+			; // FILE NOT FOUND ERROR
+		else if (chunks[i]->input_fd != -2)
+			ft_putendl_fd("hello world", chunks[i]->input_fd);
 		i++;
 	}
-
+	return (chunks);
 }

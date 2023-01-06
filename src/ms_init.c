@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/03 18:29:52 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/06 22:52:49 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_ms	*ms_init(char **envp)
 	if (!shell->current_dir)
 		return (NULL);
 	shell->is_interactive_mode = true;
-	shell->env_vars = ht_new(97);
+	shell->env_vars = ht_new(1);
 	if (!shell->env_vars)
 		return (NULL);
 	if (!fill_ht(envp, shell->env_vars))

@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/04 21:50:50 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/06 23:03:02 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,8 @@ FILES	=		minishell.c \
 				ms_tokenization/ms_get_cmd.c \
 				ms_tokenization/ms_contains_output.c \
 				ms_tokenization/ms_get_next_output.c \
+				ms_tokenization/ms_get_input_fd.c \
+				ms_command_chunk/ms_command_chunks_get.c \
 
 CC		=	cc
 

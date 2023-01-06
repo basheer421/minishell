@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 21:50:14 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/06 22:24:31 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,12 +154,15 @@ bool			ms_contains_input(char *line_chunk);
 char			*ms_get_next_input(char *line_chunk);
 
 /**
- * @brief Using get_next_input() we get the last fd.
+ * @brief Using get_next_input() we get the last fd,
+ * 	and store it inside "chunk"
  * 
- * @param file_name 
+ * @param line_piece
+ * @param chunk to be stored in
  * @return int fd, or -1 on error
  */
-int				ms_get_input_fd(char *file_name);
+int				ms_get_input_fd(char **line_piece,
+				t_command_chunk *chunk);
 
 /**
  * @brief Tells if the given line has a command.
