@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 19:16:20 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/07 20:53:07 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_ms	*ms_init(char **envp)
 	if (!shell->current_dir)
 		return (NULL);
 	shell->is_interactive_mode = true;
-	shell->env_vars = ht_new(97);
+	shell->env_vars = ht_new(1);
 	if (!shell->env_vars)
 		return (NULL);
 	if (!fill_ht(envp, shell->env_vars))
@@ -96,8 +96,6 @@ t_ms	*ms_init(char **envp)
 
 void	ms_destroy(t_ms *shell)
 {
-	if (!shell)
-		return ;
 	if (shell->current_dir)
 		free(shell->current_dir);
 	if (shell->env_vars)

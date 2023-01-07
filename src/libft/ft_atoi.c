@@ -6,17 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 21:49:30 by bammar            #+#    #+#             */
-/*   Updated: 2022/08/14 17:14:38 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/04 17:29:00 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static int	is_space(int c)
-{
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r');
-}
 
 static int	super_bad_case(int sign)
 {
@@ -63,7 +57,7 @@ int	ft_atoi(const char *str)
 
 	sign = 1;
 	i = 0;
-	while (is_space(str[i]))
+	while (ft_is_space(str[i]))
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 		if (str[i++] == '-')

@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_pwd.c                                           :+:      :+:    :+:   */
+/*   ms_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 18:33:48 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/06 18:33:48 by mfirdous         ###   ########.fr       */
+/*   Created: 2023/01/07 21:18:29 by mfirdous          #+#    #+#             */
+/*   Updated: 2023/01/07 21:18:29 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_pwd(t_ms *shell)
+void	ms_exit(int exit_status, t_ms *shell)
 {
-	char *pwd_value = "sfasf";
-	pwd_value = ht_get(shell->env_vars, "PWD");
-	printf("%s\n", (char *)pwd_value);
-	// (void)shell;
+	ms_destroy(shell);
+	exit(exit_status);
 }

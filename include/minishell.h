@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/07 20:43:03 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/07 21:26:50 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_command_chunk
  * @param line user input
  * @return int error code or 0
  */
-int				ms_invalid_char(char *line);
+int				ms_error_invalid_char(char *line);
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
@@ -84,6 +84,14 @@ void			ms_destroy(t_ms *shell);
  * @return Error code
  */
 int				ms_line_read(const char *prompt, t_ms *shell);
+
+/**
+ * @brief Tells if the line is empty.
+ * 
+ * @param line user input
+ * @return boolean, true if it's empty.
+ */
+bool			ms_line_isempty(char *line);
 
 /**
  * @brief Tells if the line has at least one command.
@@ -130,6 +138,65 @@ size_t			ms_pipes_count(char *line);
 char			**ms_pipes_divide(char *line);
 
 /**
+ * @brief Tells if the given line has input.
+ * 
+ * @param line_chunk 
+ * @return boolean
+ */
+bool			ms_contains_input(char *line_chunk);
+
+/**
+ * @brief Reads the line for the input file name
+ * 
+ * @param line_chunk 
+ * @return file_name (malloced string), or NULL if it doesn't exist.
+ */
+char			*ms_get_next_input(char *line_chunk);
+
+/**
+ * @brief Using get_next_input() we get the last fd,
+ * 	and store it inside "chunk"
+ * 
+ * @param line_piece
+ * @param chunk to be stored in
+ * @return int fd, or -1 on error
+ */
+int				ms_get_input_fd(char **line_piece,
+				t_command_chunk *chunk);
+
+/**
+ * @brief Tells if the given line has a command.
+ * 
+ * @param line_chunk 
+ * @return boolean
+ */
+bool			ms_contains_cmd(char *line_chunk);
+
+/**
+ * @brief Reads the line for the cmd
+ * 
+ * @param line_chunk 
+ * @return file_name (malloced string)
+ */
+char			*ms_get_cmd(char *line_chunk);
+
+/**
+ * @brief Tells if the given line has output.
+ * 
+ * @param line_chunk 
+ * @return boolean
+ */
+bool			ms_contains_output(char *line_chunk);
+
+/**
+ * @brief Reads the line for the output file name
+ * 
+ * @param line_chunk 
+ * @return file_name (malloced string)
+ */
+char			*ms_get_next_output(char *line_chunk);
+
+/**
  * @brief Gets the command chunks from the divided line.
  * 	might contain invalid commands
  * 
@@ -138,6 +205,26 @@ char			**ms_pipes_divide(char *line);
  * @return array of chunks
  */
 t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
+
+// /**
+//  * @brief Executes a command chunk.
+//  * Make sure everything is done in new temporary shell.
+//  * 
+//  * @param command_chunk 
+//  * @return {int} Error code
+//  */
+// int				ms_command_chunk_execute(t_command_chunk *command_chunk,
+// 					t_ms *shell);
+
+/**
+ * @brief Runs the echo command on the given strings
+ * 
+ * @param strs array of strings to be output on the screen
+ * @param n_flag if set to true echo will not output a trailing newline
+ */
+void			ms_echo(char **strs, bool n_flag);
+void			ms_pwd(t_ms *shell);
+void			ms_exit(int exit_status, t_ms *shell);
 
 /**
  * @brief Executes a command chunk.
@@ -148,14 +235,5 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
  */
 int				ms_command_chunk_execute(t_command_chunk *command_chunk,
 					t_ms *shell);
-
-/**
- * @brief Runs the echo command on the given strings
- * 
- * @param strs array of strings to be output on the screen
- * @param n_flag if set to true echo will not output a trailing newline
- */
-void			ms_echo(char **strs, bool n_flag);
-void			ms_pwd(t_ms *shell);
 
 #endif

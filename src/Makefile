@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/06 19:06:21 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/07 21:22:17 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,16 +23,25 @@ FILES	=		minishell.c \
 				hashtable/ht_replace.c \
 				hashtable/ht_clear.c \
 				hashtable/ht_destroy.c \
-				ms_line/ms_line_read.c \
 				ms_init.c \
+				ms_line/ms_line_read.c \
+				ms_line/ms_line_isempty.c \
 				ms_line/ms_line_contains_commands.c	\
 				ms_pipes/ms_pipes_count.c \
 				ms_pipes/ms_pipes_positions.c	\
 				ms_pipes/ms_pipes_divide.c \
-				ms_error/ms_error.c \
+				ms_error/ms_error_invalid_char.c \
+				ms_tokenization/ms_contains_input.c \
+				ms_tokenization/ms_get_next_input.c \
+				ms_tokenization/ms_contains_cmd.c \
+				ms_tokenization/ms_get_cmd.c \
+				ms_tokenization/ms_contains_output.c \
+				ms_tokenization/ms_get_next_output.c \
+				ms_tokenization/ms_get_input_fd.c \
 				ms_builtins/ms_echo.c \
-				ms_builtins/ms_pwd.c
-
+				ms_builtins/ms_pwd.c \
+				ms_builtins/ms_exit.c \
+				ms_command_chunk/ms_command_chunks_get.c \
 
 CC		=	cc
 

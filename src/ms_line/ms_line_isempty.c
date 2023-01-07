@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_skip_spaces.c                                   :+:      :+:    :+:   */
+/*   ms_line_isempty.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/02 21:29:47 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 17:29:42 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/03 16:45:36 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/03 16:46:49 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_skip_spaces(char *str)
+bool	ms_line_isempty(char *line)
 {
-	int	i;
-
-	i = 0;
-	while (ft_is_space(str[i]))
-		i++;
-	return (str + i);
+	if (*ft_skip_spaces(line) == 0)
+		return (true);
+	return (false);
 }
