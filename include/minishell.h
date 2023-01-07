@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/02 21:42:18 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/07 20:43:03 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,14 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
  */
 int				ms_command_chunk_execute(t_command_chunk *command_chunk,
 					t_ms *shell);
+
+/**
+ * @brief Runs the echo command on the given strings
+ * 
+ * @param strs array of strings to be output on the screen
+ * @param n_flag if set to true echo will not output a trailing newline
+ */
+void			ms_echo(char **strs, bool n_flag);
+void			ms_pwd(t_ms *shell);
 
 #endif

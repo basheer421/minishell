@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
+#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/02 19:03:15 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/06 19:06:21 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,14 +29,16 @@ FILES	=		minishell.c \
 				ms_pipes/ms_pipes_count.c \
 				ms_pipes/ms_pipes_positions.c	\
 				ms_pipes/ms_pipes_divide.c \
-				ms_error/ms_error.c
+				ms_error/ms_error.c \
+				ms_builtins/ms_echo.c \
+				ms_builtins/ms_pwd.c
 
 
 CC		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -g
+CFLAGS	=	-Wall -Wextra -Werror -g -Ofast
 
-LINKS	=	-lreadline
+LINKS	=	-lreadline 
 
 OBJS	= $(FILES:.c=.o)
 

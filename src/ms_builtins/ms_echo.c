@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_line_contains_commands.c                        :+:      :+:    :+:   */
+/*   ms_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/25 20:28:54 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/26 21:56:34 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/03 13:20:36 by mfirdous          #+#    #+#             */
+/*   Updated: 2023/01/03 13:20:36 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// ofcourse not done lol
-bool	ms_line_contains_commands(char *line, t_ms *shell)
+void	ms_echo(char **strs, bool n_flag)
 {
-	size_t	length;
+	int	i;
 
-	(void)shell;
-	printf("pipe_count: %zu\n", ms_pipes_count(line));
-	length = ft_strlen(line);
-	if (length != 4)
-		return (1);
-	return (ft_strncmp(line, "exit", 4) != 0);
+	if (!strs)
+		exit(0);
+	i = 1;
+	if (n_flag)
+		i = 2;
+	if (strs[i])
+		ft_printf("%s", strs[i]);
+	if (strs[i])
+		while (strs[++i])
+			ft_printf(" %s", strs[i]);
+	if (!n_flag)
+		ft_printf("\n");
 }
