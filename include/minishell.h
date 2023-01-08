@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/07 21:26:50 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/08 18:40:15 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,21 @@ int				ms_line_read(const char *prompt, t_ms *shell);
  */
 bool			ms_line_isempty(char *line);
 
+// /**
+//  * @brief Tells if the line has at least one command.
+//  * 
+//  * @param line user input
+//  * @return boolean
+//  */
+// bool			ms_line_contains_commands(char *line, t_ms *shell);
+
 /**
- * @brief Tells if the line has at least one command.
+ * @brief Edits the string chunks to expand any env vars.
  * 
  * @param line user input
- * @return boolean
+ * @return boolean, false on failure.
  */
-bool			ms_line_contains_commands(char *line, t_ms *shell);
+bool			ms_line_expand_vars(char **string_chunks);
 
 /**
  * @brief Execute the valid commands in parallel as
@@ -161,7 +169,7 @@ char			*ms_get_next_input(char *line_chunk);
  * @param chunk to be stored in
  * @return int fd, or -1 on error
  */
-int				ms_get_input_fd(char **line_piece,
+int				ms_get_input_fd(char *line_piece,
 				t_command_chunk *chunk);
 
 /**
@@ -179,6 +187,16 @@ bool			ms_contains_cmd(char *line_chunk);
  * @return file_name (malloced string)
  */
 char			*ms_get_cmd(char *line_chunk);
+
+/**
+ * @brief Reads the command string and checks if it's valid.
+ * 
+ * @param line_piece
+ * @param chunk to be stored in 
+ * @return Command arguments or NULL if not found
+ */
+char			**ms_get_fullcmd(char *line_piece,
+				t_command_chunk *chunk);
 
 /**
  * @brief Tells if the given line has output.

@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 19:14:02 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 20:20:47 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/07 22:38:04 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ char	*ms_get_cmd(char *line_chunk)
 	if (!line || !*line)
 		return (NULL);
 	len = 0;
-	while (line[len] && !ft_is_space(line[len]))
+	while (line[len] && line[len] != '>' && line[len] != '<')
 		len++;
 	cmd = malloc(len + 1);
-	if (cmd)
+	if (!cmd)
 		return (NULL);
 	i = -1;
 	while (++i < len)
 		cmd[i] = line[i];
+	cmd[i] = 0;
 	return (cmd);
 }

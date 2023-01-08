@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_contains_output.c                               :+:      :+:    :+:   */
+/*   ft_index.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/04 19:06:42 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/07 18:49:16 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/07 17:54:23 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/07 17:56:24 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-bool	ms_contains_output(char *line_chunk)
+int	ft_index(const char *str, int c)
 {
-	if (!line_chunk || !*line_chunk)
-		return (false);
-	if (*(ft_skip_spaces(line_chunk)) == '>')
-		return (true);
-	return (false);
+	int	i;
+	
+	i = -1;
+	while (str[++i])
+		if (str[i] == c)
+			return (str[i]);
+	return (-1);
 }

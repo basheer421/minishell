@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/07 21:22:17 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/08 18:43:11 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,13 +35,16 @@ FILES	=		minishell.c \
 				ms_tokenization/ms_get_next_input.c \
 				ms_tokenization/ms_contains_cmd.c \
 				ms_tokenization/ms_get_cmd.c \
+				ms_tokenization/ms_get_fullcmd.c \
 				ms_tokenization/ms_contains_output.c \
 				ms_tokenization/ms_get_next_output.c \
 				ms_tokenization/ms_get_input_fd.c \
 				ms_builtins/ms_echo.c \
 				ms_builtins/ms_pwd.c \
 				ms_builtins/ms_exit.c \
+				ms_tokenization/ms_line_expand_vars.c \
 				ms_command_chunk/ms_command_chunks_get.c \
+				
 
 CC		=	cc
 
