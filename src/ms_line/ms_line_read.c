@@ -65,9 +65,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	int i = -1;
 	int count = ms_pipes_count(line) + 1;
 	while (++i < count){
-		printf("chunk: %d\n", i);
-		for (int k = 0; chunks[i] && chunks[i]->cmd[k]; k++)
-			printf("%s\n", chunks[i]->cmd[k]);
+		printf("chunk: %s\n", string_chunks[i]);
 	}
 	return (ft_split_destroy(string_chunks), free(line), 0);
 }
