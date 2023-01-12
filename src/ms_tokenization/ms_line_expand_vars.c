@@ -6,11 +6,22 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/09 15:25:04 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/10 03:17:03 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// static void printlst(t_list *lst)
+// {
+// 	t_list *node = lst;
+
+// 	while (node)
+// 	{
+// 		puts(node->content);
+// 		node = node->next;
+// 	}
+// }
 
 typedef struct s_expand_vars
 {
@@ -22,7 +33,7 @@ typedef struct s_expand_vars
 
 static int	first_nonalnum(char *s)
 {
-	int	i;
+	int	i; 
 
 	i = 0;
 	while (s[i] && ft_isalnum(s[i]))
@@ -32,26 +43,31 @@ static int	first_nonalnum(char *s)
 	return (s[i]);
 }
 
-static char	*get_next_var(char *string, int i)
+static char	*get_next_var(char *string, int *index)
 {
 	int			sub_len;
 	char		*var_name;
+	int			i;
 
+	i = *index;
 	sub_len = ft_index(string + i + 1, first_nonalnum(string));
 	if (sub_len == -1)
 		sub_len = ft_strlen(string);
 	var_name = ft_substr(string, i + 1, sub_len);
 	if (!var_name)
 		return (NULL);
-	string += i + 1 + sub_len;
+	*index += 1 + sub_len;
 	return (var_name);
 }
 
 static t_list	**read_string(char *string, t_expand_vars *vars)
 {
 	int			i;
-	t_list		*lsts[2];
+	t_list		**lsts;
 
+	lsts = malloc(2 * sizeof(t_list *));
+	if (!lsts)
+		return (NULL);
 	lsts[0] = ft_lstnew(NULL);
 	if (!lsts[0])
 		return (NULL);
@@ -68,30 +84,35 @@ static t_list	**read_string(char *string, t_expand_vars *vars)
 		else if (string[i] == '$' && ft_strlen(string) == 1
 			&& (vars->inside_dquotes && !vars->inside_quotes))
 		{
-			ft_lstadd_back(&lsts[0], ft_strdup("\0"));
-			ft_lstadd_back(&lsts[1], ft_lstnew(get_next_var(string, i)));
+			ft_lstadd_back(&lsts[0], ft_lstnew(ft_strdup("\0")));
+			ft_lstadd_back(&lsts[1], ft_lstnew(get_next_var(string, &i)));
 		}
 		else
-			ft_lstadd_back(&lsts[0], &string[i]);
+			ft_lstadd_back(&lsts[0], ft_lstnew(&string[i]));
 	}
+	// printlst(lsts[0]->next);
 	return (lsts);
 }
 
-static int	expandlsts_size(t_list **lsts)
+static int	expandlsts_size(t_list **lsts, t_ms *shell)
 {
 	t_list	*nodes[2];
 	int		size;
+	char	*var_value;
 
 	nodes[0] = lsts[0];
 	nodes[1] = lsts[1];
 	size = 0;
 	while (nodes[0])
 	{
+		
 		if (*((char *)(nodes[0]->content)))
 			size++;
 		else if (nodes[1])
 		{
-			size += ft_strlen(nodes[1]->content);
+			var_value = ht_get(shell->env_vars, nodes[1]->content);
+			if (var_value)
+				size += ft_strlen(var_value);
 			nodes[1] = nodes[1]->next;
 		}
 		nodes[0] = nodes[0]->next;
@@ -99,16 +120,17 @@ static int	expandlsts_size(t_list **lsts)
 	return (size);
 }
 
-static char	*join_expandlsts(t_list **lsts)
+static char	*join_expandlsts(t_list **lsts, t_ms *shell)
 {
 	t_list	*nodes[2];
 	int		size;
 	int		i;
 	char	*new_string;
+	char	*var_value;
 
 	nodes[0] = lsts[0]->next;
 	nodes[1] = lsts[1]->next;
-	size = expandlsts_size(nodes);
+	size = expandlsts_size(nodes, shell);
 	new_string = malloc(size + 1);
 	if (!new_string)
 		return (NULL);
@@ -119,9 +141,12 @@ static char	*join_expandlsts(t_list **lsts)
 			new_string[i++] = *((char *)(nodes[0]->content));
 		else if (nodes[1])
 		{
-			ft_memcpy(new_string + i, 
-				nodes[1]->content, ft_strlen(nodes[1]->content));
-			i += ft_strlen(nodes[1]->content);
+			var_value = ht_get(shell->env_vars, nodes[1]->content);
+			if (!var_value)
+				var_value = ft_strdup("\0");
+			ft_memcpy(new_string + i, var_value,
+				ft_strlen(var_value));
+			i += ft_strlen(var_value);
 			nodes[1] = nodes[1]->next;
 		}
 		nodes[0] = nodes[0]->next;
@@ -135,7 +160,7 @@ static char	*join_expandlsts(t_list **lsts)
 //	and puts a '\0' as a place holder,
 //	so whenever '\0' is found we call the last variable inside "lst 1"
 //	and we join everything togather replacing all '\0's with their values
-static char	*chunk_expand(char *chunk)
+static char	*chunk_expand(char *chunk, t_ms *shell)
 {
 	int				word_count;
 	t_list			**lsts;
@@ -152,15 +177,15 @@ static char	*chunk_expand(char *chunk)
 	while (words[++word_count])
 	{
 		ft_bzero(&vars, sizeof(t_expand_vars));
-		lsts = read_string(words, &vars);
+		lsts = read_string(words[word_count], &vars);
 		if (!lsts)
 			return (NULL);
-		words[word_count] = join_expandlsts(lsts);
+		words[word_count] = join_expandlsts(lsts, shell);
 		if (!words[word_count])
 			return (NULL);
 	}
 	word_count = -1;
-	new_chunk = ft_strdup("\0");
+	new_chunk = ft_strdup(words[++word_count]);
 	if (!new_chunk)
 		return (NULL);
 	while (words[++word_count])
@@ -175,16 +200,16 @@ static char	*chunk_expand(char *chunk)
 	return (new_chunk);
 }
 
-bool	ms_line_expand_vars(char **string_chunks)
+bool	ms_line_expand_vars(char **string_chunks, t_ms *shell)
 {
 	int		i;
 	char	*temp;
 
-	i - 1;
+	i = -1;
 	while (string_chunks[++i])
 	{
 		temp = string_chunks[i];
-		string_chunks[i] = chunk_expand(string_chunks[i]);
+		string_chunks[i] = chunk_expand(string_chunks[i], shell);
 		free(temp);
 		if (!string_chunks[i])
 			return (false);

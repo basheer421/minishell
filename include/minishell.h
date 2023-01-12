@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/08 21:20:14 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/10 02:53:09 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ bool			ms_line_isempty(char *line);
  * @param line user input
  * @return boolean, false on failure.
  */
-bool			ms_line_expand_vars(char **string_chunks);
+bool			ms_line_expand_vars(char **string_chunks, t_ms *shell);
 
 /**
  * @brief Execute the valid commands in parallel as

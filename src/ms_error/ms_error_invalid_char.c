@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:02:43 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/08 12:19:44 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/10 21:05:25 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ int	ms_error_invalid_char(char *line)
 			&& (line[i] == '\\' || line[i] == ';'))
 			return (127); // OR PRINT ERROR
 	}
+	if (inside_quotes || inside_dquotes)
+		return (127); // OR PRINT ERROR
 	return (0);
 }
