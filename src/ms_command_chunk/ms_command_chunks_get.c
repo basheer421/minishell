@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/08 13:26:15 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/10 16:25:53 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_command_chunk	**chunk_init(size_t amount)
 	t_command_chunk	**chunks;
 	size_t			i;
 
-	chunks = malloc(sizeof(t_command_chunk *) * amount);
+	chunks = malloc(sizeof(t_command_chunk *) * (amount + 1));
 	if (!chunks)
 		return (NULL);
 	i = 0;
@@ -30,6 +30,7 @@ static t_command_chunk	**chunk_init(size_t amount)
 			return (NULL);
 		i++;
 	}
+	chunks[i] = NULL;
 	return (chunks);
 }
 

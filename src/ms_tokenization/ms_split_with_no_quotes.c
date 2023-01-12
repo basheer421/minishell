@@ -6,11 +6,24 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 21:18:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/08 21:20:29 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/12 12:39:20 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*chrskip(char *s, char c)
+{
+	int	i;
+
+	if (!s)
+		return (NULL);
+	i = 0;
+	while (s[i] != 0 && s[i] == c)
+		i++;
+	return (s + i);
+}
+
 
 static int	split_with_no_quotes_len(char *line, int c)
 {
@@ -26,7 +39,11 @@ static int	split_with_no_quotes_len(char *line, int c)
 	while (line[++i])
 	{
 		if (line[i] == c && !inside_quotes && !inside_dquotes)
+		{
 			len++;
+			while (line[i + 1] == c)
+				i++;
+		}
 		else if (line[i] == '\'')
 			inside_quotes = !inside_quotes;
 		else if (line[i] == '\"')
@@ -52,22 +69,27 @@ static int	*ms_char_positions(char *line, int c)
 	current_index = 0;
 	while (line[++i])
 	{
-		if (line[i] == '\"')
+		if (line[i] == c && !inside_dquotes && !inside_quotes)
+		{
+			positions[current_index++] = i;
+			while (line[i + 1] == c)
+				i++;
+		}
+		else if (line[i] == '\"')
 			inside_dquotes = !inside_dquotes;
 		else if (line[i] == '\'')
 			inside_quotes = !inside_quotes;
-		else if (line[i] == c && !inside_dquotes && !inside_quotes)
-			positions[current_index++] = i;
+		
 	}
 	positions[current_index] = -1;
 	return (positions);
 }
 
-static size_t	get_length(char *line, int current_index, int position)
+static size_t	get_length(char *line, char *start_pos, int next_c)
 {
-	if (position == -1)
-		return (ft_strlen(line) - current_index);
-	return (position - current_index);
+	if (next_c == -1)
+		return (ft_strlen(start_pos));
+	return (ft_strlen(start_pos) - ft_strlen(line + next_c));
 }
 
 char	**split_with_no_quotes(char *line, int c)
@@ -75,22 +97,31 @@ char	**split_with_no_quotes(char *line, int c)
 	char	**content;
 	int		current_index;
 	int		*positions;
+	char	*start_pos;
 	size_t	i;
 	size_t	content_size;
 
+	while (*line == c)
+		line++;
+	if (!line || !*line)
+		return (NULL);
 	content_size = split_with_no_quotes_len(line, c) + 1;
 	positions = ms_char_positions(line, c);
 	if (!positions)
 		return (NULL);
 	content = malloc(sizeof(char *) * (content_size + 1));
 	if (!content)
-		return (NULL);
+		return (free(positions), NULL);
 	i = 0;
 	current_index = 0;
 	while (i < content_size)
 	{
-		content[i] = ft_substr(line, current_index, get_length(line,
-					current_index, positions[i]));
+		start_pos = chrskip(line + current_index, c);
+		if (!start_pos || !*start_pos)
+			return (free(positions), free(content), NULL);
+		content[i] = ft_substr(start_pos,
+			0, get_length(line,
+					start_pos, positions[i]));
 		if (!content[i])
 			return (free(positions), free(content), NULL);
 		current_index = positions[i++] + 1;
@@ -98,3 +129,6 @@ char	**split_with_no_quotes(char *line, int c)
 	content[i] = NULL;
 	return (free(positions), content);
 }
+
+// hello  "wow lol"  rld
+// 6 - 3 = 5

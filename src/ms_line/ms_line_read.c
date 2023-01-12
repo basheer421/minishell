@@ -12,30 +12,23 @@
 
 #include "minishell.h"
 
-static void	check_builtins(char *line, t_ms *shell)
+static void	check_builtins(t_command_chunk *chunk, t_ms *shell)
 {
-	char **strs;
-
-	strs = ft_split(line, ' ');
-	if (strs && strs[0])
+	if (ft_strncmp(chunk->cmd[0], "echo", 5) == 0)
 	{
-		if (ft_strncmp(strs[0], "echo", 5) == 0)
-		{
-			if (strs[1] && ft_strncmp(strs[1], "-n", 3) == 0) // -n flag is set to true
-				ms_echo(strs, 1);
-			else
-				ms_echo(strs, 0);
-		}
-		else if (ft_strncmp(strs[0], "pwd", 4) == 0)
-			ms_pwd(shell);
-		else if (ft_strncmp(strs[0], "exit", 5) == 0)
-		{
-			free(line);
-			ft_split_destroy(strs);
-			ms_exit(0, shell);
-		}	
-		ft_split_destroy(strs);
+		if (chunk->cmd[1] && ft_strncmp(chunk->cmd[1], "-n", 3) == 0) // -n flag is set to true
+			ms_echo(chunk->cmd, 1);
+		else
+			ms_echo(chunk->cmd, 0);
 	}
+	else if (ft_strncmp(chunk->cmd[0], "pwd", 4) == 0)
+		ms_pwd(shell);
+	else if (ft_strncmp(chunk->cmd[0], "exit", 5) == 0)
+	{
+		ft_split_destroy(chunk->cmd);
+		ms_exit(0, shell);
+	}	
+	ft_split_destroy(chunk->cmd);
 }
 
 int	ms_line_read(const char *prompt, t_ms *shell)
@@ -50,22 +43,23 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (shell->error_code != 0)
 		return (free(line), shell->error_code);
 	add_history(line);
-	check_builtins(line, shell);
 	shell->error_code = ms_error_invalid_char(line);
-	if (ms_line_isempty(line))
+	if (ms_line_isempty(line) || shell->error_code == 127)
 		return (free(line), 0);
 	string_chunks = ms_pipes_divide(line);
 	if (!string_chunks)
 		return (free(line), 1);
-	// expand vars here
+	// if (!ms_line_expand_vars(string_chunks, shell))
+	// 	return (0);
 	// use pipex with the given chunks
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);
 	int i = -1;
-	int count = ms_pipes_count(line) + 1;
-	while (++i < count){
-		printf("chunk: %s\n", string_chunks[i]);
-	}
+	while (chunks[0]->cmd[++i] != NULL)
+		printf("cmds:%s\n", chunks[0]->cmd[i]);
+	i = -1;
+	while (chunks[++i] != NULL)
+		check_builtins(chunks[i], shell);	
 	return (ft_split_destroy(string_chunks), free(line), 0);
 }
