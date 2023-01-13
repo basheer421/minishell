@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/08 22:25:45 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/13 16:31:30 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ FILES	=		minishell.c \
 				ms_tokenization/ms_get_next_output.c \
 				ms_tokenization/ms_get_input_fd.c \
 				ms_tokenization/ms_line_expand_vars.c \
+				ms_tokenization/ms_split_utils.c \
 				ms_tokenization/ms_split_with_no_quotes.c \
 				ms_builtins/ms_echo.c \
 				ms_builtins/ms_pwd.c \

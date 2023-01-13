@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/10 02:53:09 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/13 16:05:14 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ void			ms_destroy(t_ms *shell);
  * @return Error code
  */
 int				ms_line_read(const char *prompt, t_ms *shell);
+
+// Helper functions for split_with_no_quotes
+char			*chrskip(char *s, char c);
+int				split_with_no_quotes_len(char *line, int c);
+int				*ms_char_positions(char *line, int c);
 
 /**
  * @brief Splits a string by a character unless the character is inside quotes.
