@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/07 21:26:50 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/11 23:13:02 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <string.h>
+# include <unistd.h>
+# include <errno.h>
+# include <dirent.h>
+# include <fcntl.h>
+# include <sys/param.h>
+
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -217,14 +223,29 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
 // 					t_ms *shell);
 
 /**
+ * @brief Checks if a function returned an error and if so displays appropriate error message
+ * 
+ * @param err_header Name of the function being called, to be used in error message
+ * @param ret_value Return value of the function called 
+ * @return ret_value
+ */
+int	ms_errno_check(char *err_header, int ret_value);
+
+void	handle_builtins(char *line, t_ms *shell);
+
+/**
  * @brief Runs the echo command on the given strings
  * 
  * @param strs array of strings to be output on the screen
  * @param n_flag if set to true echo will not output a trailing newline
  */
 void			ms_echo(char **strs, bool n_flag);
-void			ms_pwd(t_ms *shell);
-void			ms_exit(int exit_status, t_ms *shell);
+void			ms_pwd(void);
+void			ms_cd(t_ms *shell, char **path, int arg_count);
+int				ms_exit(char **args, int arg_count, char *line, t_ms *shell);
+void			ms_env(t_ms *shell);
+void			ms_export(t_ms *shell, char **args, int arg_count);
+void			ms_unset(t_ms *shell, char **strs, int arg_count);
 
 /**
  * @brief Executes a command chunk.

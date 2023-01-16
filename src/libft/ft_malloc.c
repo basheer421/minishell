@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_malloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 18:33:48 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/06 18:33:48 by mfirdous         ###   ########.fr       */
+/*   Created: 2023/01/11 23:51:08 by mfirdous          #+#    #+#             */
+/*   Updated: 2023/01/11 23:51:08 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ms_pwd(void)
+void	*ft_malloc(size_t size)
 {
-	char	cur_dir[MAXPATHLEN];
+	void	*ptr;
 
-	if (!getcwd(cur_dir, MAXPATHLEN))
-		perror("pwd");
-	else
-		printf("%s\n", cur_dir);
+	ptr = malloc(size);
+	if (!ptr)
+		exit(EXIT_FAILURE);
+	return (ptr);
 }

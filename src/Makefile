@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/07 21:22:17 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/11 21:28:54 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,9 +38,15 @@ FILES	=		minishell.c \
 				ms_tokenization/ms_contains_output.c \
 				ms_tokenization/ms_get_next_output.c \
 				ms_tokenization/ms_get_input_fd.c \
+				ms_builtins/ms_handle_builtins.c \
 				ms_builtins/ms_echo.c \
 				ms_builtins/ms_pwd.c \
+				ms_builtins/ms_cd.c \
+				ms_builtins/ms_env.c \
+				ms_builtins/ms_export.c \
+				ms_builtins/ms_unset.c \
 				ms_builtins/ms_exit.c \
+				ms_error/ms_errno_check.c \
 				ms_command_chunk/ms_command_chunks_get.c \
 
 CC		=	cc

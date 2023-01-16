@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ht_set.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 00:28:18 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/24 15:14:58 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/16 18:36:23 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@ static int	set_key_and_value(t_ht *table, char *key,
 	node->key = ft_strdup(key);
 	if (!node->key)
 		return (0);
-	node->value = ft_strdup(value);
-	if (!node->value)
-		return (0);
-	node->next = NULL;
+	node->value = NULL;
+	if (value)
+	{
+		node->value = ft_strdup(value);
+		if (!node->value)
+			return (0);
+	}
 	table->size++;
+	node->next = NULL;
 	return (1);
 }
 

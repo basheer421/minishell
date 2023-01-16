@@ -4,3 +4,16 @@ handle expansions for env vars, also:
 	$? - last return value
 	$$ - pid of the currently running process 
 	.. there will be more
+
+ERROR MESSAGES
+make function to print error messages in the foll format:
+	minishell: <command name>: <optional arg>: <error msg>
+eg:	minishell: cd: HOME not set
+eg: minishell: cat: file.txt: No such file or directory
+
+
+for today:
+basic exec for single commands and their args
+signal handling
+precede error messages for builtin commands with "bash"
+set all return statuses (cd, export) (global variable)

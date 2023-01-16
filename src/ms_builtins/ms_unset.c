@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_pwd.c                                           :+:      :+:    :+:   */
+/*   ms_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 18:33:48 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/06 18:33:48 by mfirdous         ###   ########.fr       */
+/*   Created: 2023/01/11 19:39:01 by mfirdous          #+#    #+#             */
+/*   Updated: 2023/01/11 19:39:01 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_pwd(void)
+void	ms_unset(t_ms *shell, char **strs, int arg_count)
 {
-	char	cur_dir[MAXPATHLEN];
+	int	i;
 
-	if (!getcwd(cur_dir, MAXPATHLEN))
-		perror("pwd");
-	else
-		printf("%s\n", cur_dir);
+	i = 0;
+	if (arg_count > 1)
+		while(strs[++i])
+			ht_remove(shell->env_vars, strs[i]);
 }

@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_pwd.c                                           :+:      :+:    :+:   */
+/*   ms_errno_check.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 18:33:48 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/06 18:33:48 by mfirdous         ###   ########.fr       */
+/*   Created: 2023/01/08 12:39:46 by mfirdous          #+#    #+#             */
+/*   Updated: 2023/01/08 12:39:46 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ms_pwd(void)
+int	ms_errno_check(char *err_header, int ret_value)
 {
-	char	cur_dir[MAXPATHLEN];
-
-	if (!getcwd(cur_dir, MAXPATHLEN))
-		perror("pwd");
-	else
-		printf("%s\n", cur_dir);
+	if (ret_value == -1)
+		perror(err_header);
+	free(err_header);
+	return (ret_value);
 }
