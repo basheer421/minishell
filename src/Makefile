@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/11 21:28:54 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/16 20:33:08 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,13 @@ FILES	=		minishell.c \
 				ms_tokenization/ms_get_next_input.c \
 				ms_tokenization/ms_contains_cmd.c \
 				ms_tokenization/ms_get_cmd.c \
+				ms_tokenization/ms_get_fullcmd.c \
 				ms_tokenization/ms_contains_output.c \
 				ms_tokenization/ms_get_next_output.c \
 				ms_tokenization/ms_get_input_fd.c \
+				ms_tokenization/ms_line_expand_vars.c \
+				ms_tokenization/ms_split_utils.c \
+				ms_tokenization/ms_split_with_no_quotes.c \
 				ms_builtins/ms_handle_builtins.c \
 				ms_builtins/ms_echo.c \
 				ms_builtins/ms_pwd.c \
@@ -48,6 +52,7 @@ FILES	=		minishell.c \
 				ms_builtins/ms_exit.c \
 				ms_error/ms_errno_check.c \
 				ms_command_chunk/ms_command_chunks_get.c \
+				
 
 CC		=	cc
 

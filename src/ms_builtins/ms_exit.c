@@ -25,7 +25,7 @@ static	int	is_invalid_exit_status(char *str)
 }
 
 // confirm if exit status shows as 1 for too many args
-int	ms_exit(char **args, int arg_count, char *line, t_ms *shell)
+int	ms_exit(char **args, int arg_count, t_ms *shell)
 {
 	int exit_status;
 
@@ -45,7 +45,6 @@ int	ms_exit(char **args, int arg_count, char *line, t_ms *shell)
 		printf("exit: too many arguments\n");
 		return (EXIT_FAILURE);
 	}
-	free(line);
 	ft_split_destroy(args);
 	ms_destroy(shell);
 	exit(exit_status);

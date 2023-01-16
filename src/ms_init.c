@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/07 20:53:07 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:39:39 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ t_ms	*ms_init(char **envp)
 		return (free(shell), NULL);
 	return (shell);
 }
-
 
 void	ms_destroy(t_ms *shell)
 {

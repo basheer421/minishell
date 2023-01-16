@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/11 23:13:02 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/17 00:28:15 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,20 @@ void			ms_destroy(t_ms *shell);
  */
 int				ms_line_read(const char *prompt, t_ms *shell);
 
+// Helper functions for split_with_no_quotes
+char			*chrskip(char *s, char c);
+int				split_with_no_quotes_len(char *line, int c);
+int				*ms_char_positions(char *line, int c);
+
+/**
+ * @brief Splits a string by a character unless the character is inside quotes.
+ * 
+ * @param line the string to split
+ * @param char to split by 
+ * @return array of strings 
+ */
+char			**split_with_no_quotes(char *line, int c);
+
 /**
  * @brief Tells if the line is empty.
  * 
@@ -99,13 +113,21 @@ int				ms_line_read(const char *prompt, t_ms *shell);
  */
 bool			ms_line_isempty(char *line);
 
+// /**
+//  * @brief Tells if the line has at least one command.
+//  * 
+//  * @param line user input
+//  * @return boolean
+//  */
+// bool			ms_line_contains_commands(char *line, t_ms *shell);
+
 /**
- * @brief Tells if the line has at least one command.
+ * @brief Edits the string chunks to expand any env vars.
  * 
  * @param line user input
- * @return boolean
+ * @return boolean, false on failure.
  */
-bool			ms_line_contains_commands(char *line, t_ms *shell);
+bool			ms_line_expand_vars(char **string_chunks, t_ms *shell);
 
 /**
  * @brief Execute the valid commands in parallel as
@@ -167,7 +189,7 @@ char			*ms_get_next_input(char *line_chunk);
  * @param chunk to be stored in
  * @return int fd, or -1 on error
  */
-int				ms_get_input_fd(char **line_piece,
+int				ms_get_input_fd(char *line_piece,
 				t_command_chunk *chunk);
 
 /**
@@ -185,6 +207,16 @@ bool			ms_contains_cmd(char *line_chunk);
  * @return file_name (malloced string)
  */
 char			*ms_get_cmd(char *line_chunk);
+
+/**
+ * @brief Reads the command string and checks if it's valid.
+ * 
+ * @param line_piece
+ * @param chunk to be stored in 
+ * @return Command arguments or NULL if not found
+ */
+char			**ms_get_fullcmd(char *line_piece,
+				t_command_chunk *chunk);
 
 /**
  * @brief Tells if the given line has output.
@@ -231,7 +263,7 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
  */
 int	ms_errno_check(char *err_header, int ret_value);
 
-void	handle_builtins(char *line, t_ms *shell);
+void	handle_builtins(char **strs, t_ms *shell);
 
 /**
  * @brief Runs the echo command on the given strings
@@ -242,7 +274,7 @@ void	handle_builtins(char *line, t_ms *shell);
 void			ms_echo(char **strs, bool n_flag);
 void			ms_pwd(void);
 void			ms_cd(t_ms *shell, char **path, int arg_count);
-int				ms_exit(char **args, int arg_count, char *line, t_ms *shell);
+int				ms_exit(char **args, int arg_count, t_ms *shell);
 void			ms_env(t_ms *shell);
 void			ms_export(t_ms *shell, char **args, int arg_count);
 void			ms_unset(t_ms *shell, char **strs, int arg_count);

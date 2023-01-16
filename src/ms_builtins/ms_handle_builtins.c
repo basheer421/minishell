@@ -12,33 +12,42 @@
 
 #include "minishell.h"
 
-void	handle_builtins(char *line, t_ms *shell)
+int	count_args(char **cmd)
 {
-	char	**strs;
+	int arg_count;
+	
+	arg_count = 0;
+	while (cmd[arg_count])
+		arg_count++;
+	return (arg_count);
+}
+
+void	handle_builtins(char **cmd, t_ms *shell)
+{
 	int		arg_count;
 	
-	strs = ft_split2(line, " ", &arg_count);
-	if (strs && strs[0])
+	arg_count = count_args(cmd);
+	if (cmd && cmd[0])
 	{
-		if (ft_strncmp(strs[0], "echo", 5) == 0)
+		if (ft_strncmp(cmd[0], "echo", 5) == 0)
 		{
-			if (strs[1] && ft_strncmp(strs[1], "-n", 3) == 0) // -n flag is set to true
-				ms_echo(strs, 1);
+			if (cmd[1] && ft_strncmp(cmd[1], "-n", 3) == 0) // -n flag is set to true
+				ms_echo(cmd, 1);
 			else
-				ms_echo(strs, 0);
+				ms_echo(cmd, 0);
 		}
-		else if (ft_strncmp(strs[0], "pwd", 4) == 0)
+		else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
 			ms_pwd();
-		else if (ft_strncmp(strs[0], "exit", 5) == 0)
-			ms_exit(strs, arg_count, line, shell);
-		else if (ft_strncmp(strs[0], "cd", 3) == 0)
-			ms_cd(shell, strs, arg_count);
-		else if (ft_strncmp(strs[0], "env", 4) == 0)
+		else if (ft_strncmp(cmd[0], "exit", 5) == 0)
+			ms_exit(cmd, arg_count, shell);
+		else if (ft_strncmp(cmd[0], "cd", 3) == 0)
+			ms_cd(shell, cmd, arg_count);
+		else if (ft_strncmp(cmd[0], "env", 4) == 0)
 			ms_env(shell);
-		else if (ft_strncmp(strs[0], "export", 7) == 0)
-			ms_export(shell, strs, arg_count);
-		else if (ft_strncmp(strs[0], "unset", 6) == 0)
-			ms_unset(shell, strs, arg_count);
-		ft_split_destroy(strs);
+		else if (ft_strncmp(cmd[0], "export", 7) == 0)
+			ms_export(shell, cmd, arg_count);
+		else if (ft_strncmp(cmd[0], "unset", 6) == 0)
+			ms_unset(shell, cmd, arg_count);
+		ft_split_destroy(cmd);
 	}
 }

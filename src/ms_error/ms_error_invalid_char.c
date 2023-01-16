@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_error.c                                         :+:      :+:    :+:   */
+/*   ms_error_invalid_char.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:02:43 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/04 21:26:52 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/10 21:05:25 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ int	ms_error_invalid_char(char *line)
 			inside_dquotes = !inside_dquotes;
 		else if (!inside_quotes && !inside_dquotes 
 			&& (line[i] == '\\' || line[i] == ';'))
-			return (127);
+			return (127); // OR PRINT ERROR
 	}
+	if (inside_quotes || inside_dquotes)
+		return (127); // OR PRINT ERROR
 	return (0);
 }
