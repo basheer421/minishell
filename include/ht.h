@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 03:04:33 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/16 10:12:50 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:27:59 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct s_ht
 t_ht				*ht_new(size_t size);
 unsigned int		ht_hash(t_ht *table, char *key);
 int					ht_set(t_ht *table, char *key, void *value);
-void				*ht_get(t_ht *table, const char *key, int *found);
+void				*ht_get(t_ht *table, const char *key);
 int					ht_contains(t_ht *table, const char *key);
 int					ht_isempty(t_ht *table);
 void				ht_remove(t_ht *table, const char *key);

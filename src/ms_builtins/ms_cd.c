@@ -22,7 +22,6 @@ void	ms_cd(t_ms *shell, char **path, int arg_count)
 	char	*cur_dir;
 	char	*new_dir;
 	char	*pwd;
-	int		found;
 
 	if (arg_count > 2)
 		printf("cd: too many arguments\n");
@@ -31,7 +30,7 @@ void	ms_cd(t_ms *shell, char **path, int arg_count)
 	{
 		if (arg_count == 1)
 		{
-			new_dir = (char *)ht_get(shell->env_vars, "HOME", &found);
+			new_dir = (char *)ht_get(shell->env_vars, "HOME");
 			if (!new_dir)
 				printf("cd: HOME not set\n");
 		}
@@ -39,11 +38,10 @@ void	ms_cd(t_ms *shell, char **path, int arg_count)
 			new_dir = path[1];
 		cur_dir = (char *)malloc(sizeof(char) * MAXPATHLEN);
 		// runs cd on given path and checks if it was successful
-		found = 0;
 		if (new_dir && ms_errno_check(ft_strjoin("cd: ", new_dir), \
 			chdir(new_dir)) == 0)
 		{
-			pwd = (char *)ht_get(shell->env_vars, "PWD", &found);
+			pwd = (char *)ht_get(shell->env_vars, "PWD");
 			if (pwd)
 			{
 				if (ht_contains(shell->env_vars, "OLDPWD"))

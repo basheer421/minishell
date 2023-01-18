@@ -12,11 +12,12 @@
 
 #include "minishell.h"
 
+// Copies the env variables key values into a new array of strings
 static	char	**dup_env_vars(t_ms *shell)
 {
 	char	**arr;
 	t_node	*env;
-	size_t		i;
+	size_t	i;
 	int		len;
 
 	arr = (char **)ft_malloc(sizeof(char *) * (shell->env_vars->size + 1));
@@ -33,28 +34,30 @@ static	char	**dup_env_vars(t_ms *shell)
 	return (arr);
 }
 
-// creates a new array of a strings containing the env variables key values sorted in lexical order
+// Creates a new array of a strings containing the env vars key values sorted
 static	char	**sort_lexical(t_ms *shell)
 {
 	size_t		i;
 	size_t		j;
 	char		*temp;
-	char 		**env_keys;
+	char 		**keys;
 
-	env_keys = dup_env_vars(shell);
+	keys = dup_env_vars(shell);
 	i = -1;
-	while (env_keys[++i + 1])
+	while (keys[++i + 1])
 	{
 		j = i + 1;
-		while (env_keys[++j])
-			if (ft_strncmp(env_keys[i], env_keys[j], ft_strlen(env_keys[i])) > 0)
+		while (keys[++j])
+		{
+			if (ft_strncmp(keys[i], keys[j], ft_strlen(keys[i])) > 0)
 			{
-				temp = env_keys[i];
-				env_keys[i] = env_keys[j];
-				env_keys[j] = temp;
+				temp = keys[i];
+				keys[i] = keys[j];
+				keys[j] = temp;
 			}
+		}
 	}
-	return (env_keys);
+	return (keys);
 }
 
 static void	display_sorted_env(t_ms *shell)
@@ -62,14 +65,12 @@ static void	display_sorted_env(t_ms *shell)
 	char	**sorted_keys;
 	char	*env_value;
 	int		i;
-	int		found;
 
 	sorted_keys = sort_lexical(shell);
 	i = -1;
 	while (sorted_keys[++i])
 	{
-		found = 0;
-		env_value = (char *)ht_get(shell->env_vars, sorted_keys[i], &found);
+		env_value = (char *)ht_get(shell->env_vars, sorted_keys[i]);
 		if (env_value)
 			printf("declare -x %s=\"%s\"\n", sorted_keys[i], env_value);
 		else
@@ -98,12 +99,13 @@ void	export_var(t_ms *shell, char *env_var)
 
 void	ms_export(t_ms *shell, char **args, int arg_count)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (arg_count == 1)
 		display_sorted_env(shell);
 	else
+	{
 		while (args[++i])
 		{
 			if (args[i][0] == '=')
@@ -111,4 +113,5 @@ void	ms_export(t_ms *shell, char **args, int arg_count)
 			else
 				export_var(shell, args[i]);
 		}
+	}
 }

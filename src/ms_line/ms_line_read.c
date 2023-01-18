@@ -16,11 +16,12 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
 	char			**string_chunks;
+	int				i;
 	t_command_chunk	**chunks;
 
 	line = readline(prompt);
 	if (!line || !*line)
-		return (free(line), 1);
+		return (free(line), 0);
 	if (shell->error_code != 0)
 		return (free(line), shell->error_code);
 	add_history(line);
@@ -36,9 +37,14 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);
-	int i = -1;
-	while (chunks[0]->cmd[++i] != NULL)
-		printf("cmds:%s\n", chunks[0]->cmd[i]);
+	// int i = -1;
+	// while (chunks[++i])
+	// {
+	// 	printf("chunk %d\n", i);
+	// 	int	j = -1;
+	// 	while (chunks[i]->cmd[++j] != NULL)
+	// 		printf("cmds:%s\n", chunks[i]->cmd[j]);
+	// }
 	i = -1;
 	while (chunks[++i] != NULL)
 		handle_builtins(chunks[i]->cmd, shell);

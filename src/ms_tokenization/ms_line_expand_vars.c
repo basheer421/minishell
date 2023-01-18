@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/16 20:55:29 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:37:29 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,17 @@ static int	expandlsts_size(t_list **lsts, t_ms *shell)
 	t_list	*nodes[2];
 	int		size;
 	char	*var_value;
-	int		found;
 
 	nodes[0] = lsts[0];
 	nodes[1] = lsts[1];
 	size = 0;
 	while (nodes[0])
 	{
-		
 		if (*((char *)(nodes[0]->content)))
 			size++;
 		else if (nodes[1])
 		{
-			found = 0;
-			var_value = ht_get(shell->env_vars, nodes[1]->content, &found);
+			var_value = ht_get(shell->env_vars, nodes[1]->content);
 			if (var_value)
 				size += ft_strlen(var_value);
 			nodes[1] = nodes[1]->next;
@@ -129,7 +126,6 @@ static char	*join_expandlsts(t_list **lsts, t_ms *shell)
 	int		i;
 	char	*new_string;
 	char	*var_value;
-	int		found;
 
 	nodes[0] = lsts[0]->next;
 	nodes[1] = lsts[1]->next;
@@ -144,8 +140,7 @@ static char	*join_expandlsts(t_list **lsts, t_ms *shell)
 			new_string[i++] = *((char *)(nodes[0]->content));
 		else if (nodes[1])
 		{
-			found = 0;
-			var_value = ht_get(shell->env_vars, nodes[1]->content, &found);
+			var_value = ht_get(shell->env_vars, nodes[1]->content);
 			if (!var_value)
 				var_value = ft_strdup("\0");
 			ft_memcpy(new_string + i, var_value,

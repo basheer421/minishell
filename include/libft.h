@@ -65,7 +65,6 @@ int		ft_is_space(int c);
 char	*ft_skip_spaces(char *str);
 int		ft_index(const char *str, int c);
 
-
 typedef struct s_list
 {
 	void			*content;

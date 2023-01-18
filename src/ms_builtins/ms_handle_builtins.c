@@ -14,8 +14,8 @@
 
 int	count_args(char **cmd)
 {
-	int arg_count;
-	
+	int	arg_count;
+
 	arg_count = 0;
 	while (cmd[arg_count])
 		arg_count++;
@@ -25,14 +25,14 @@ int	count_args(char **cmd)
 void	handle_builtins(char **cmd, t_ms *shell)
 {
 	int		arg_count;
-	
+
 	arg_count = count_args(cmd);
 	if (cmd && cmd[0])
 	{
 		if (ft_strncmp(cmd[0], "echo", 5) == 0)
 		{
-			if (cmd[1] && ft_strncmp(cmd[1], "-n", 3) == 0) // -n flag is set to true
-				ms_echo(cmd, 1);
+			if (cmd[1] && ft_strncmp(cmd[1], "-n", 3) == 0)
+				ms_echo(cmd, 1); // change param2 to (ft_strncmp(cmd[1], "-n", 3) == 0)
 			else
 				ms_echo(cmd, 0);
 		}
