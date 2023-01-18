@@ -13,20 +13,20 @@
 #include "minishell.h"
 
 // only for testing, remove later
-static	void	show_chunks(t_command_chunk **chunks)
-{
-	int	i;
-	int	j;
+// static	void	show_chunks(t_command_chunk **chunks)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = -1;
-	while (chunks[++i])
-	{
-		printf("chunk %d\n", i);
-		j = -1;
-		while (chunks[i]->cmd[++j] != NULL)
-			printf("cmds:%s\n", chunks[i]->cmd[j]);
-	}
-}
+// 	i = -1;
+// 	while (chunks[++i])
+// 	{
+// 		printf("chunk %d\n", i);
+// 		j = -1;
+// 		while (chunks[i]->cmd[++j] != NULL)
+// 			printf("cmds:%s\n", chunks[i]->cmd[j]);
+// 	}
+// }
 
 int	ms_line_read(const char *prompt, t_ms *shell)
 {
@@ -52,6 +52,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);
+	printf("working\n");
 	// show_chunks(chunks);
 	i = -1;
 	while (chunks[++i] != NULL)

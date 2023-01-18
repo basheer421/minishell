@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ht_contains.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 01:16:51 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 16:27:24 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:35:51 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	ht_contains(t_ht *table, const char *key)
 {
-	int				found;
 	unsigned int	index;
 	size_t			string_length;
 	t_node			*node;
@@ -27,7 +26,6 @@ int	ht_contains(t_ht *table, const char *key)
 		return (0);
 	index = ht_hash(table, ft_strdup(key));
 	node = table->array[index];
-	found = 0;
 	while (node && node->key)
 	{
 		string_length = ft_strlen(node->key);

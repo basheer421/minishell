@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_line_expand_vars.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 17:10:13 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/18 21:25:59 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,16 @@ typedef struct s_inside
 	char	*value;
 }			t_inside;
 
-static void	tick_inside_vars(t_inside *inside, char c, bool is_end)
+static void	tick_inside_vars(t_inside *inside, char c, char next)
 {
 	if (c == '\'' && !inside->dquotes)
 		inside->quotes = !inside->quotes;
 	else if (c == '\"' && !inside->quotes)
 		inside->dquotes = !inside->dquotes;
-	else if (c == '$' && !inside->quotes && !is_end)
+	else if (c == '$' && !inside->quotes && (ft_isalnum(next) || next == '?'))
 		inside->var = true;
-	else if (!ft_isalnum(c) && c != '?')
+	else if (!ft_isalnum(c) || c != '?')
 		inside->var = false;
-}
-
-static char	*value_at(char *line, int pos, t_ms *shell)
-{
-	char	*var;
-	char	*val;
-
-	var = ft_substr(line, pos + 1, ft_next_nonalnum(line, pos + 1) - pos - 1);
-	if (ht_contains(shell->env_vars, var))
-	{
-		val = ht_get(shell->env_vars, var);
-		free(var);
-		if (!val)
-			return (ft_strdup("\0"));
-		return (ft_strdup(val));
-	}
-	return (free(var), ft_strdup("\0"));
 }
 
 static int	len_with_expand(char *line, t_ms *shell)
@@ -61,7 +44,7 @@ static int	len_with_expand(char *line, t_ms *shell)
 	i = -1;
 	while (line[++i])
 	{
-		tick_inside_vars(&inside, line[i], line[i + 1] == 0);
+		tick_inside_vars(&inside, line[i], line[i + 1]);
 		if (inside.var)
 		{
 			value = value_at(line, i, shell);
@@ -69,7 +52,7 @@ static int	len_with_expand(char *line, t_ms *shell)
 				exit(EXIT_FAILURE);
 			total += ft_strlen(value);
 			free(value);
-			i = ft_next_nonalnum(line, i + 1) - 1;
+			i = get_next_index(line, i) - 1;
 		}
 		else
 			total++;
@@ -77,12 +60,16 @@ static int	len_with_expand(char *line, t_ms *shell)
 	return (total);
 }
 
-static char	*var_init(t_inside *inside, char **line, t_ms *shell)
+static char	*var_init(t_inside *inside, char **line, t_ms *shell, int *c_count)
 {
 	char	*nline;
 
-	ft_bzero(&inside, sizeof(t_inside));
+	inside->dquotes = 0;
+	inside->quotes = 0;
+	inside->value = NULL;
+	inside->var = 0;
 	nline = ft_malloc(sizeof(int) * (len_with_expand(*line, shell) + 1));
+	*c_count = 0;
 	return (nline);
 }
 
@@ -93,19 +80,18 @@ void	ms_line_expand_vars(char **line, t_ms *shell)
 	t_inside	inside;
 	int			i;
 
-	nline = var_init(&inside, line, shell);
-	c_count = 0;
+	nline = var_init(&inside, line, shell, &c_count);
 	i = -1;
 	while (line[0][++i])
 	{
-		tick_inside_vars(&inside, line[0][i], line[0][i + 1] == 0);
+		tick_inside_vars(&inside, line[0][i], line[0][i + 1]);
 		if (inside.var)
 		{
 			inside.value = value_at(*line, i, shell);
 			ft_memcpy(nline + c_count, inside.value, ft_strlen(inside.value));
 			c_count += ft_strlen(inside.value);
 			free(inside.value);
-			i = ft_next_nonalnum(*line, i + 1) - 1;
+			i = get_next_index(*line, i) - 1;
 		}
 		else
 			nline[c_count++] = line[0][i];

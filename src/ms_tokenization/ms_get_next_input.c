@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:17:25 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/07 16:16:06 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/18 18:05:09 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ char	*ms_get_next_input(char *line_chunk)
 		&& !ft_is_space(line_chunk[len]) && line_chunk[len] != '<'
 		&& line_chunk[len] != '>' && line_chunk[len] != '\'')
 		len++;
-	name = malloc(len + 1);
-	if (!name)
-		return (NULL);
+	name = ft_malloc(len + 1);
 	i = -1;
 	while (++i < len)
 		name[i] = line_chunk[i];
