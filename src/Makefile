@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
+#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/18 16:19:41 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/18 22:45:03 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,11 @@ FILES	=		minishell.c \
 				hashtable/ht_clear.c \
 				hashtable/ht_destroy.c \
 				ms_init.c \
+				ms_line/ms_line_clean.c \
 				ms_line/ms_line_read.c \
 				ms_line/ms_line_isempty.c \
 				ms_line/ms_line_contains_commands.c	\
+				ms_line/ms_expand_vars_utils.c \
 				ms_line/ms_line_expand_vars.c \
 				ms_pipes/ms_pipes_count.c \
 				ms_pipes/ms_pipes_positions.c	\

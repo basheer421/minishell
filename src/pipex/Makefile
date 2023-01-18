@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
+#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/01 17:34:11 by mfirdous          #+#    #+#              #
-#    Updated: 2022/12/26 15:33:06 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/18 22:44:12 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ CFLAGS	=	-Wall -Werror -Wextra -I ${HEADER}
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o} 
 
 ${NAME}:	${LIBFT} ${OBJS}
-			${CC} ${OBJS} ${LIBFT} -o ${NAME}
+			${CC} ${CFLAGS} ${OBJS} ${LIBFT} -o ${NAME}
 
 ${LIBFT}:	
 			${MAKE} -C libft
@@ -40,7 +40,7 @@ ${LIBFT}:
 all:		${NAME}
 
 bonus:		${LIBFT} ${B_OBJS}
-			${CC} ${B_OBJS} ${LIBFT} -o ${NAME}
+			${CC} ${CFLAGS} ${B_OBJS} ${LIBFT} -o ${NAME}
 
 clean:	
 			/bin/rm -f ${OBJS}

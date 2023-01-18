@@ -52,10 +52,9 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);
-	printf("working\n");
 	// show_chunks(chunks);
 	i = -1;
 	while (chunks[++i] != NULL)
 		handle_builtins(chunks[i]->cmd, shell);
-	return (ft_split_destroy(string_chunks), free(line), 0);
+	return (ms_clean(chunks, string_chunks, line), 0);
 }
