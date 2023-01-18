@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/29 22:39:47 by bammar            #+#    #+#             */
-/*   Updated: 2022/08/14 16:31:58 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/18 13:32:45 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*empty_string(void)
 {
 	char	*s;
 
-	s = malloc(1);
+	s = ft_malloc(1);
 	if (!s)
 		return (NULL);
 	s[0] = '\0';
@@ -39,7 +39,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		char_count = (len);
 	else
 		char_count = (strlen - (size_t)start);
-	s2 = malloc(char_count + 1);
+	s2 = ft_malloc(char_count + 1);
 	if (!s2)
 		return (NULL);
 	i = 0;

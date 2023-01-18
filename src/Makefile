@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/16 20:33:08 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/18 16:19:41 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ FILES	=		minishell.c \
 				ms_line/ms_line_read.c \
 				ms_line/ms_line_isempty.c \
 				ms_line/ms_line_contains_commands.c	\
+				ms_line/ms_line_expand_vars.c \
 				ms_pipes/ms_pipes_count.c \
 				ms_pipes/ms_pipes_positions.c	\
 				ms_pipes/ms_pipes_divide.c \
@@ -39,7 +40,6 @@ FILES	=		minishell.c \
 				ms_tokenization/ms_contains_output.c \
 				ms_tokenization/ms_get_next_output.c \
 				ms_tokenization/ms_get_input_fd.c \
-				ms_tokenization/ms_line_expand_vars.c \
 				ms_tokenization/ms_split_utils.c \
 				ms_tokenization/ms_split_with_no_quotes.c \
 				ms_builtins/ms_handle_builtins.c \

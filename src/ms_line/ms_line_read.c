@@ -27,18 +27,16 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	shell->error_code = ms_error_invalid_char(line);
 	if (ms_line_isempty(line) || shell->error_code == 127)
 		return (free(line), 0);
+	ms_line_expand_vars(&line, shell);
 	string_chunks = ms_pipes_divide(line);
 	if (!string_chunks)
 		return (free(line), 1);
-	// if (!ms_line_expand_vars(string_chunks, shell))
-	// 	return (0);
 	// use pipex with the given chunks
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);
-	int i = -1;
-	while (chunks[0]->cmd[++i] != NULL)
-		printf("cmds:%s\n", chunks[0]->cmd[i]);
+	
+	int i;
 	i = -1;
 	while (chunks[++i] != NULL)
 		handle_builtins(chunks[i]->cmd, shell);
