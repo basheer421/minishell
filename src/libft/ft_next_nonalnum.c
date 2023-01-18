@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_index.c                                         :+:      :+:    :+:   */
+/*   ft_next_nonalnum.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 17:54:23 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 17:00:21 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/18 16:55:47 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/18 16:56:07 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_index(const char *str, int c)
+int	ft_next_nonalnum(char *str, int start)
 {
 	int	i;
 
-	i = -1;
-	while (str[++i])
-		if (str[i] == c)
-			return (i);
-	return (-1);
+	i = start;
+	while (str[i] && ft_isalnum(str[i]))
+		i++;
+	return (i);
 }

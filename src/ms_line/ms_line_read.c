@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+// only for testing, remove later
+static	void	show_chunks(t_command_chunk **chunks)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (chunks[++i])
+	{
+		printf("chunk %d\n", i);
+		j = -1;
+		while (chunks[i]->cmd[++j] != NULL)
+			printf("cmds:%s\n", chunks[i]->cmd[j]);
+	}
+}
+
 int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
@@ -28,23 +44,15 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	shell->error_code = ms_error_invalid_char(line);
 	if (ms_line_isempty(line) || shell->error_code == 127)
 		return (free(line), 0);
+	ms_line_expand_vars(&line, shell);
 	string_chunks = ms_pipes_divide(line);
 	if (!string_chunks)
 		return (free(line), 1);
-	// if (!ms_line_expand_vars(string_chunks, shell))
-	// 	return (0);
 	// use pipex with the given chunks
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);
-	// int i = -1;
-	// while (chunks[++i])
-	// {
-	// 	printf("chunk %d\n", i);
-	// 	int	j = -1;
-	// 	while (chunks[i]->cmd[++j] != NULL)
-	// 		printf("cmds:%s\n", chunks[i]->cmd[j]);
-	// }
+	// show_chunks(chunks);
 	i = -1;
 	while (chunks[++i] != NULL)
 		handle_builtins(chunks[i]->cmd, shell);

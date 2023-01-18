@@ -6,13 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:28:19 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/08 21:18:26 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/18 17:01:18 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 // REMEMBER TO CHECK FOR commad not found ERROR
 char	**ms_get_fullcmd(char *line_piece,

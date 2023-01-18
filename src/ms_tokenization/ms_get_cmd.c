@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 19:14:02 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/07 22:38:04 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/18 17:02:06 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ms_get_cmd(char *line_chunk)
 
 	if (!line_chunk)
 		return (NULL);
-	line  = ft_skip_spaces(line_chunk);
+	line = ft_skip_spaces(line_chunk);
 	if (!line || !*line)
 		return (NULL);
 	len = 0;

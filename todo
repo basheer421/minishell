@@ -1,8 +1,8 @@
 handle single and double quotes for all commands - if already done what exactly is handled so far?
 handle expansions for env vars, also: 
-	$0 - name of running process
+	$0 - name of running process // not required
 	$? - last return value
-	$$ - pid of the currently running process 
+	$$ - pid of the currently running process // not required
 	.. there will be more
 
 ERROR MESSAGES

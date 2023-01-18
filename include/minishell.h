@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/17 00:28:15 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:41:11 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,12 @@ bool			ms_line_isempty(char *line);
 // bool			ms_line_contains_commands(char *line, t_ms *shell);
 
 /**
- * @brief Edits the string chunks to expand any env vars.
+ * @brief Edits the given to expand any env vars.
  * 
  * @param line user input
  * @return boolean, false on failure.
  */
-bool			ms_line_expand_vars(char **string_chunks, t_ms *shell);
+void			ms_line_expand_vars(char **line, t_ms *shell);
 
 /**
  * @brief Execute the valid commands in parallel as

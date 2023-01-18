@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:01:38 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/13 16:33:09 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/18 17:02:47 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ typedef struct s_split_postions
 	int		*positions;
 	bool	inside_quotes;
 	bool	inside_dquotes;
-}				t_split_postions;
-
+}			t_split_postions;
 
 char	*chrskip(char *s, char c)
 {
@@ -64,9 +63,10 @@ int	*ms_char_positions(char *line, int c)
 {
 	t_split_postions	vars;
 	int					i;
-	
+
 	ft_bzero(&vars, sizeof(t_split_postions));
-	vars.positions = malloc(sizeof(int) * (split_with_no_quotes_len(line, c) + 1));
+	vars.positions = malloc(sizeof(int) * (split_with_no_quotes_len(line, c)
+				+ 1));
 	if (!vars.positions)
 		return (NULL);
 	i = -1;

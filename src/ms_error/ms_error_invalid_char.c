@@ -6,12 +6,13 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 19:02:43 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/10 21:05:25 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/17 02:48:42 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// might delete this
 int	ms_error_invalid_char(char *line)
 {
 	int		i;
