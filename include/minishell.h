@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 16:41:11 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/19 18:51:36 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ bool			ms_line_isempty(char *line);
  * @return boolean, false on failure.
  */
 void			ms_line_expand_vars(char **line, t_ms *shell);
+int				get_next_index(char *line, char pos);
+char			*value_at(char *line, int pos, t_ms *shell);
 
 /**
  * @brief Execute the valid commands in parallel as
@@ -261,8 +263,8 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
  * @param ret_value Return value of the function called 
  * @return ret_value
  */
-int	ms_errno_check(char *err_header, int ret_value);
-
+int		ms_errno_check(char *err_header, int ret_value);
+void	ms_clean(t_command_chunk **chunks, char **string_chunks, char *line);
 void	handle_builtins(char **strs, t_ms *shell);
 
 /**

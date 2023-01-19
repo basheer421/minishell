@@ -10,16 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
-int	redirect_file(char *file_name, int pipe_end, int write)
+int	redirect_file(char *file_name, int pipe_end, int open_flags)
 {
 	int	file;
 
-	if (!write)
-		file = open(file_name, O_RDONLY, 0777);
-	else
-		file = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	file = open(file_name, open_flags, 0777);
 	if (file == -1)
 	{
 		perror(file_name);
@@ -47,33 +44,80 @@ int	exec_cmd(int p1[], int p2[], char *cmd_str, char **envp)
 		close(p2[1]);
 		check_err("execve", execve(c->path, c->cmd, envp));
 	}
+	close(p1[0]);
+	close(p2[1]);
 	return (pid);
 }
 
-int	main(int argc, char**argv, char**envp)
+int	check_heredoc(char **argv, int pipe[], int *i)
 {
-	int	p[2][2];
-	int	status;
-	int	i;
-	int	pid[2];
-
-	if (argc != 5)
-		exit_msg("pipex", WRONG_ARG_COUNT, 2, NULL);
-	i = -1;
-	check_err("pipe", pipe(p[0]));
-	while (++i < 2)
+	char	*line;
+	int		d_len;
+	
+	if (ft_strncmp("here_doc", argv[1], 9) == 0)
 	{
-		check_err("pipe", pipe(p[!i]));
-		close(p[0][!i]);
-		if (redirect_file(argv[i * 3 + 1], p[0][i], i))
-			pid[i] = exec_cmd(p[i], p[!i], argv[i + 2], envp);
-		close(p[i][0]);
-		close(p[!i][1]);
+		d_len = ft_strlen(argv[2]);
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
+		while (line)
+		{
+			if (!ft_strncmp(line, argv[2], d_len) && !line[d_len + 1])
+				break ;
+			write(pipe[1], line, ft_strlen(line));
+			write(STDOUT_FILENO, "> ", 2);
+			free(line);
+			line = get_next_line(STDIN_FILENO);
+		}
+		*i = 2;
+		free(line);
+		return (O_WRONLY | O_APPEND | O_CREAT);
 	}
+	*i = 1;
+	redirect_file(argv[1], pipe[0], O_RDONLY);
+	return (O_WRONLY | O_TRUNC | O_CREAT);
+}
+
+int	wait_cmds(int *pids, int count)
+{
+	int	i;
+	int	status;
+
 	i = -1;
-	while (++i < 2)
-		waitpid(pid[i], &status, 0);
+	while (++i < count)
+		waitpid(pids[0], &status, 0);
+	free(pids);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (1);
+}
+
+char	**create_envp(t_ht *env_vars)
+{
+	char	**envp;
+
+	// envp = 
+}
+
+int	set_up_pipes(char **cmd_strs, int cmd_count, t_ms *shell)
+{	
+	int	pipes[2][2];
+	int	*pids;
+	int	i;
+	int	pipe_no;
+	char	**envp;
+
+	check_err("pipe", pipe(pipes[0]));
+	close(pipes[0][1]);
+	pids = (int *)malloc(sizeof(int) * (cmd_count));
+	pipe_no = 0;
+	i = -1;
+	envp = create_envp(shell->env_vars);
+	while (cmd_strs[++i])
+	{
+		check_err("pipe", pipe(pipes[!pipe_no]));
+		pids[i] = exec_cmd(pipes[pipe_no], pipes[!pipe_no], cmd_strs[i], envp);
+		pipe_no = !pipe_no;
+	}
+	close(pipes[pipe_no][0]);
+	return (wait_cmds(pids, i));
 }

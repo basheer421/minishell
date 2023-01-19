@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
 // Returns a list of each colon-separated directory name as an array of strings
 char	**parse_path(char **envp)

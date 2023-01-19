@@ -49,6 +49,9 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (!string_chunks)
 		return (free(line), 1);
 	// use pipex with the given chunks
+	i = -1;
+	while (string_chunks[++i])
+		printf("%s\n", string_chunks[i]);
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);

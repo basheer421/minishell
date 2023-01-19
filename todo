@@ -17,3 +17,11 @@ basic exec for single commands and their args
 signal handling
 precede error messages for builtin commands with "bash"
 set all return statuses (cd, export) (global variable)
+
+parsing:
+	double and single quotes
+echo:
+skip past all -n in the beginning 
+	eg: -n 
+		-n -n
+		-n -nnnnnn -n -nnn
