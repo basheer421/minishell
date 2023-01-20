@@ -48,16 +48,14 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	string_chunks = ms_pipes_divide(line);
 	if (!string_chunks)
 		return (free(line), 1);
-	// use pipex with the given chunks
-	i = -1;
-	while (string_chunks[++i])
-		printf("%s\n", string_chunks[i]);
+	set_up_pipes(string_chunks, ms_pipes_count(line) + 1, shell);
 	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
 	if (!chunks)
 		return (0);
+	(void)i;
 	// show_chunks(chunks);
-	i = -1;
-	while (chunks[++i] != NULL)
-		handle_builtins(chunks[i]->cmd, shell);
+	// i = -1;
+	// while (chunks[++i] != NULL)
+	// 	handle_builtins(chunks[i]->cmd, shell);
 	return (ms_clean(chunks, string_chunks, line), 0);
 }

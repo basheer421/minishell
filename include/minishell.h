@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/19 18:51:36 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:22:42 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,8 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
  */
 int		ms_errno_check(char *err_header, int ret_value);
 void	ms_clean(t_command_chunk **chunks, char **string_chunks, char *line);
-void	handle_builtins(char **strs, t_ms *shell);
+// void	handle_builtins(char **strs, t_ms *shell);
+int	handle_builtins(char *cmd_str, t_ms *shell);
 
 /**
  * @brief Runs the echo command on the given strings
@@ -290,5 +291,9 @@ void			ms_unset(t_ms *shell, char **strs, int arg_count);
  */
 int				ms_command_chunk_execute(t_command_chunk *command_chunk,
 					t_ms *shell);
+int				set_up_pipes(char **cmd_strs, int cmd_count, t_ms *shell);
+t_alloced		*set_alloc(int p1[], int p2[], t_ms *shell);
+t_alloced		*check_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell);
+int				exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell);
 
 #endif

@@ -28,21 +28,31 @@ int	redirect_file(char *file_name, int pipe_end, int open_flags)
 	return (1);
 }
 
-int	exec_cmd(int p1[], int p2[], char *cmd_str, char **envp)
+int	exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell)
 {
 	int			pid;
 	t_alloced	*c;
 
+	/**
+	 * if cmd is a builtin
+	 * 		set up pipes accordingly but in parent proc and not child proc
+	 * 		correct pipe ends should be closed 
+	 * 		run builtin 
+	 * 
+	 */
+	// not fully correct so instead, control flow should go like this ^
+	if (handle_builtins(cmd_str, shell))
+		return (-1);
 	pid = check_err("fork", fork());
 	if (pid == 0)
 	{	
 		close(p2[0]);
-		c = check_cmd(p1, p2, cmd_str, envp);
+		c = check_cmd(p1, p2, cmd_str, shell);
 		dup2(p1[0], STDIN_FILENO);
 		close(p1[0]);
 		dup2(p2[1], STDOUT_FILENO);
 		close(p2[1]);
-		check_err("execve", execve(c->path, c->cmd, envp));
+		check_err("execve", execve(c->path, c->cmd, c->envp));
 	}
 	close(p1[0]);
 	close(p2[1]);
@@ -53,18 +63,19 @@ int	check_heredoc(char **argv, int pipe[], int *i)
 {
 	char	*line;
 	int		d_len;
-	
+	int		temp;
+
 	if (ft_strncmp("here_doc", argv[1], 9) == 0)
 	{
 		d_len = ft_strlen(argv[2]);
-		write(STDOUT_FILENO, "> ", 2);
+		temp = write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
 		while (line)
 		{
 			if (!ft_strncmp(line, argv[2], d_len) && !line[d_len + 1])
 				break ;
-			write(pipe[1], line, ft_strlen(line));
-			write(STDOUT_FILENO, "> ", 2);
+			temp = write(pipe[1], line, ft_strlen(line));
+			temp = write(STDOUT_FILENO, "> ", 2);
 			free(line);
 			line = get_next_line(STDIN_FILENO);
 		}
@@ -74,6 +85,7 @@ int	check_heredoc(char **argv, int pipe[], int *i)
 	}
 	*i = 1;
 	redirect_file(argv[1], pipe[0], O_RDONLY);
+	(void)temp;
 	return (O_WRONLY | O_TRUNC | O_CREAT);
 }
 
@@ -84,40 +96,37 @@ int	wait_cmds(int *pids, int count)
 
 	i = -1;
 	while (++i < count)
-		waitpid(pids[0], &status, 0);
+		if (pids[i] != -1)
+			waitpid(pids[i], &status, 0);
 	free(pids);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (1);
 }
 
-char	**create_envp(t_ht *env_vars)
-{
-	char	**envp;
-
-	// envp = 
-}
-
 int	set_up_pipes(char **cmd_strs, int cmd_count, t_ms *shell)
 {	
-	int	pipes[2][2];
-	int	*pids;
-	int	i;
-	int	pipe_no;
-	char	**envp;
+	int		pipes[2][2];
+	int		*pids;
+	int		i;
+	int		pipe_no;
+	// char	**envp;
 
 	check_err("pipe", pipe(pipes[0]));
 	close(pipes[0][1]);
 	pids = (int *)malloc(sizeof(int) * (cmd_count));
 	pipe_no = 0;
 	i = -1;
-	envp = create_envp(shell->env_vars);
+	// envp = create_envp(shell);
 	while (cmd_strs[++i])
 	{
 		check_err("pipe", pipe(pipes[!pipe_no]));
-		pids[i] = exec_cmd(pipes[pipe_no], pipes[!pipe_no], cmd_strs[i], envp);
+		if (!cmd_strs[i + 1])
+			dup2(STDOUT_FILENO, pipes[!pipe_no][1]);
+		pids[i] = exec_cmd(pipes[pipe_no], pipes[!pipe_no], cmd_strs[i], shell);
 		pipe_no = !pipe_no;
 	}
 	close(pipes[pipe_no][0]);
+	// ft_split_destroy(envp);
 	return (wait_cmds(pids, i));
 }

@@ -26,6 +26,7 @@ typedef struct s_alloced
 	int		pipes[2][2];
 	char	**cmd;
 	char	*path;
+	char	**envp;
 }	t_alloced;
 
 # define WRONG_ARG_COUNT	"Incorrect number of arguments"
@@ -35,12 +36,9 @@ typedef struct s_alloced
 
 char		**parse_path(char **envp);
 char		*get_pathname(char *cmd_name, char **envp);
-int			redirect_file(char *file_name, int pipe_end, int write);
+int			redirect_file(char *file_name, int pipe_end, int open_flags);
 void		free_strs(char **args, char *str, int index);
-int			exec_cmd(int p1[], int p2[], char *cmd_str, char **envp);
 int			check_err(char *func_name, int ret_value);
 void		exit_msg(char *head, char *err_msg, int err_code, t_alloced *mem);
-t_alloced	*set_alloc(int p1[], int p2[], char **cmd, char *path);
-t_alloced	*check_cmd(int p1[], int p2[], char *cmd_str, char **envp);
 
 #endif

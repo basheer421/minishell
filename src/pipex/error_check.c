@@ -6,13 +6,36 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2022/09/21 16:25:04 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 14:24:59 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "minishell.h"
 
-t_alloced	*set_alloc(int p1[], int p2[], char **cmd, char *path)
+static char	**create_envp(t_ms *shell)
+{
+	char	**envp;
+	t_node	*env;
+	size_t	i;
+	int		len;
+
+	envp = (char **)ft_malloc(sizeof(char *) * (shell->env_vars->size + 1));
+	env = *(shell->env_vars->array);
+	i = -1;
+	while (env)
+	{
+		len = ft_strlen(env->key) + ft_strlen(env->value) + 2;
+		envp[++i] = (char *)ft_malloc(sizeof(char) * len);
+		ft_strlcpy(envp[i], env->key, len);
+		ft_strlcat(envp[i], "=", len);
+		ft_strlcat(envp[i], env->value, len);
+		env = env->next;
+	}
+	envp[++i] = NULL;
+	return (envp);
+}
+
+t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell)
 {	
 	t_alloced	*mem;
 
@@ -23,8 +46,9 @@ t_alloced	*set_alloc(int p1[], int p2[], char **cmd, char *path)
 		mem->pipes[0][1] = p1[1];
 		mem->pipes[1][0] = p2[0];
 		mem->pipes[1][1] = p2[1];
-		mem->cmd = cmd;
-		mem->path = path;
+		mem->cmd = NULL;
+		mem->path = NULL;
+		mem->envp = create_envp(shell);
 	}
 	return (mem);
 }
@@ -45,25 +69,26 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 				close(mem->pipes[i][!i]);
 		}
 		free_strs(mem->cmd, mem->path, 0);
+		ft_split_destroy(mem->envp);
 		free(mem);
 	}
 	exit(err_code);
 }
 
-t_alloced	*check_cmd(int p1[], int p2[], char *cmd_str, char **envp)
+t_alloced	*check_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell)
 {
 	char		**cmd;
 	char		*path_name;
 	t_alloced	*cmd_info;
 
-	cmd_info = set_alloc(p1, p2, 0, 0);
+	cmd_info = set_alloc(p1, p2, shell);
 	if (!cmd_str || !cmd_str[0])
 		exit_msg("pipex", EMPTY_STRING_ERR, 2, cmd_info);
 	cmd = ft_split(cmd_str, ' ');
 	cmd_info->cmd = cmd;
 	if (!cmd || !cmd[0])
 		exit_msg(cmd_str, CMD_ERR, 127, cmd_info);
-	path_name = get_pathname(cmd[0], envp);
+	path_name = get_pathname(cmd[0], cmd_info->envp);
 	if (!path_name && access(cmd[0], F_OK) == 0)
 		path_name = ft_strdup(cmd[0]);
 	else if (!path_name)
