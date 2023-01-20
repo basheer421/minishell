@@ -59,7 +59,7 @@ int	handle_builtins(char *cmd_str, t_ms *shell)
 	bool	builtin_flag;
 
 	cmd = ft_split2(cmd_str, " ", &arg_count);
-	builtin_flag = 1;
+	builtin_flag = true;
 	if (cmd && cmd[0])
 	{
 		if (ft_strncmp(cmd[0], "echo", 5) == 0)
@@ -82,7 +82,7 @@ int	handle_builtins(char *cmd_str, t_ms *shell)
 		else if (ft_strncmp(cmd[0], "unset", 6) == 0)
 			ms_unset(shell, cmd, arg_count);
 		else
-			builtin_flag = 0;
+			builtin_flag = false;
 		ft_split_destroy(cmd);
 	}
 	return (builtin_flag);

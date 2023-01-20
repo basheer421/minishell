@@ -37,7 +37,7 @@ int	exec_cmd(int p1[], int p2[], char *cmd_str, char **envp)
 	if (pid == 0)
 	{	
 		close(p2[0]);
-		c = check_cmd(p1, p2, cmd_str, envp);
+		c = check_cmd_path(p1, p2, cmd_str, envp);
 		dup2(p1[0], STDIN_FILENO);
 		close(p1[0]);
 		dup2(p2[1], STDOUT_FILENO);

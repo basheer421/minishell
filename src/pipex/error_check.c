@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/20 14:24:59 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 18:13:01 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 	exit(err_code);
 }
 
-t_alloced	*check_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell)
+t_alloced	*check_cmd_path(int p1[], int p2[], char *cmd_str, t_ms *shell)
 {
 	char		**cmd;
 	char		*path_name;

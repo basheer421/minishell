@@ -32,8 +32,10 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
 	char			**string_chunks;
-	int				i;
+	// int				i;
+	int				pipe_count;
 	t_command_chunk	**chunks;
+	bool			cmd_is_builtin;
 
 	line = readline(prompt);
 	if (!line || !*line)
@@ -48,11 +50,15 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	string_chunks = ms_pipes_divide(line);
 	if (!string_chunks)
 		return (free(line), 1);
-	set_up_pipes(string_chunks, ms_pipes_count(line) + 1, shell);
-	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
+	pipe_count = ms_pipes_count(line);
+	cmd_is_builtin = false;
+	if (pipe_count == 0)
+		cmd_is_builtin = handle_builtins(string_chunks[0], shell);
+	if (pipe_count > 0 || !cmd_is_builtin)
+		pipex(string_chunks, pipe_count + 1, shell);
+	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
 		return (0);
-	(void)i;
 	// show_chunks(chunks);
 	// i = -1;
 	// while (chunks[++i] != NULL)
