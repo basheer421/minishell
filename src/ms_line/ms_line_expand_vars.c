@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 21:25:59 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/20 17:35:10 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static char	*var_init(t_inside *inside, char **line, t_ms *shell, int *c_count)
 	inside->quotes = 0;
 	inside->value = NULL;
 	inside->var = 0;
-	nline = ft_malloc(sizeof(int) * (len_with_expand(*line, shell) + 1));
+	nline = ft_malloc(len_with_expand(*line, shell) + 1);
 	*c_count = 0;
 	return (nline);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 14:22:42 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 21:53:01 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@
 # include <errno.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <sys/types.h>
 # include <sys/param.h>
-
+# include <sys/stat.h>
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -57,14 +58,6 @@ typedef struct s_command_chunk
 	int			input_fd;
 	int			output_fd;
 }				t_command_chunk;
-
-/**
- * @brief Detect if "\" or ";" is found.
- * 
- * @param line user input
- * @return int error code or 0
- */
-int				ms_error_invalid_char(char *line);
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
@@ -131,6 +124,10 @@ void			ms_line_expand_vars(char **line, t_ms *shell);
 int				get_next_index(char *line, char pos);
 char			*value_at(char *line, int pos, t_ms *shell);
 
+// Helpers for line_expand
+int				get_next_index(char *line, char pos);
+char			*value_at(char *line, int pos, t_ms *shell);
+
 /**
  * @brief Execute the valid commands in parallel as
  *  "minishell" requires only that.
@@ -181,7 +178,7 @@ bool			ms_contains_input(char *line_chunk);
  * @param line_chunk 
  * @return file_name (malloced string), or NULL if it doesn't exist.
  */
-char			*ms_get_next_input(char *line_chunk);
+char			*ms_get_next_input(char **line_chunk);
 
 /**
  * @brief Using get_next_input() we get the last fd,
@@ -234,7 +231,18 @@ bool			ms_contains_output(char *line_chunk);
  * @param line_chunk 
  * @return file_name (malloced string)
  */
-char			*ms_get_next_output(char *line_chunk);
+char			*ms_get_next_output(char **line_chunk);
+
+/**
+ * @brief Using get_next_output() we get the last fd,
+ * 	and store it inside "chunk"
+ * 
+ * @param line_piece
+ * @param chunk to be stored in
+ * @return int fd, or -1 on error
+ */
+int				ms_get_output_fd(char *line_piece,
+					t_command_chunk *chunk);
 
 /**
  * @brief Gets the command chunks from the divided line.
@@ -295,5 +303,8 @@ int				set_up_pipes(char **cmd_strs, int cmd_count, t_ms *shell);
 t_alloced		*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced		*check_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell);
 int				exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell);
+
+void			ms_clean(t_command_chunk **chunks,
+					char **string_chunks, char *line);
 
 #endif

@@ -32,6 +32,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
 	char			**string_chunks;
+	size_t			pipes_count;
 	int				i;
 	t_command_chunk	**chunks;
 
@@ -41,17 +42,17 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (shell->error_code != 0)
 		return (free(line), shell->error_code);
 	add_history(line);
-	shell->error_code = ms_error_invalid_char(line);
-	if (ms_line_isempty(line) || shell->error_code == 127)
+	if (ms_line_isempty(line))
 		return (free(line), 0);
 	ms_line_expand_vars(&line, shell);
 	string_chunks = ms_pipes_divide(line);
 	if (!string_chunks)
 		return (free(line), 1);
-	set_up_pipes(string_chunks, ms_pipes_count(line) + 1, shell);
-	chunks = ms_command_chunks_get(string_chunks, ms_pipes_count(line) + 1);
+	pipes_count = ms_pipes_count(line);
+	set_up_pipes(string_chunks,  + 1, shell);
+	chunks = ms_command_chunks_get(string_chunks, pipes_count + 1);
 	if (!chunks)
-		return (0);
+		return (ft_split_destroy(string_chunks), ms_destroy(shell), 0);
 	(void)i;
 	// show_chunks(chunks);
 	// i = -1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_line_clean.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:31:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/18 19:52:31 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 18:44:46 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	ms_clean(t_command_chunk **chunks, char **string_chunks, char *line)
 
 	i = -1;
 	while (chunks[++i])
+	{
+		ft_split_destroy(chunks[i]->cmd);
 		free(chunks[i]);
+	}
 	free(chunks);
 	ft_split_destroy(string_chunks);
 	free(line);

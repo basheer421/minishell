@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/10 16:25:53 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/20 20:59:17 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ static t_command_chunk	**chunk_init(size_t amount)
 	t_command_chunk	**chunks;
 	size_t			i;
 
-	chunks = malloc(sizeof(t_command_chunk *) * (amount + 1));
-	if (!chunks)
-		return (NULL);
+	chunks = ft_malloc(sizeof(t_command_chunk *) * (amount + 1));
 	i = 0;
 	while (i < amount)
 	{
 		chunks[i] = ft_calloc(1, sizeof(t_command_chunk));
-		chunks[i]->input_fd = -2;
+		chunks[i]->input_fd = 0;
 		chunks[i]->output_fd = 1;
 		if (!chunks[i])
 			return (NULL);
@@ -48,29 +46,44 @@ static int	token_type(char *line)
 	return (-1);
 }
 
+static void	abort_alloc(t_command_chunk	**chunks, int reach)
+{
+	int	i;
+
+	i = -1;
+	while (++i < reach)
+	{
+		ft_split_destroy(chunks[i]->cmd);
+		free(chunks[i]);
+	}
+	free(chunks);
+}
+
 t_command_chunk	**ms_command_chunks_get(char **line_pieces,
 										size_t amount)
 {
 	t_command_chunk	**chunks;
-	size_t			i;
+	int				i;
 	int				token;
+	char			*string_head;
 
 	chunks = chunk_init(amount);
-	if (!chunks)
-		return (NULL);
-	i = 0;
-	while (i < amount)
+	i = -1;
+	while (++i < (int)amount)
 	{
+		string_head = line_pieces[i];
 		token = token_type(line_pieces[i]);
 		if (token == 0)
 			chunks[i]->input_fd = ms_get_input_fd(line_pieces[i], chunks[i]);
-		// else if (token == 1)
-		// 	chunks[i]->output_fd = ms_get_output_fd(line_pieces[i], chunks[i]);
-		else if (token == 2)
+		else if (token == 1)
+			chunks[i]->output_fd = ms_get_output_fd(line_pieces[i], chunks[i]);
+		if (token == 2)
 			chunks[i]->cmd = ms_get_fullcmd(line_pieces[i], chunks[i]);
-		else if (token == 3)
-			return (NULL); // ERROR
-		i++;
+		line_pieces[i] = string_head;
+		if (token == -1 || chunks[i]->input_fd == -1
+			|| chunks[i]->output_fd == -1
+			|| !chunks[i]->cmd)
+			return (abort_alloc(chunks, i), NULL); // ERRORs
 	}
 	return (chunks);
 }

@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 09:35:40 by bammar            #+#    #+#             */
-/*   Updated: 2022/08/14 16:31:53 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/20 16:54:10 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*empty_string(void)
 {
 	char	*s;
 
-	s = (char *)malloc(1 * sizeof(char));
+	s = (char *)ft_malloc(1 * sizeof(char));
 	if (!s)
 		return (NULL);
 	s[0] = '\0';
@@ -70,7 +70,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		end--;
 	if (get_sum_of_trimmed(s1, (char *)set) >= (int)ft_strlen((char *)s1))
 		return (empty_string());
-	s = (char *)malloc(ft_strlen((char *)s1) - get_sum_of_trimmed(s1,
+	s = (char *)ft_malloc(ft_strlen((char *)s1) - get_sum_of_trimmed(s1,
 				(char *)set) + 1);
 	if (!s)
 		return (NULL);
