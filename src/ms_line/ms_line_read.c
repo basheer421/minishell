@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 // only for testing, remove later
-// static	void	show_chunks(t_command_chunk **chunks)
+// static	void	show_chunks(t_cmd_chunk **chunks)
 // {
 // 	int	i;
 // 	int	j;
@@ -34,7 +34,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	char			**string_chunks;
 	// int				i;
 	int				pipe_count;
-	t_command_chunk	**chunks;
+	t_cmd_chunk		**chunks;
 	bool			cmd_is_builtin;
 
 	line = readline(prompt);
@@ -42,10 +42,10 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 		return (free(line), 0);
 	if (shell->error_code != 0)
 		return (free(line), shell->error_code);
-	add_history(line);
 	shell->error_code = ms_error_invalid_char(line);
-	if (ms_line_isempty(line) || shell->error_code == 127)
+	if (ms_line_isempty(line))
 		return (free(line), 0);
+	add_history(line);
 	ms_line_expand_vars(&line, shell);
 	string_chunks = ms_pipes_divide(line);
 	if (!string_chunks)
@@ -55,7 +55,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (pipe_count == 0)
 		cmd_is_builtin = handle_builtins(string_chunks[0], shell);
 	if (pipe_count > 0 || !cmd_is_builtin)
-		pipex(string_chunks, pipe_count + 1, shell);
+		g_exit_code = pipex(string_chunks, pipe_count + 1, shell);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
 		return (0);

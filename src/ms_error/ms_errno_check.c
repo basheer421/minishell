@@ -15,7 +15,11 @@
 int	ms_errno_check(char *err_header, int ret_value)
 {
 	if (ret_value == -1)
+	{
+		g_exit_code = 1;
 		perror(err_header);
-	free(err_header);
+	}
+	if (err_header)
+		free(err_header);
 	return (ret_value);
 }

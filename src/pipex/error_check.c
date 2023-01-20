@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/20 18:13:01 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:27:32 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 	int	i;
 
 	i = -1;
-	ft_printf("%s: %s\n", heading, err_msg);
+	write(STDERR_FILENO, heading, ft_strlen(heading));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, err_msg, ft_strlen(err_msg));
+	write(STDERR_FILENO, "\n", 1);
+	// ft_printf("%s: %s\n", heading, err_msg);
 	if (mem)
 	{
 		while (++i < 2)

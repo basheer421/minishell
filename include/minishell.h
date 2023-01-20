@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 18:12:49 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 21:02:43 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <fcntl.h>
 # include <sys/param.h>
 
+extern int	g_exit_code;
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -49,14 +50,14 @@ typedef struct s_ms
  * "input_isheredoc" is true.
  * 
  */
-typedef struct s_command_chunk
+typedef struct s_cmd_chunk
 {
 	char		**cmd;
 	bool		input_isheredoc;
 	bool		append_to_output;
 	int			input_fd;
 	int			output_fd;
-}				t_command_chunk;
+}				t_cmd_chunk;
 
 /**
  * @brief Detect if "\" or ";" is found.
@@ -191,8 +192,7 @@ char			*ms_get_next_input(char *line_chunk);
  * @param chunk to be stored in
  * @return int fd, or -1 on error
  */
-int				ms_get_input_fd(char *line_piece,
-				t_command_chunk *chunk);
+int				ms_get_input_fd(char *line_piece, t_cmd_chunk *chunk);
 
 /**
  * @brief Tells if the given line has a command.
@@ -217,8 +217,7 @@ char			*ms_get_cmd(char *line_chunk);
  * @param chunk to be stored in 
  * @return Command arguments or NULL if not found
  */
-char			**ms_get_fullcmd(char *line_piece,
-				t_command_chunk *chunk);
+char			**ms_get_fullcmd(char *line_piece, t_cmd_chunk *chunk);
 
 /**
  * @brief Tells if the given line has output.
@@ -244,7 +243,7 @@ char			*ms_get_next_output(char *line_chunk);
  * @param shell 
  * @return array of chunks
  */
-t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
+t_cmd_chunk		**ms_command_chunks_get(char **line_pieces, size_t amount);
 
 // /**
 //  * @brief Executes a command chunk.
@@ -253,20 +252,22 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
 //  * @param command_chunk 
 //  * @return {int} Error code
 //  */
-// int				ms_command_chunk_execute(t_command_chunk *command_chunk,
+// int				ms_command_chunk_execute(t_cmd_chunk *command_chunk,
 // 					t_ms *shell);
 
 /**
- * @brief Checks if a function returned an error and if so displays appropriate error message
+ * @brief Checks if a function returned an error and if so displays appropriate
+ *		  error message
  * 
- * @param err_header Name of the function being called, to be used in error message
+ * @param err_header Name of the function being called, to be used in error 
+ * 					 message
  * @param ret_value Return value of the function called 
  * @return ret_value
  */
-int		ms_errno_check(char *err_header, int ret_value);
-void	ms_clean(t_command_chunk **chunks, char **string_chunks, char *line);
+int				ms_errno_check(char *err_header, int ret_value);
+void			ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
 // void	handle_builtins(char **strs, t_ms *shell);
-int	handle_builtins(char *cmd_str, t_ms *shell);
+int				handle_builtins(char *cmd_str, t_ms *shell);
 
 /**
  * @brief Runs the echo command on the given strings
@@ -276,7 +277,7 @@ int	handle_builtins(char *cmd_str, t_ms *shell);
  */
 void			ms_echo(char **strs, bool n_flag);
 void			ms_pwd(void);
-void			ms_cd(t_ms *shell, char **path, int arg_count);
+int				ms_cd(t_ms *shell, char **path, int arg_count);
 int				ms_exit(char **args, int arg_count, t_ms *shell);
 void			ms_env(t_ms *shell);
 void			ms_export(t_ms *shell, char **args, int arg_count);
@@ -289,7 +290,7 @@ void			ms_unset(t_ms *shell, char **strs, int arg_count);
  * @param command_chunk 
  * @return {int} Error code
  */
-int				ms_command_chunk_execute(t_command_chunk *command_chunk,
+int				ms_command_chunk_execute(t_cmd_chunk *command_chunk,
 					t_ms *shell);
 int				pipex(char **cmd_strs, int cmd_count, t_ms *shell);
 t_alloced		*set_alloc(int p1[], int p2[], t_ms *shell);

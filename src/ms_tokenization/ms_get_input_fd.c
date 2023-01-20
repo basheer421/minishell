@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_get_input_fd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 21:46:05 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 18:08:04 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/20 18:39:09 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ms_get_input_fd(char *line_piece, t_command_chunk *chunk)
+int	ms_get_input_fd(char *line_piece, t_cmd_chunk *chunk)
 {
 	char	*input;
 	char	*temp;

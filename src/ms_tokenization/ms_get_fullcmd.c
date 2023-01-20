@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_get_fullcmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:28:19 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 17:01:18 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/20 18:39:09 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // REMEMBER TO CHECK FOR commad not found ERROR
 char	**ms_get_fullcmd(char *line_piece,
-						t_command_chunk *chunk)
+						t_cmd_chunk *chunk)
 {
 	char	**cmds;
 	char	*temp;

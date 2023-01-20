@@ -6,11 +6,13 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/16 20:33:27 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/20 18:35:22 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_exit_code = 0;
 
 int	main(int argc, char **argv, char **envp)
 {

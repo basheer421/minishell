@@ -33,14 +33,6 @@ int	exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell)
 	int			pid;
 	t_alloced	*c;
 
-	/**
-	 * if cmd is a builtin
-	 * 		set up pipes accordingly but in parent proc and not child proc
-	 * 		correct pipe ends should be closed 
-	 * 		run builtin 
-	 * 
-	 */
-	// not fully correct so instead, control flow should go like this ^
 	pid = check_err("fork", fork());
 	if (pid == 0)
 	{	

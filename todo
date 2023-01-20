@@ -13,10 +13,12 @@ eg: minishell: cat: file.txt: No such file or directory
 
 
 for today:
-basic exec for single commands and their args
 signal handling
 precede error messages for builtin commands with "bash"
-set all return statuses (cd, export) (global variable)
+set all return statuses (cd, export) (extern global variable)
+return codes for builtins
+minishell inside minishell, or any local executable
+change pipex and handle_builtins to use chunks and not string_chunks
 
 parsing:
 	double and single quotes

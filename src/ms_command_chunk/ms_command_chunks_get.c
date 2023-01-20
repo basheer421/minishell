@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ms_command_chunks_get.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/10 16:25:53 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/20 18:39:09 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_command_chunk	**chunk_init(size_t amount)
+static t_cmd_chunk	**chunk_init(size_t amount)
 {
-	t_command_chunk	**chunks;
+	t_cmd_chunk	**chunks;
 	size_t			i;
 
-	chunks = malloc(sizeof(t_command_chunk *) * (amount + 1));
+	chunks = malloc(sizeof(t_cmd_chunk *) * (amount + 1));
 	if (!chunks)
 		return (NULL);
 	i = 0;
 	while (i < amount)
 	{
-		chunks[i] = ft_calloc(1, sizeof(t_command_chunk));
+		chunks[i] = ft_calloc(1, sizeof(t_cmd_chunk));
 		chunks[i]->input_fd = -2;
 		chunks[i]->output_fd = 1;
 		if (!chunks[i])
@@ -48,10 +48,10 @@ static int	token_type(char *line)
 	return (-1);
 }
 
-t_command_chunk	**ms_command_chunks_get(char **line_pieces,
+t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
 										size_t amount)
 {
-	t_command_chunk	**chunks;
+	t_cmd_chunk	**chunks;
 	size_t			i;
 	int				token;
 

@@ -40,7 +40,7 @@ int	check_err(char *func_name, int ret_value)
 	return (ret_value);
 }
 
-void	set_up_pipes(t_command_chunk **chunks, )
+void	set_up_pipes(t_cmd_chunk **chunks, )
 {
 	int	i;
 	int	pipe_no;
@@ -54,7 +54,6 @@ void	set_up_pipes(t_command_chunk **chunks, )
 	while (chunks[++i])
 	{
 		check_err("minishell: pipe: ", pipe(pipes[!pipe_no]));
-		exec_cmd()
 		pipe_no = !pipe_no;
 	}
 }
