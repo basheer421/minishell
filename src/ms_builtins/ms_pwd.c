@@ -12,12 +12,15 @@
 
 #include "minishell.h"
 
-void	ms_pwd(void)
+int	ms_pwd(void)
 {
 	char	cur_dir[MAXPATHLEN];
 
 	if (!getcwd(cur_dir, MAXPATHLEN))
+	{
 		perror("pwd");
-	else
-		printf("%s\n", cur_dir);
+		return (EXIT_FAILURE);
+	}
+	printf("%s\n", cur_dir);
+	return (EXIT_SUCCESS);
 }

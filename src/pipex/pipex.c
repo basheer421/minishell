@@ -87,7 +87,10 @@ int	wait_cmds(int *pids, int count)
 	i = -1;
 	while (++i < count)
 		if (pids[i] != -1)
-			waitpid(pids[i], &status, 0);
+		{
+			printf("waiting %d\n", i);
+			waitpid(-1, &status, 0);
+		}
 	free(pids);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

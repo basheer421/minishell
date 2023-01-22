@@ -97,7 +97,7 @@ void	export_var(t_ms *shell, char *env_var)
 		ht_set(shell->env_vars, env_var, NULL);
 }
 
-void	ms_export(t_ms *shell, char **args, int arg_count)
+int	ms_export(t_ms *shell, char **args, int arg_count)
 {
 	int	i;
 
@@ -109,9 +109,13 @@ void	ms_export(t_ms *shell, char **args, int arg_count)
 		while (args[++i])
 		{
 			if (args[i][0] == '=')
+			{
 				printf("export: \'%s\': not a valid identifier\n", args[i]);
+				return (EXIT_FAILURE);
+			}
 			else
 				export_var(shell, args[i]);
 		}
 	}
+	return (EXIT_SUCCESS);
 }

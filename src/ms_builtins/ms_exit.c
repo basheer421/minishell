@@ -27,7 +27,7 @@ static	int	is_invalid_exit_status(char *str)
 // confirm if exit status shows as 1 for too many args
 int	ms_exit(char **args, int arg_count, t_ms *shell)
 {
-	int exit_status;
+	int	exit_status;
 
 	printf("exit\n");
 	exit_status = 0;

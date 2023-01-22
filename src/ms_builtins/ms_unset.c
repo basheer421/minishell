@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ms_unset(t_ms *shell, char **strs, int arg_count)
+int	ms_unset(t_ms *shell, char **strs, int arg_count)
 {
 	int	i;
 
@@ -20,4 +20,5 @@ void	ms_unset(t_ms *shell, char **strs, int arg_count)
 	if (arg_count > 1)
 		while(strs[++i])
 			ht_remove(shell->env_vars, strs[i]);
+	return (EXIT_SUCCESS);
 }

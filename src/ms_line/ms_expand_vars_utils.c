@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:19:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 18:40:55 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/22 16:42:41 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*value_at(char *line, int pos, t_ms *shell)
 	char	*val;
 
 	if (line[pos + 1] == '?')
-		return (ft_itoa(g_exit_code));
+		return (ft_itoa(g_exit_status));
 		// return (ft_itoa(shell->error_code));
 		// put here the prev error code {$?}
 	var = ft_substr(line, pos + 1, ft_next_nonalnum(line, pos + 1) - pos - 1);

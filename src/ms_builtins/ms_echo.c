@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ms_echo(char **strs, bool n_flag)
+int	ms_echo(char **strs, bool n_flag)
 {
 	int	i;
 
@@ -28,4 +28,5 @@ void	ms_echo(char **strs, bool n_flag)
 			ft_printf(" %s", strs[i]);
 	if (!n_flag)
 		ft_printf("\n");
+	return (EXIT_SUCCESS);
 }

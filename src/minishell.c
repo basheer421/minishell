@@ -6,13 +6,13 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 18:35:22 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/22 22:40:04 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_code = 0;
+int	g_exit_status = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -24,11 +24,12 @@ int	main(int argc, char **argv, char **envp)
 	while (shell->error_code != -1)
 	{
 		shell->error_code = ms_line_read("\033[0;35mminishell\033[0m$ ", shell);
+		signal(SIGINT, ms_signal_handler);
+		// shell->error_code = ms_line_read("minishell$ ", shell);
 		// print_error_function_here
 	}
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	ms_destroy(shell);
 	clear_history();
 	return (0);

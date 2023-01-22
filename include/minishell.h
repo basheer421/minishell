@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 21:02:43 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/22 22:03:50 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@
 # include <dirent.h>
 # include <fcntl.h>
 # include <sys/param.h>
+# include <signal.h>
 
-extern int	g_exit_code;
+extern int	g_exit_status;
 
 /**
  * @brief Stores a hash map of environment variables,
@@ -275,13 +276,13 @@ int				handle_builtins(char *cmd_str, t_ms *shell);
  * @param strs array of strings to be output on the screen
  * @param n_flag if set to true echo will not output a trailing newline
  */
-void			ms_echo(char **strs, bool n_flag);
-void			ms_pwd(void);
+int				ms_echo(char **strs, bool n_flag);
+int				ms_pwd(void);
 int				ms_cd(t_ms *shell, char **path, int arg_count);
 int				ms_exit(char **args, int arg_count, t_ms *shell);
-void			ms_env(t_ms *shell);
-void			ms_export(t_ms *shell, char **args, int arg_count);
-void			ms_unset(t_ms *shell, char **strs, int arg_count);
+int				ms_env(t_ms *shell);
+int				ms_export(t_ms *shell, char **args, int arg_count);
+int				ms_unset(t_ms *shell, char **strs, int arg_count);
 
 /**
  * @brief Executes a command chunk.
@@ -296,5 +297,5 @@ int				pipex(char **cmd_strs, int cmd_count, t_ms *shell);
 t_alloced		*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced		*check_cmd_path(int p1[], int p2[], char *cmd_str, t_ms *shell);
 int				exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell);
-
+void			ms_signal_handler(int n);
 #endif

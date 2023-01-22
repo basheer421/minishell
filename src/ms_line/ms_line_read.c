@@ -40,8 +40,8 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	line = readline(prompt);
 	if (!line || !*line)
 		return (free(line), 0);
-	if (shell->error_code != 0)
-		return (free(line), shell->error_code);
+	// if (shell->error_code != 0)
+	// 	return (free(line), shell->error_code);
 	shell->error_code = ms_error_invalid_char(line);
 	if (ms_line_isempty(line))
 		return (free(line), 0);
@@ -55,7 +55,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (pipe_count == 0)
 		cmd_is_builtin = handle_builtins(string_chunks[0], shell);
 	if (pipe_count > 0 || !cmd_is_builtin)
-		g_exit_code = pipex(string_chunks, pipe_count + 1, shell);
+		g_exit_status = pipex(string_chunks, pipe_count + 1, shell);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
 		return (0);

@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/20 00:53:03 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/22 22:04:23 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ FILES	=		src/minishell.c \
 				src/ms_command_chunk/ms_command_chunks_get.c \
 				src/pipex/pipex.c \
 				src/pipex/error_check.c \
-				src/pipex/pipex_utils.c 
+				src/pipex/pipex_utils.c \
+				src/ms_signal/ms_signal_handler.c 
 
 CC		=	cc
 

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ms_env(t_ms *shell)
+int	ms_env(t_ms *shell)
 {
 	t_node	*var;
 	char	*var_value;
@@ -25,4 +25,5 @@ void	ms_env(t_ms *shell)
 			printf("%s=%s\n", var->key, var_value);
 		var = var->next;
 	}
+	return (EXIT_SUCCESS);
 }
