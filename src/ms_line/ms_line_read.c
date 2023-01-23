@@ -52,7 +52,8 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	set_up_pipes(string_chunks,  + 1, shell);
 	chunks = ms_command_chunks_get(string_chunks, pipes_count + 1);
 	if (!chunks)
-		return (ft_split_destroy(string_chunks), ms_destroy(shell), 0);
+		return (ms_clean(chunks, string_chunks, line), 0); // BAD SYNTAX
+	printf("chunks\n");
 	(void)i;
 	// show_chunks(chunks);
 	// i = -1;

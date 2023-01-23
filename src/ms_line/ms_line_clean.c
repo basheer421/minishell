@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:31:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/20 18:44:46 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/21 14:41:17 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ void	ms_clean(t_command_chunk **chunks, char **string_chunks, char *line)
 	}
 	free(chunks);
 	ft_split_destroy(string_chunks);
-	free(line);
+	if (line)
+		free(line);
 }

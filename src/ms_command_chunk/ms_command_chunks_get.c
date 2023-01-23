@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 20:59:17 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/21 15:42:10 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static t_command_chunk	**chunk_init(size_t amount)
 	while (i < amount)
 	{
 		chunks[i] = ft_calloc(1, sizeof(t_command_chunk));
-		chunks[i]->input_fd = 0;
-		chunks[i]->output_fd = 1;
 		if (!chunks[i])
 			return (NULL);
+		chunks[i]->input_fd = 0;
+		chunks[i]->output_fd = 1;
 		i++;
 	}
 	chunks[i] = NULL;
@@ -46,17 +46,18 @@ static int	token_type(char *line)
 	return (-1);
 }
 
-static void	abort_alloc(t_command_chunk	**chunks, int reach)
+static bool is_err(t_command_chunk *chunk)
 {
-	int	i;
-
-	i = -1;
-	while (++i < reach)
+	if (chunk->input_fd != -1 && !chunk->output_fd != -1
+		&& !chunk->cmd)
+		return (true); // command not found
+	if (chunk->input_fd == -1)
 	{
-		ft_split_destroy(chunks[i]->cmd);
-		free(chunks[i]);
+		return (true); // No such file or directory
 	}
-	free(chunks);
+	if (chunk->output_fd == -1)
+		return (true); // some weird err lol
+	return (false);
 }
 
 t_command_chunk	**ms_command_chunks_get(char **line_pieces,
@@ -80,10 +81,8 @@ t_command_chunk	**ms_command_chunks_get(char **line_pieces,
 		if (token == 2)
 			chunks[i]->cmd = ms_get_fullcmd(line_pieces[i], chunks[i]);
 		line_pieces[i] = string_head;
-		if (token == -1 || chunks[i]->input_fd == -1
-			|| chunks[i]->output_fd == -1
-			|| !chunks[i]->cmd)
-			return (abort_alloc(chunks, i), NULL); // ERRORs
+		if (token == -1 && is_err(chunks[i]))
+			return (NULL); // ERRORS
 	}
 	return (chunks);
 }
