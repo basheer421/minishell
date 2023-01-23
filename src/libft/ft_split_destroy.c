@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_destroy.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 16:37:51 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/30 16:38:50 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/23 22:07:45 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	ft_split_destroy(char **a)
 	int	i;
 
 	i = -1;
-	while (a[++i])
-		free(a[i]);
-	free(a);
+	if (a)
+	{
+		while (a[++i])
+			free(a[i]);
+		free(a);
+	}
 }

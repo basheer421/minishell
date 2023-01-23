@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/23 20:44:57 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/23 22:03:34 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@
 # include <errno.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <sys/types.h>
 # include <sys/param.h>
 # include <signal.h>
+# include <sys/stat.h>
 
 extern int	g_exit_status;
 
@@ -46,11 +48,29 @@ typedef struct s_ms
 }				t_ms;
 
 /**
+ * @brief 	when name is delim for heredoc, is_extra is set to true
+ * 			when file is for append, is_extra is set to true
+ */
+typedef struct s_file
+{
+	char	*name;
+	bool	is_extra;
+						
+}				t_file;
+
+/**
  * @brief This is a command chunk, should be like this
  * {{ "< input cmd  >  output" }}, Note: input should be the LIMITER incase
  * "input_isheredoc" is true.
  * 
  */
+// typedef struct s_cmd_chunk
+// {
+// 	char		**cmd;
+// 	t_file		*inputs;
+// 	t_file		*outputs;
+// }				t_cmd_chunk;
+
 typedef struct s_cmd_chunk
 {
 	char		**cmd;
@@ -60,13 +80,6 @@ typedef struct s_cmd_chunk
 	int			output_fd;
 }				t_cmd_chunk;
 
-/**
- * @brief Detect if "\" or ";" is found.
- * 
- * @param line user input
- * @return int error code or 0
- */
-int				ms_error_invalid_char(char *line);
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
@@ -133,6 +146,10 @@ void			ms_line_expand_vars(char **line, t_ms *shell);
 int				get_next_index(char *line, char pos);
 char			*value_at(char *line, int pos, t_ms *shell);
 
+// Helpers for line_expand
+int				get_next_index(char *line, char pos);
+char			*value_at(char *line, int pos, t_ms *shell);
+
 /**
  * @brief Execute the valid commands in parallel as
  *  "minishell" requires only that.
@@ -183,7 +200,7 @@ bool			ms_contains_input(char *line_chunk);
  * @param line_chunk 
  * @return file_name (malloced string), or NULL if it doesn't exist.
  */
-char			*ms_get_next_input(char *line_chunk);
+char			*ms_get_next_input(char **line_chunk);
 
 /**
  * @brief Using get_next_input() we get the last fd,
@@ -234,7 +251,18 @@ bool			ms_contains_output(char *line_chunk);
  * @param line_chunk 
  * @return file_name (malloced string)
  */
-char			*ms_get_next_output(char *line_chunk);
+char			*ms_get_next_output(char **line_chunk);
+
+/**
+ * @brief Using get_next_output() we get the last fd,
+ * 	and store it inside "chunk"
+ * 
+ * @param line_piece
+ * @param chunk to be stored in
+ * @return int fd, or -1 on error
+ */
+int				ms_get_output_fd(char *line_piece,
+					t_cmd_chunk *chunk);
 
 /**
  * @brief Gets the command chunks from the divided line.
@@ -301,5 +329,7 @@ int				exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell);
 
 void			ms_sigint_handler(int n);
 void			ms_sigquit_handler(int sig);
+
+void			ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line);
 
 #endif

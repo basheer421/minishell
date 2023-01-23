@@ -32,14 +32,13 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
 	char			**string_chunks;
-	int				pipe_count;
+	size_t			pipe_count;
 	bool			cmd_is_builtin;
 	t_cmd_chunk		**chunks;
 
 	line = readline(prompt);
-	if (!line || !*line)
-		return (free(line), 0);	
-	shell->error_code = ms_error_invalid_char(line);
+	if (!line)
+		ms_exit(NULL, 0, shell);
 	if (ms_line_isempty(line))
 		return (free(line), 0);
 	add_history(line);
@@ -50,12 +49,11 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	pipe_count = ms_pipes_count(line);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
-		return (0);
+		return (ft_split_destroy(string_chunks), 0);
 	cmd_is_builtin = false;
 	if (pipe_count == 0)
 		cmd_is_builtin = handle_builtins(chunks[0]->cmd, shell);
 	if (pipe_count > 0 || !cmd_is_builtin)
 		g_exit_status = pipex(chunks, pipe_count + 1, shell);
-	// show_chunks(chunks);
 	return (ms_clean(chunks, string_chunks, line), 0);
 }

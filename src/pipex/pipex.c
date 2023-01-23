@@ -88,9 +88,8 @@ int	wait_cmds(int *pids, int count)
 	while (++i < count)
 		waitpid(pids[i], &status, 0);
 	free(pids);
-	if (WIFSIGNALED(status))
-		return (WTERMSIG(status));
-	if (WIFEXITED(status))
+	// if (WIFSIGNALED(status))
+	// 	return (WTERMSIG(status));
 		return (WEXITSTATUS(status));
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 21:18:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/18 17:01:04 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/20 15:36:17 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,7 @@ char	**split_with_no_quotes(char *line, int c)
 	vars.positions = ms_char_positions(line, c);
 	if (!vars.positions)
 		return (NULL);
-	vars.content = malloc(sizeof(char *) * (vars.content_size + 1));
-	if (!vars.content)
-		return (free(vars.positions), NULL);
+	vars.content = ft_malloc(sizeof(char *) * (vars.content_size + 1));
 	if (!fill_content(&vars))
 		return (NULL);
 	return (free(vars.positions), vars.content);

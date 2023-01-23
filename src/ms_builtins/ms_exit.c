@@ -31,7 +31,7 @@ int	ms_exit(char **args, int arg_count, t_ms *shell)
 
 	printf("exit\n");
 	exit_status = 0;
-	if (args[1])
+	if (args && args[1])
 	{
 		if (is_invalid_exit_status(args[1]))
 		{
@@ -39,7 +39,7 @@ int	ms_exit(char **args, int arg_count, t_ms *shell)
 			exit(2);
 		}
 		exit_status = ft_atoi(args[1]);
-	}	
+	}
 	if (arg_count > 2)
 	{
 		printf("exit: too many arguments\n");
