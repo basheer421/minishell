@@ -75,6 +75,9 @@ char	*get_pathname(char *cmd_name, char **envp)
 	int		i;
 
 	paths = parse_path(envp);
+	if (!paths)
+		return (NULL);
+		// exit_msg(cmd_name, NO_FILE_ERR, 127, )
 	file_name = ft_strjoin("/", cmd_name);
 	i = -1;
 	while (paths[++i])

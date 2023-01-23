@@ -33,6 +33,7 @@ typedef struct s_alloced
 # define EMPTY_STRING_ERR	"Command cannot be an empty string"
 # define CMD_ERR			"command not found"
 # define PERMISSION_ERR		"permission denied"
+# define NO_FILE_ERR		"No such file or directory"
 
 char		**parse_path(char **envp);
 char		*get_pathname(char *cmd_name, char **envp);

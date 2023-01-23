@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/23 22:03:34 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/24 00:09:59 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,7 +329,7 @@ int				exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell);
 
 void			ms_sigint_handler(int n);
 void			ms_sigquit_handler(int sig);
-
+int				ms_get_sig_status(int sig_no);
 void			ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line);
 
 #endif

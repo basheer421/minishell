@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/23 21:13:28 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/24 00:13:36 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,8 @@ FILES	=		src/minishell.c \
 				src/pipex/pipex.c \
 				src/pipex/error_check.c \
 				src/pipex/pipex_utils.c \
-				src/ms_signal/ms_signal_handler.c 
+				src/ms_signal/ms_signal_handler.c \
+				src/ms_signal/ms_get_sig_status.c 
 
 CC		=	cc
 

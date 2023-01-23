@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/23 20:49:32 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/24 00:35:55 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		signal(SIGINT, ms_sigint_handler);
 		signal(SIGQUIT, ms_sigquit_handler);
-		shell->error_code = ms_line_read("\033[0;35mminishell\033[0m$ ", shell);
+		ms_line_read("\033[0;35mminishell\033[0m$ ", shell);
 	}
 	(void)argc;
 	(void)argv;
