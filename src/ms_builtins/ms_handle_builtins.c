@@ -48,7 +48,6 @@ bool	handle_builtins(char **cmd, t_ms *shell)
 			g_exit_status = ms_unset(shell, cmd, arg_count);
 		else
 			builtin_flag = false;
-		// ft_split_destroy(cmd);
 	}
 	return (builtin_flag);
 }
