@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
+// should i make it handle negative numbers and INTMAX/INTMIN?
 void	check_cmd_minishell(char *cmd_name, char **envp)
 {
 	int		len;
 	int		i;
 	char	*new_shlvl;
-	// char	shl_lvl[6];
 
 	len = ft_strlen(cmd_name);
 	if (ft_strncmp(cmd_name, "minishell", len) == 0 || \
@@ -26,7 +26,6 @@ void	check_cmd_minishell(char *cmd_name, char **envp)
 		i = -1;
 		while (envp[++i])
 		{
-			// ft_strlcpy(shl_lvl, envp[i], 6);
 			if (ft_strncmp(envp[i], "SHLVL", 5) == 0)
 			{
 				new_shlvl = ft_itoa(ft_atoi(ft_strchr(envp[i], '=') + 1) + 1);

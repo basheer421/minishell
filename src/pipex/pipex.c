@@ -28,7 +28,7 @@ int	redirect_file(char *file_name, int pipe_end, int open_flags)
 	return (1);
 }
 
-int	exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell)
+int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
 {
 	int			pid;
 	t_alloced	*c;
@@ -41,10 +41,10 @@ int	exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell)
 		close(p1[0]);
 		dup2(p2[1], STDOUT_FILENO);
 		close(p2[1]);
-		if (handle_builtins(cmd_str, shell))
-			exit(0);
-		c = check_cmd_path(p1, p2, cmd_str, shell);
-		check_err("execve", execve(c->path, c->cmd, c->envp));
+		if (handle_builtins(cmd, shell))
+			exit(g_exit_status);
+		c = check_cmd_path(p1, p2, cmd, shell);
+		check_err("execve", execve(c->path, cmd, c->envp));
 	}
 	close(p1[0]);
 	close(p2[1]);
@@ -86,15 +86,17 @@ int	wait_cmds(int *pids, int count)
 
 	i = -1;
 	while (++i < count)
-		if (pids[i] != -1)
-			waitpid(pids[i], &status, 0);
+		waitpid(pids[i], &status, 0);
 	free(pids);
+	if (WIFSIGNALED(status))
+		return (WTERMSIG(status));
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (1);
 }
 
-int	pipex(char **cmd_strs, int cmd_count, t_ms *shell)
+// for now uses stdin for first command and stdout for last command
+int	pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell)
 {	
 	int		pipes[2][2];
 	int		*pids;
@@ -106,13 +108,15 @@ int	pipex(char **cmd_strs, int cmd_count, t_ms *shell)
 	pids = (int *)malloc(sizeof(int) * (cmd_count));
 	pipe_no = 0;
 	i = -1;
-	dup2(STDIN_FILENO, pipes[0][0]);
-	while (cmd_strs[++i])
+	dup2(STDIN_FILENO, pipes[0][0]);					// will remove later
+	while (chunks[++i])
 	{
+		// redirect input
+		// redirect output
 		check_err("pipe", pipe(pipes[!pipe_no]));
-		if (!cmd_strs[i + 1])
-			dup2(STDOUT_FILENO, pipes[!pipe_no][1]);
-		pids[i] = exec_cmd(pipes[pipe_no], pipes[!pipe_no], cmd_strs[i], shell);
+		if (!chunks[i + 1])								// will remove later
+			dup2(STDOUT_FILENO, pipes[!pipe_no][1]); 	// because chunks->input and chunks->output will be used instead
+		pids[i] = exec_cmd(pipes[pipe_no], pipes[!pipe_no], chunks[i]->cmd, shell);
 		pipe_no = !pipe_no;
 	}
 	close(pipes[pipe_no][0]);

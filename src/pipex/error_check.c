@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/23 11:38:57 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/23 20:07:48 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell)
 		mem->pipes[0][1] = p1[1];
 		mem->pipes[1][0] = p2[0];
 		mem->pipes[1][1] = p2[1];
-		mem->cmd = NULL;
 		mem->path = NULL;
 		mem->envp = create_envp(shell);
 	}
@@ -73,26 +72,22 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 			if (mem->pipes[i][!i])
 				close(mem->pipes[i][!i]);
 		}
-		free_strs(mem->cmd, mem->path, 0);
+		free(mem->path);
+		// free_strs(mem->cmd, mem->path, 0);
 		ft_split_destroy(mem->envp);
 		free(mem);
 	}
 	exit(err_code);
 }
 
-t_alloced	*check_cmd_path(int p1[], int p2[], char *cmd_str, t_ms *shell)
+t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell)
 {
-	char		**cmd;
 	char		*path_name;
 	t_alloced	*cmd_info;
 
 	cmd_info = set_alloc(p1, p2, shell);
-	if (!cmd_str || !cmd_str[0])
-		exit_msg("minishell", EMPTY_STRING_ERR, 2, cmd_info);
-	cmd = ft_split(cmd_str, ' ');
-	cmd_info->cmd = cmd;
 	if (!cmd || !cmd[0])
-		exit_msg(cmd_str, CMD_ERR, 127, cmd_info);
+		exit_msg("", CMD_ERR, 127, cmd_info);
 	path_name = get_pathname(cmd[0], cmd_info->envp);
 	if (!path_name && access(cmd[0], F_OK) == 0)
 		path_name = ft_strdup(cmd[0]);
@@ -101,7 +96,6 @@ t_alloced	*check_cmd_path(int p1[], int p2[], char *cmd_str, t_ms *shell)
 	cmd_info->path = path_name;
 	if (access(path_name, X_OK) != 0)
 		exit_msg(cmd[0], PERMISSION_ERR, 126, cmd_info);
-	printf("path found = %s\n", cmd_info->path);
 	check_cmd_minishell(cmd[0], cmd_info->envp);
 	return (cmd_info);
 }

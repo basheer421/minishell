@@ -22,44 +22,13 @@ int	count_args(char **cmd)
 	return (arg_count);
 }
 
-// void	handle_builtins(char **cmd, t_ms *shell)
-// {
-// 	int		arg_count;
-
-// 	arg_count = count_args(cmd);
-// 	if (cmd && cmd[0])
-// 	{
-// 		if (ft_strncmp(cmd[0], "echo", 5) == 0)
-// 		{
-// 			if (cmd[1] && ft_strncmp(cmd[1], "-n", 3) == 0)
-// 				ms_echo(cmd, 1); // change param2 to (ft_strncmp(cmd[1], "-n", 3) == 0)
-// 			else
-// 				ms_echo(cmd, 0);
-// 		}
-// 		else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
-// 			ms_pwd();
-// 		else if (ft_strncmp(cmd[0], "exit", 5) == 0)
-// 			ms_exit(cmd, arg_count, shell);
-// 		else if (ft_strncmp(cmd[0], "cd", 3) == 0)
-// 			ms_cd(shell, cmd, arg_count);
-// 		else if (ft_strncmp(cmd[0], "env", 4) == 0)
-// 			ms_env(shell);
-// 		else if (ft_strncmp(cmd[0], "export", 7) == 0)
-// 			ms_export(shell, cmd, arg_count);
-// 		else if (ft_strncmp(cmd[0], "unset", 6) == 0)
-// 			ms_unset(shell, cmd, arg_count);
-// 		ft_split_destroy(cmd);
-// 	}
-// }
-
-int	handle_builtins(char *cmd_str, t_ms *shell)
+bool	handle_builtins(char **cmd, t_ms *shell)
 {
 	int		arg_count;
-	char	**cmd;
 	bool	builtin_flag;
 
-	cmd = ft_split2(cmd_str, " ", &arg_count);
 	builtin_flag = true;
+	arg_count = count_args(cmd);
 	if (cmd && cmd[0])
 	{
 		if (ft_strncmp(cmd[0], "echo", 5) == 0)
@@ -79,7 +48,39 @@ int	handle_builtins(char *cmd_str, t_ms *shell)
 			g_exit_status = ms_unset(shell, cmd, arg_count);
 		else
 			builtin_flag = false;
-		ft_split_destroy(cmd);
+		// ft_split_destroy(cmd);
 	}
 	return (builtin_flag);
 }
+
+// int	handle_builtins(char *cmd_str, t_ms *shell)
+// {
+// 	int		arg_count;
+// 	char	**cmd;
+// 	bool	builtin_flag;
+
+// 	cmd = ft_split2(cmd_str, " ", &arg_count);
+// 	builtin_flag = true;
+// 	if (cmd && cmd[0])
+// 	{
+// 		if (ft_strncmp(cmd[0], "echo", 5) == 0)
+// 				g_exit_status = ms_echo(cmd, (cmd[1] && \
+// 								ft_strncmp(cmd[1], "-n", 2) == 0));
+// 		else if (ft_strncmp(cmd[0], "pwd", 4) == 0)
+// 			g_exit_status = ms_pwd();
+// 		else if (ft_strncmp(cmd[0], "exit", 5) == 0)
+// 			g_exit_status = ms_exit(cmd, arg_count, shell);
+// 		else if (ft_strncmp(cmd[0], "cd", 3) == 0)
+// 			g_exit_status = ms_cd(shell, cmd, arg_count);
+// 		else if (ft_strncmp(cmd[0], "env", 4) == 0)
+// 			g_exit_status = ms_env(shell);
+// 		else if (ft_strncmp(cmd[0], "export", 7) == 0)
+// 			g_exit_status = ms_export(shell, cmd, arg_count);
+// 		else if (ft_strncmp(cmd[0], "unset", 6) == 0)
+// 			g_exit_status = ms_unset(shell, cmd, arg_count);
+// 		else
+// 			builtin_flag = false;
+// 		ft_split_destroy(cmd);
+// 	}
+// 	return (builtin_flag);
+// }

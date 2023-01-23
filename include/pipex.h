@@ -24,7 +24,7 @@
 typedef struct s_alloced
 {
 	int		pipes[2][2];
-	char	**cmd;
+	// char	**cmd;
 	char	*path;
 	char	**envp;
 }	t_alloced;
