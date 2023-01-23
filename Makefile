@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/22 22:04:23 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/23 01:03:09 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,8 @@ FILES	=		src/minishell.c \
 
 CC		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -g -Ofast
+# CFLAGS	=	-Wall -Wextra -Werror -g -Ofast
+CFLAGS	=	-Wall -Wextra -g -Ofast
 
 LINKS	=	-lreadline 
 

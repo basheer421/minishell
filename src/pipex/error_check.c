@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/20 19:27:32 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:38:57 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static char	**create_envp(t_ms *shell)
 	t_node	*env;
 	size_t	i;
 	int		len;
+	int		shl_lvl;
 
 	envp = (char **)ft_malloc(sizeof(char *) * (shell->env_vars->size + 1));
 	env = *(shell->env_vars->array);
@@ -87,7 +88,7 @@ t_alloced	*check_cmd_path(int p1[], int p2[], char *cmd_str, t_ms *shell)
 
 	cmd_info = set_alloc(p1, p2, shell);
 	if (!cmd_str || !cmd_str[0])
-		exit_msg("pipex", EMPTY_STRING_ERR, 2, cmd_info);
+		exit_msg("minishell", EMPTY_STRING_ERR, 2, cmd_info);
 	cmd = ft_split(cmd_str, ' ');
 	cmd_info->cmd = cmd;
 	if (!cmd || !cmd[0])
@@ -100,6 +101,8 @@ t_alloced	*check_cmd_path(int p1[], int p2[], char *cmd_str, t_ms *shell)
 	cmd_info->path = path_name;
 	if (access(path_name, X_OK) != 0)
 		exit_msg(cmd[0], PERMISSION_ERR, 126, cmd_info);
+	printf("path found = %s\n", cmd_info->path);
+	check_cmd_minishell(cmd[0], cmd_info->envp);
 	return (cmd_info);
 }
 

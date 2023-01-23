@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/22 22:03:50 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:38:06 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,6 +296,7 @@ int				ms_command_chunk_execute(t_cmd_chunk *command_chunk,
 int				pipex(char **cmd_strs, int cmd_count, t_ms *shell);
 t_alloced		*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced		*check_cmd_path(int p1[], int p2[], char *cmd_str, t_ms *shell);
+void			check_cmd_minishell(char *cmd_name, char **envp);
 int				exec_cmd(int p1[], int p2[], char *cmd_str, t_ms *shell);
 void			ms_signal_handler(int n);
 #endif

@@ -87,10 +87,7 @@ int	wait_cmds(int *pids, int count)
 	i = -1;
 	while (++i < count)
 		if (pids[i] != -1)
-		{
-			printf("waiting %d\n", i);
-			waitpid(-1, &status, 0);
-		}
+			waitpid(pids[i], &status, 0);
 	free(pids);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -109,6 +106,7 @@ int	pipex(char **cmd_strs, int cmd_count, t_ms *shell)
 	pids = (int *)malloc(sizeof(int) * (cmd_count));
 	pipe_no = 0;
 	i = -1;
+	dup2(STDIN_FILENO, pipes[0][0]);
 	while (cmd_strs[++i])
 	{
 		check_err("pipe", pipe(pipes[!pipe_no]));

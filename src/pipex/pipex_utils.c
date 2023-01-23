@@ -12,6 +12,33 @@
 
 #include "minishell.h"
 
+void	check_cmd_minishell(char *cmd_name, char **envp)
+{
+	int		len;
+	int		i;
+	char	*new_shlvl;
+	// char	shl_lvl[6];
+
+	len = ft_strlen(cmd_name);
+	if (ft_strncmp(cmd_name, "minishell", len) == 0 || \
+		ft_strncmp(cmd_name, "./minishell", len) == 0)
+	{
+		i = -1;
+		while (envp[++i])
+		{
+			// ft_strlcpy(shl_lvl, envp[i], 6);
+			if (ft_strncmp(envp[i], "SHLVL", 5) == 0)
+			{
+				new_shlvl = ft_itoa(ft_atoi(ft_strchr(envp[i], '=') + 1) + 1);
+				free(envp[i]);
+				envp[i] = ft_strjoin("SHLVL=", new_shlvl);			
+				free(new_shlvl);
+				break;
+			}
+		}
+	}
+}
+
 // Returns a list of each colon-separated directory name as an array of strings
 char	**parse_path(char **envp)
 {

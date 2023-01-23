@@ -39,9 +39,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 
 	line = readline(prompt);
 	if (!line || !*line)
-		return (free(line), 0);
-	// if (shell->error_code != 0)
-	// 	return (free(line), shell->error_code);
+		return (free(line), 0);	
 	shell->error_code = ms_error_invalid_char(line);
 	if (ms_line_isempty(line))
 		return (free(line), 0);
