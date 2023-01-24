@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/24 21:25:35 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/25 02:44:30 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ typedef struct s_file
 
 /**
  * @brief This is a command chunk, should be like this
- * {{ "< input cmd  >  output" }}, Note: input should be the LIMITER incase
- * "input_isheredoc" is true.
+ * {{ "< input cmd  >  output" }} or something like that, less or more
  * 
  */
 typedef struct s_cmd_chunk
@@ -142,30 +141,12 @@ int				get_next_index(char *line, char pos);
 char			*value_at(char *line, int pos, t_ms *shell);
 
 /**
- * @brief Gets the positions of pipes to make it easier
- * 	when dividing the contents.
- * 
- * @param line user input
- * @return int* pipes positions, ends with (-1) for termination
- */
-int				*ms_pipes_positions(char *line);
-
-/**
  * @brief Counts how many pipes which is not contained inside quotations.
  * 
  * @param line user input
  * @return pipes count 
  */
 size_t			ms_pipes_count(char *line);
-
-/**
- * @brief Divides contents between pipes to a 2d array.
- * 	needs a check after.
- * 
- * @param line user input
- * @return 2d array contents (might be commands)
- */
-char			**ms_pipes_divide(char *line);
 
 /**
  * @brief Tells if the given line has input.

@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/24 02:29:27 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/25 02:44:48 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,12 +27,9 @@ FILES	=		src/minishell.c \
 				src/ms_line/ms_line_clean.c \
 				src/ms_line/ms_line_read.c \
 				src/ms_line/ms_line_isempty.c \
-				src/ms_line/ms_line_contains_commands.c	\
 				src/ms_line/ms_expand_vars_utils.c \
 				src/ms_line/ms_line_expand_vars.c \
 				src/ms_pipes/ms_pipes_count.c \
-				src/ms_pipes/ms_pipes_positions.c	\
-				src/ms_pipes/ms_pipes_divide.c \
 				src/ms_error/ms_errno_check.c \
 				src/ms_tokenization/ms_contains_redirect.c \
 				src/ms_tokenization/ms_get_next_redirect.c \

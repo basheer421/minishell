@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/24 21:25:53 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/25 02:17:53 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,41 @@ static bool	is_err(t_cmd_chunk **chunks, int reach)
 	return (false);
 }
 
-static void	adjust_redirects(t_cmd_chunk **chunks, int size)
+// static t_cmd_chunk	**adjust_redirects(t_cmd_chunk **chunks,
+// 						int size)
+// {
+// 	int		i;
+// 	t_list	*temp;
+
+// 	i = -1;
+// 	while (++i < size)
+// 	{
+// 		if (chunks[i]->inputs->next != NULL)
+// 		{
+// 			temp = chunks[i]->inputs;
+// 			chunks[i]->inputs = chunks[i]->inputs->next;
+// 			free(temp);
+// 		}
+// 		if (chunks[i]->outputs->next != NULL)
+// 		{
+// 			temp = chunks[i]->outputs;
+// 			chunks[i]->outputs = chunks[i]->outputs->next;
+// 			free(temp);
+// 		}
+// 	}
+// }
+
+static void	add_back(t_list **lst, t_list *new_node)
 {
-	int		i;
 	t_list	*temp;
 
-	i = -1;
-	while (++i < size)
+	if ((*lst)->content == NULL)
 	{
-		if (chunks[i]->inputs->next != NULL)
-		{
-			temp = chunks[i]->inputs;
-			chunks[i]->inputs = chunks[i]->inputs->next;
-			free(temp);
-		}
-		if (chunks[i]->outputs->next != NULL)
-		{
-			temp = chunks[i]->outputs;
-			chunks[i]->outputs = chunks[i]->outputs->next;
-			free(temp);
-		}
+		temp = (*lst);
+		(*lst) = (*lst)->next;
+		free(temp);
 	}
+	ft_lstadd_back(lst, new_node);
 }
 
 t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
@@ -93,13 +107,13 @@ t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
 		{
 			token = token_type(string_head);
 			if (token == '<' || token == '>')
-				ft_lstadd_back(&(chunks[i]->inputs),
+				add_back(&(chunks[i]->inputs),
 					ft_lstnew(ms_get_next_redirect(&string_head, token)));
 			else if (token == 2)
 				chunks[i]->cmd = ms_get_fullcmd(&string_head);
 			else if (token == -1 && is_err(chunks, i))
-				return (NULL); // ERRORS
+				return (NULL);
 		}
 	}
-	return (adjust_redirects(chunks, amount), chunks);
+	return (chunks);
 }
