@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/25 02:17:53 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/25 03:24:33 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@ static void	add_back(t_list **lst, t_list *new_node)
 {
 	t_list	*temp;
 
+	ft_lstadd_back(lst, new_node);
 	if ((*lst)->content == NULL)
 	{
 		temp = (*lst);
 		(*lst) = (*lst)->next;
 		free(temp);
 	}
-	ft_lstadd_back(lst, new_node);
 }
 
 t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,

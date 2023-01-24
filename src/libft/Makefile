@@ -31,8 +31,6 @@ HEADER	=	../../include
 
 OBJS		= ${SRCS:.c=.o}
 
-BOBJS 		= ${BSRCS:.c=.o}
-
 NAME		= libft.a
 
 CC			= cc
@@ -49,7 +47,6 @@ all:		${NAME}
 
 clean:
 			/bin/rm -f ${OBJS}
-			/bin/rm -f ${BOBJS}
 
 fclean:		clean
 			/bin/rm -f ${NAME}
