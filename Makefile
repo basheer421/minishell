@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
+#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/24 00:13:36 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/01/24 02:29:27 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,15 +34,11 @@ FILES	=		src/minishell.c \
 				src/ms_pipes/ms_pipes_positions.c	\
 				src/ms_pipes/ms_pipes_divide.c \
 				src/ms_error/ms_errno_check.c \
-				src/ms_tokenization/ms_contains_input.c \
-				src/ms_tokenization/ms_get_next_input.c \
+				src/ms_tokenization/ms_contains_redirect.c \
+				src/ms_tokenization/ms_get_next_redirect.c \
 				src/ms_tokenization/ms_contains_cmd.c \
 				src/ms_tokenization/ms_get_cmd.c \
 				src/ms_tokenization/ms_get_fullcmd.c \
-				src/ms_tokenization/ms_contains_output.c \
-				src/ms_tokenization/ms_get_next_output.c \
-				src/ms_tokenization/ms_get_input_fd.c \
-				src/ms_tokenization/ms_get_output_fd.c \
 				src/ms_tokenization/ms_split_utils.c \
 				src/ms_tokenization/ms_split_with_no_quotes.c \
 				src/ms_builtins/ms_handle_builtins.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_command_chunks_get.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/23 21:32:07 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/24 21:25:53 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,47 +22,64 @@ static t_cmd_chunk	**chunk_init(size_t amount)
 	while (i < amount)
 	{
 		chunks[i] = ft_calloc(1, sizeof(t_cmd_chunk));
-		chunks[i]->input_fd = 0;
-		chunks[i]->output_fd = 1;
+		chunks[i]->inputs = ft_lstnew(NULL);
+		chunks[i]->outputs = ft_lstnew(NULL);
 		if (!chunks[i])
-			return (NULL);
+			exit(EXIT_FAILURE);
 		i++;
 	}
 	chunks[i] = NULL;
 	return (chunks);
 }
 
-// 0 means the next part is input, 1 means output and 2 means it's a command
+// 60 means the next part is input, 62 means output and 2 means it's a command
 static int	token_type(char *line)
 {
-	if (!*ft_skip_spaces(line))
-		return (3);
-	if (ms_contains_input(line))
-		return (0);
-	if (ms_contains_output(line))
-		return (1);
+	if (ms_contains_redirect(line, '<'))
+		return ('<');
+	if (ms_contains_redirect(line, '>'))
+		return ('>');
 	if (ms_contains_cmd(line))
 		return (2);
 	return (-1);
 }
 
-// static void	abort_alloc(t_cmd_chunk	**chunks, int reach)
-// {
-// 	int	i;
+static bool	is_err(t_cmd_chunk **chunks, int reach)
+{
+	if (!chunks[reach]->cmd
+		&& !chunks[reach]->inputs->content
+		&& !chunks[reach]->outputs->content)
+		return (true);
+	return (false);
+}
 
-// 	i = -1;
-// 	while (++i < reach)
-// 	{
-// 		ft_split_destroy(chunks[i]->cmd);
-// 		free(chunks[i]);
-// 	}
-// 	free(chunks);
-// }
+static void	adjust_redirects(t_cmd_chunk **chunks, int size)
+{
+	int		i;
+	t_list	*temp;
+
+	i = -1;
+	while (++i < size)
+	{
+		if (chunks[i]->inputs->next != NULL)
+		{
+			temp = chunks[i]->inputs;
+			chunks[i]->inputs = chunks[i]->inputs->next;
+			free(temp);
+		}
+		if (chunks[i]->outputs->next != NULL)
+		{
+			temp = chunks[i]->outputs;
+			chunks[i]->outputs = chunks[i]->outputs->next;
+			free(temp);
+		}
+	}
+}
 
 t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
 										size_t amount)
 {
-	t_cmd_chunk	**chunks;
+	t_cmd_chunk		**chunks;
 	int				i;
 	int				token;
 	char			*string_head;
@@ -72,18 +89,17 @@ t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
 	while (++i < (int)amount)
 	{
 		string_head = line_pieces[i];
-		token = token_type(line_pieces[i]);
-		if (token == 0)
-			chunks[i]->input_fd = ms_get_input_fd(line_pieces[i], chunks[i]);
-		else if (token == 1)
-			chunks[i]->output_fd = ms_get_output_fd(line_pieces[i], chunks[i]);
-		if (token == 2)
-			chunks[i]->cmd = ms_get_fullcmd(line_pieces[i], chunks[i]);
-		line_pieces[i] = string_head;
-		if (token == -1 || chunks[i]->input_fd == -1
-			|| chunks[i]->output_fd == -1
-			|| !chunks[i]->cmd)
-			return (NULL); // ERRORs
+		while (string_head && *ft_skip_spaces(string_head))
+		{
+			token = token_type(string_head);
+			if (token == '<' || token == '>')
+				ft_lstadd_back(&(chunks[i]->inputs),
+					ft_lstnew(ms_get_next_redirect(&string_head, token)));
+			else if (token == 2)
+				chunks[i]->cmd = ms_get_fullcmd(&string_head);
+			else if (token == -1 && is_err(chunks, i))
+				return (NULL); // ERRORS
+		}
 	}
-	return (chunks);
+	return (adjust_redirects(chunks, amount), chunks);
 }

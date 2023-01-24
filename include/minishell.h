@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/24 00:09:59 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/24 21:25:35 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ typedef struct s_ms
 typedef struct s_file
 {
 	char	*name;
-	bool	is_extra;
-						
+	bool	is_extra;				
 }				t_file;
 
 /**
@@ -64,21 +63,21 @@ typedef struct s_file
  * "input_isheredoc" is true.
  * 
  */
-// typedef struct s_cmd_chunk
-// {
-// 	char		**cmd;
-// 	t_file		*inputs;
-// 	t_file		*outputs;
-// }				t_cmd_chunk;
-
 typedef struct s_cmd_chunk
 {
 	char		**cmd;
-	bool		input_isheredoc;
-	bool		append_to_output;
-	int			input_fd;
-	int			output_fd;
+	t_list		*inputs;
+	t_list		*outputs;
 }				t_cmd_chunk;
+
+// typedef struct s_cmd_chunk
+// {
+// 	char		**cmd;
+// 	bool		input_isheredoc;
+// 	bool		append_to_output;
+// 	int			input_fd;
+// 	int			output_fd;
+// }				t_cmd_chunk;
 
 
 /**
@@ -128,14 +127,6 @@ char			**split_with_no_quotes(char *line, int c);
  */
 bool			ms_line_isempty(char *line);
 
-// /**
-//  * @brief Tells if the line has at least one command.
-//  * 
-//  * @param line user input
-//  * @return boolean
-//  */
-// bool			ms_line_contains_commands(char *line, t_ms *shell);
-
 /**
  * @brief Edits the given to expand any env vars.
  * 
@@ -143,22 +134,12 @@ bool			ms_line_isempty(char *line);
  * @return boolean, false on failure.
  */
 void			ms_line_expand_vars(char **line, t_ms *shell);
-int				get_next_index(char *line, char pos);
-char			*value_at(char *line, int pos, t_ms *shell);
 
-// Helpers for line_expand
+// Helper for line_expand
 int				get_next_index(char *line, char pos);
-char			*value_at(char *line, int pos, t_ms *shell);
 
-/**
- * @brief Execute the valid commands in parallel as
- *  "minishell" requires only that.
- * 
- * @param line user input
- * @return 0 on success or error code
- */
-// int				ms_line_execute_commands(char *line);
-// idk, u handle this
+// Helper for line_expand
+char			*value_at(char *line, int pos, t_ms *shell);
 
 /**
  * @brief Gets the positions of pipes to make it easier
@@ -192,25 +173,15 @@ char			**ms_pipes_divide(char *line);
  * @param line_chunk 
  * @return boolean
  */
-bool			ms_contains_input(char *line_chunk);
+bool			ms_contains_redirect(char *line_chunk, char type);
 
 /**
  * @brief Reads the line for the input file name
  * 
  * @param line_chunk 
  * @return file_name (malloced string), or NULL if it doesn't exist.
- */
-char			*ms_get_next_input(char **line_chunk);
-
-/**
- * @brief Using get_next_input() we get the last fd,
- * 	and store it inside "chunk"
- * 
- * @param line_piece
- * @param chunk to be stored in
- * @return int fd, or -1 on error
- */
-int				ms_get_input_fd(char *line_piece, t_cmd_chunk *chunk);
+//  */
+t_file			*ms_get_next_redirect(char **line_chunk, char type);
 
 /**
  * @brief Tells if the given line has a command.
@@ -235,7 +206,7 @@ char			*ms_get_cmd(char *line_chunk);
  * @param chunk to be stored in 
  * @return Command arguments or NULL if not found
  */
-char			**ms_get_fullcmd(char *line_piece, t_cmd_chunk *chunk);
+char			**ms_get_fullcmd(char **line_piece);
 
 /**
  * @brief Tells if the given line has output.
@@ -243,7 +214,7 @@ char			**ms_get_fullcmd(char *line_piece, t_cmd_chunk *chunk);
  * @param line_chunk 
  * @return boolean
  */
-bool			ms_contains_output(char *line_chunk);
+// bool			ms_contains_output(char *line_chunk);
 
 /**
  * @brief Reads the line for the output file name
@@ -251,18 +222,7 @@ bool			ms_contains_output(char *line_chunk);
  * @param line_chunk 
  * @return file_name (malloced string)
  */
-char			*ms_get_next_output(char **line_chunk);
-
-/**
- * @brief Using get_next_output() we get the last fd,
- * 	and store it inside "chunk"
- * 
- * @param line_piece
- * @param chunk to be stored in
- * @return int fd, or -1 on error
- */
-int				ms_get_output_fd(char *line_piece,
-					t_cmd_chunk *chunk);
+// t_file			*ms_get_next_output(char **line_chunk);
 
 /**
  * @brief Gets the command chunks from the divided line.
@@ -274,15 +234,6 @@ int				ms_get_output_fd(char *line_piece,
  */
 t_cmd_chunk		**ms_command_chunks_get(char **line_pieces, size_t amount);
 
-// /**
-//  * @brief Executes a command chunk.
-//  * Make sure everything is done in new temporary shell.
-//  * 
-//  * @param command_chunk 
-//  * @return {int} Error code
-//  */
-// int				ms_command_chunk_execute(t_cmd_chunk *command_chunk,
-// 					t_ms *shell);
 
 /**
  * @brief Checks if a function returned an error and if so displays appropriate
