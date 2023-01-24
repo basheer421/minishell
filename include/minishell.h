@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/24 00:09:59 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/24 02:41:11 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,21 @@ typedef struct s_file
  * "input_isheredoc" is true.
  * 
  */
-// typedef struct s_cmd_chunk
-// {
-// 	char		**cmd;
-// 	t_file		*inputs;
-// 	t_file		*outputs;
-// }				t_cmd_chunk;
-
 typedef struct s_cmd_chunk
 {
 	char		**cmd;
-	bool		input_isheredoc;
-	bool		append_to_output;
-	int			input_fd;
-	int			output_fd;
+	t_list		*inputs;
+	t_list		*outputs;
 }				t_cmd_chunk;
+
+// typedef struct s_cmd_chunk
+// {
+// 	char		**cmd;
+// 	bool		input_isheredoc;
+// 	bool		append_to_output;
+// 	int			input_fd;
+// 	int			output_fd;
+// }				t_cmd_chunk;
 
 
 /**
