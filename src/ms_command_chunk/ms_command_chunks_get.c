@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/25 03:24:33 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/25 14:35:55 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,30 +52,6 @@ static bool	is_err(t_cmd_chunk **chunks, int reach)
 		return (true);
 	return (false);
 }
-
-// static t_cmd_chunk	**adjust_redirects(t_cmd_chunk **chunks,
-// 						int size)
-// {
-// 	int		i;
-// 	t_list	*temp;
-
-// 	i = -1;
-// 	while (++i < size)
-// 	{
-// 		if (chunks[i]->inputs->next != NULL)
-// 		{
-// 			temp = chunks[i]->inputs;
-// 			chunks[i]->inputs = chunks[i]->inputs->next;
-// 			free(temp);
-// 		}
-// 		if (chunks[i]->outputs->next != NULL)
-// 		{
-// 			temp = chunks[i]->outputs;
-// 			chunks[i]->outputs = chunks[i]->outputs->next;
-// 			free(temp);
-// 		}
-// 	}
-// }
 
 static void	add_back(t_list **lst, t_list *new_node)
 {
