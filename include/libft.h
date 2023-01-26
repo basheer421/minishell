@@ -65,6 +65,7 @@ int		ft_is_space(int c);
 char	*ft_skip_spaces(char *str);
 int		ft_index(const char *str, int c);
 int		ft_next_nonalnum(char *str, int start);
+char	*ft_exclude_quotes(char *str);
 
 typedef struct s_list
 {

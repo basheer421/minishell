@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:17:25 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/24 21:49:31 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/26 22:14:05 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_file	*ms_get_next_redirect(char **line_chunk, char type)
 	int			len;
 	t_inside	inside;
 	t_file		*file;
+	char		*temp;
 
 	ft_bzero(&inside, sizeof(inside));
 	file = ft_malloc(sizeof(t_file));
@@ -57,8 +58,9 @@ t_file	*ms_get_next_redirect(char **line_chunk, char type)
 	if (len == 0)
 		return (NULL); // unexpected token error
 	*line_chunk += inside.dquotes || inside.quotes;
-	file->name = ft_malloc(len + 1);
-	ft_strlcpy(file->name, *line_chunk, len + 1);
+	file->name = ft_substr(file->name, 0, len);
+	temp = file->name;
+	file->name = ft_exclude_quotes(file->name);
 	*line_chunk += len + (inside.dquotes || inside.quotes);
-	return (file);
+	return (free(temp), file);
 }

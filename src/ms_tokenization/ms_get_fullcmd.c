@@ -6,20 +6,24 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:28:19 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/25 00:38:44 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/26 22:19:40 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	increment_string(char **str, int amount)
+static void	remove_quotes(char **arr)
 {
-	int	i;
+	int		i;
+	char	*temp;
 
-	i = 0;
-	while (str[0][i] && i < amount)
-		i++;
-	*str += i;
+	i = -1;
+	while (arr[++i])
+	{
+		temp = arr[i];
+		arr[i] = ft_exclude_quotes(arr[i]);
+		free(temp);
+	}
 }
 
 char	**ms_get_fullcmd(char **line_piece)
@@ -40,9 +44,10 @@ char	**ms_get_fullcmd(char **line_piece)
 	temp = ft_substr(*line_piece, 0, cmds_length);
 	if (!temp)
 		return (NULL);
-	cmds = split_with_no_quotes(temp, ' '); // i should use my split but it's not working
+	cmds = split_with_no_quotes(temp, ' ');
 	if (!cmds)
 		return (free(temp), NULL);
 	*line_piece += cmds_length;
+	remove_quotes(cmds);
 	return (free(temp), cmds);
 }
