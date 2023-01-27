@@ -6,19 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:01:38 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/25 01:09:34 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 01:56:01 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-typedef struct s_split_postions
-{
-	int		current_index;
-	int		*positions;
-	bool	inside_quotes;
-	bool	inside_dquotes;
-}			t_split_postions;
 
 char	*chrskip(char *s, char c)
 {
@@ -33,7 +25,7 @@ char	*chrskip(char *s, char c)
 static void	char_trim(char **line, int c)
 {
 	char	*set;
-	
+
 	set = ft_malloc(2);
 	set[0] = c;
 	set[1] = 0;
@@ -77,8 +69,8 @@ int	*ms_char_positions(char *line, int c)
 	int					i;
 
 	ft_bzero(&vars, sizeof(t_split_postions));
-	vars.positions = ft_malloc(sizeof(int)
-		* (split_with_no_quotes_len(line, c) + 1));
+	vars.positions = ft_malloc(sizeof(int) * (split_with_no_quotes_len(line, c)
+				+ 1));
 	i = -1;
 	while (line[++i])
 	{

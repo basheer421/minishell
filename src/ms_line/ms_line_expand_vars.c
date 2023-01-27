@@ -6,21 +6,13 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 17:35:10 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 01:12:55 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-typedef struct s_inside
-{
-	bool	quotes;
-	bool	dquotes;
-	bool	var;
-	char	*value;
-}			t_inside;
-
-static void	tick_inside_vars(t_inside *inside, char c, char next)
+static void	tick_inside_vars(t_inside2 *inside, char c, char next)
 {
 	if (c == '\'' && !inside->dquotes)
 		inside->quotes = !inside->quotes;
@@ -37,9 +29,9 @@ static int	len_with_expand(char *line, t_ms *shell)
 	int			i;
 	int			total;
 	char		*value;
-	t_inside	inside;
+	t_inside2	inside;
 
-	ft_bzero(&inside, sizeof(t_inside));
+	ft_bzero(&inside, sizeof(t_inside2));
 	total = 0;
 	i = -1;
 	while (line[++i])
@@ -60,7 +52,7 @@ static int	len_with_expand(char *line, t_ms *shell)
 	return (total);
 }
 
-static char	*var_init(t_inside *inside, char **line, t_ms *shell, int *c_count)
+static char	*var_init(t_inside2 *inside, char **line, t_ms *shell, int *c_count)
 {
 	char	*nline;
 
@@ -77,7 +69,7 @@ void	ms_line_expand_vars(char **line, t_ms *shell)
 {
 	int			c_count;
 	char		*nline;
-	t_inside	inside;
+	t_inside2	inside;
 	int			i;
 
 	nline = var_init(&inside, line, shell, &c_count);

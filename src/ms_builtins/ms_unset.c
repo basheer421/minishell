@@ -18,7 +18,7 @@ int	ms_unset(t_ms *shell, char **strs, int arg_count)
 
 	i = 0;
 	if (arg_count > 1)
-		while(strs[++i])
+		while (strs[++i])
 			ht_remove(shell->env_vars, strs[i]);
 	return (EXIT_SUCCESS);
 }

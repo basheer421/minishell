@@ -24,6 +24,12 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
+typedef struct s_inside
+{
+	int		quotes;
+	int		dquotes;
+}			t_inside;
+
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);

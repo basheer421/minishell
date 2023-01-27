@@ -6,18 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:17:25 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/27 16:37:32 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 02:01:28 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-typedef struct s_inside
-{
-	bool	quotes;
-	bool	dquotes;
-}			t_inside;
-
 
 static int	end_pos(char *str, t_inside *inside)
 {
@@ -52,8 +45,8 @@ t_file	*ms_get_next_redirect(char **line_chunk, char type)
 	*line_chunk = ft_skip_spaces(*line_chunk);
 	len = end_pos(*line_chunk, &inside);
 	if (len == 0)
-		return (NULL); // unexpected token error
-	*line_chunk += inside.dquotes || inside.quotes;
+		return (NULL);
+	*line_chunk += (inside.dquotes || inside.quotes);
 	file->name = ft_substr(file->name, 0, len);
 	temp = file->name;
 	file->name = ft_exclude_quotes(file->name);

@@ -6,17 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 21:54:57 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/26 22:26:38 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 01:16:09 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-typedef struct s_inside
-{
-	int		quotes;
-	int		dquotes;
-}			t_inside;
 
 static int	count_without_quotes(char *s)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/16 20:39:39 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/28 02:00:05 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ static char	**split_by_first(char c, char *str)
 	s1 = ft_substr(str, 0, get_index(c, str));
 	if (!s1)
 		return (NULL);
-	s2 = ft_substr(str, get_index(c, str) + 1,
-		ft_strlen(ft_strchr(str, c) + 1));
+	s2 = ft_substr(str, get_index(c, str) + 1, ft_strlen(ft_strchr(str, c)
+				+ 1));
 	if (!s2)
 		return (free(s1), NULL);
 	a = malloc(3 * sizeof(char *));
 	if (!a)
-		return(free(s1), free(s2), NULL);
+		return (free(s1), free(s2), NULL);
 	a[0] = s1;
 	a[1] = s2;
 	a[2] = NULL;
@@ -51,14 +51,12 @@ static bool	fill_ht(char **envp, t_ht *table)
 	char	**splited_env_value;
 
 	i = -1;
-
 	while (envp[++i])
 	{
 		splited_env_value = split_by_first('=', envp[i]);
 		if (!splited_env_value)
 			return (false);
-		if (!splited_env_value[1]
-			|| ft_strlen(splited_env_value[1]) == 0)
+		if (!splited_env_value[1] || ft_strlen(splited_env_value[1]) == 0)
 		{
 			free(splited_env_value[1]);
 			splited_env_value[1] = ft_strdup("\0");
@@ -74,7 +72,7 @@ static bool	fill_ht(char **envp, t_ht *table)
 
 t_ms	*ms_init(char **envp)
 {
-	t_ms			*shell;
+	t_ms	*shell;
 
 	if (!envp || !*envp)
 		return (NULL);

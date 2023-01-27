@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/27 18:43:27 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 01:50:41 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,19 @@
 # include "ht.h"
 # include "libft.h"
 # include "pipex.h"
+# include <dirent.h>
+# include <errno.h>
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <string.h>
-# include <unistd.h>
-# include <errno.h>
-# include <dirent.h>
-# include <fcntl.h>
-# include <sys/types.h>
 # include <sys/param.h>
-# include <signal.h>
 # include <sys/stat.h>
+# include <sys/types.h>
+# include <unistd.h>
 
 # define UNEXPECTED_TOKEN 258
 
@@ -43,11 +42,11 @@ extern int	g_exit_status;
  */
 typedef struct s_ms
 {
-	t_ht		*env_vars;
-	char		*current_dir;
-	bool		is_interactive_mode;
-	int			error_code;
-}				t_ms;
+	t_ht	*env_vars;
+	char	*current_dir;
+	bool	is_interactive_mode;
+	int		error_code;
+}			t_ms;
 
 /**
  * @brief 	when name is delim for heredoc, is_extra is set to true
@@ -56,8 +55,8 @@ typedef struct s_ms
 typedef struct s_file
 {
 	char	*name;
-	bool	is_extra;				
-}				t_file;
+	bool	is_extra;
+}			t_file;
 
 /**
  * @brief This is a command chunk, should be like this
@@ -66,10 +65,40 @@ typedef struct s_file
  */
 typedef struct s_cmd_chunk
 {
-	char		**cmd;
-	t_list		*inputs;
-	t_list		*outputs;
-}				t_cmd_chunk;
+	char	**cmd;
+	t_list	*inputs;
+	t_list	*outputs;
+}			t_cmd_chunk;
+
+/**
+ * @brief struct type for parsing
+ * ; dquotes is for double quotes.
+*/
+
+typedef struct s_inside2
+{
+	bool	quotes;
+	bool	dquotes;
+	bool	var;
+	char	*value;
+}			t_inside2;
+// helper for split
+typedef struct s_split
+{
+	char	*line;
+	char	c;
+	char	**content;
+	int		*positions;
+	size_t	content_size;
+}			t_split_vars;
+// helper for split
+typedef struct s_split_postions
+{
+	int		current_index;
+	int		*positions;
+	bool	inside_quotes;
+	bool	inside_dquotes;
+}			t_split_postions;
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
@@ -78,14 +107,14 @@ typedef struct s_cmd_chunk
  * @param envp enviroment variables from main() fucntion
  * @return mini shell struct pointer (t_ms *)
  */
-t_ms			*ms_init(char **envp);
+t_ms		*ms_init(char **envp);
 
 /**
  * @brief Destroys and frees everything inside the given shell (t_ms).
  * 
  * @param shell 
  */
-void			ms_destroy(t_ms *shell);
+void		ms_destroy(t_ms *shell);
 
 /**
  * @brief Reads the command line and does the main functions,
@@ -94,7 +123,7 @@ void			ms_destroy(t_ms *shell);
  * @param prompt desired prompt
  * @return Error code
  */
-int				ms_line_read(const char *prompt, t_ms *shell);
+int			ms_line_read(const char *prompt, t_ms *shell);
 
 /**
  * @brief Tells if the line is empty.
@@ -102,7 +131,7 @@ int				ms_line_read(const char *prompt, t_ms *shell);
  * @param line user input
  * @return boolean, true if it's empty.
  */
-bool			ms_line_isempty(char *line);
+bool		ms_line_isempty(char *line);
 
 /**
  * @brief tells if the line is empty and prints the syntax error.
@@ -110,12 +139,12 @@ bool			ms_line_isempty(char *line);
  * @param line user input 
  * @return boolean, true if it's a valid complete line, false other wise.
  */
-bool			ms_line_iscomplete(char *line, char **string_chunks);
+bool		ms_line_iscomplete(char *line, char **string_chunks);
 
 // Helper functions for split_with_no_quotes
-char			*chrskip(char *s, char c);
-int				split_with_no_quotes_len(char *line, int c);
-int				*ms_char_positions(char *line, int c);
+char		*chrskip(char *s, char c);
+int			split_with_no_quotes_len(char *line, int c);
+int			*ms_char_positions(char *line, int c);
 
 /**
  * @brief Splits a string by a character unless the character is inside quotes.
@@ -124,7 +153,7 @@ int				*ms_char_positions(char *line, int c);
  * @param char to split by 
  * @return array of strings 
  */
-char			**split_with_no_quotes(char *line, int c);
+char		**split_with_no_quotes(char *line, int c);
 
 /**
  * @brief Edits the given to expand any env vars.
@@ -132,13 +161,13 @@ char			**split_with_no_quotes(char *line, int c);
  * @param line user input
  * @return boolean, false on failure.
  */
-void			ms_line_expand_vars(char **line, t_ms *shell);
+void		ms_line_expand_vars(char **line, t_ms *shell);
 
 // Helper for line_expand
-int				get_next_index(char *line, char pos);
+int			get_next_index(char *line, char pos);
 
 // Helper for line_expand
-char			*value_at(char *line, int pos, t_ms *shell);
+char		*value_at(char *line, int pos, t_ms *shell);
 
 /**
  * @brief Counts how many pipes which is not contained inside quotations.
@@ -146,7 +175,7 @@ char			*value_at(char *line, int pos, t_ms *shell);
  * @param line user input
  * @return pipes count 
  */
-size_t			ms_pipes_count(char *line);
+size_t		ms_pipes_count(char *line);
 
 /**
  * @brief Tells if the given line has input.
@@ -154,15 +183,15 @@ size_t			ms_pipes_count(char *line);
  * @param line_chunk 
  * @return boolean
  */
-bool			ms_contains_redirect(char *line_chunk, char type);
+bool		ms_contains_redirect(char *line_chunk, char type);
 
 /**
  * @brief Reads the line for the input file name
  * 
  * @param line_chunk 
  * @return file_name (malloced string), or NULL if it doesn't exist.
-//  */
-t_file			*ms_get_next_redirect(char **line_chunk, char type);
+*/
+t_file		*ms_get_next_redirect(char **line_chunk, char type);
 
 /**
  * @brief Tells if the given line has a command.
@@ -170,7 +199,7 @@ t_file			*ms_get_next_redirect(char **line_chunk, char type);
  * @param line_chunk 
  * @return boolean
  */
-bool			ms_contains_cmd(char *line_chunk);
+bool		ms_contains_cmd(char *line_chunk);
 
 /**
  * @brief Reads the line for the cmd
@@ -178,7 +207,7 @@ bool			ms_contains_cmd(char *line_chunk);
  * @param line_chunk 
  * @return file_name (malloced string)
  */
-char			*ms_get_cmd(char *line_chunk);
+char		*ms_get_cmd(char *line_chunk);
 
 /**
  * @brief Reads the command string and checks if it's valid.
@@ -187,7 +216,7 @@ char			*ms_get_cmd(char *line_chunk);
  * @param chunk to be stored in 
  * @return Command arguments or NULL if not found
  */
-char			**ms_get_fullcmd(char **line_piece);
+char		**ms_get_fullcmd(char **line_piece);
 
 /**
  * @brief Gets the command chunks from the divided line.
@@ -197,22 +226,21 @@ char			**ms_get_fullcmd(char **line_piece);
  * @param shell 
  * @return array of chunks
  */
-t_cmd_chunk		**ms_command_chunks_get(char **line_pieces, size_t amount);
-
+t_cmd_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
 
 /**
  * @brief Checks if a function returned an error and if so displays appropriate
- *		  error message
+ *			error message
  * 
  * @param err_header Name of the function being called, to be used in error 
- * 					 message
+ * 						message
  * @param ret_value Return value of the function called 
  * @return ret_value
  */
-int				ms_errno_check(char *err_header, int ret_value);
-void			ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
+int			ms_errno_check(char *err_header, int ret_value);
+void		ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
 // void	handle_builtins(char **strs, t_ms *shell);
-bool			handle_builtins(char **cmd, t_ms *shell);
+bool		handle_builtins(char **cmd, t_ms *shell);
 
 /**
  * @brief Runs the echo command on the given strings
@@ -220,13 +248,13 @@ bool			handle_builtins(char **cmd, t_ms *shell);
  * @param strs array of strings to be output on the screen
  * @param n_flag if set to true echo will not output a trailing newline
  */
-int				ms_echo(char **strs, bool n_flag);
-int				ms_pwd(void);
-int				ms_cd(t_ms *shell, char **path, int arg_count);
-int				ms_exit(char **args, int arg_count, t_ms *shell);
-int				ms_env(t_ms *shell);
-int				ms_export(t_ms *shell, char **args, int arg_count);
-int				ms_unset(t_ms *shell, char **strs, int arg_count);
+int			ms_echo(char **strs, bool n_flag);
+int			ms_pwd(void);
+int			ms_cd(t_ms *shell, char **path, int arg_count);
+int			ms_exit(char **args, int arg_count, t_ms *shell);
+int			ms_env(t_ms *shell);
+int			ms_export(t_ms *shell, char **args, int arg_count);
+int			ms_unset(t_ms *shell, char **strs, int arg_count);
 
 /**
  * @brief Executes a command chunk.
@@ -235,17 +263,17 @@ int				ms_unset(t_ms *shell, char **strs, int arg_count);
  * @param command_chunk 
  * @return {int} Error code
  */
-int				ms_command_chunk_execute(t_cmd_chunk *command_chunk,
-					t_ms *shell);
-int				pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
-t_alloced		*set_alloc(int p1[], int p2[], t_ms *shell);
-t_alloced		*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
-void			check_cmd_minishell(char *cmd_name, char **envp);
-int				exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell);
+int			ms_command_chunk_execute(t_cmd_chunk *command_chunk,
+				t_ms *shell);
+int			pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
+t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
+t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
+void		check_cmd_minishell(char *cmd_name, char **envp);
+int			exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell);
 
-void			ms_sigint_handler(int n);
-void			ms_sigquit_handler(int sig);
-int				ms_get_sig_status(int sig_no);
-void			ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line);
+void		ms_sigint_handler(int n);
+void		ms_sigquit_handler(int sig);
+int			ms_get_sig_status(int sig_no);
+void		ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line);
 
 #endif
