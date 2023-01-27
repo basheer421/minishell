@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/25 14:35:55 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/27 20:46:02 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,26 @@ static int	token_type(char *line)
 	return (-1);
 }
 
-static bool	is_err(t_cmd_chunk **chunks, int reach)
+static bool	is_err(t_cmd_chunk **chunks, int reach, char *line)
 {
+	char	*nline;
+
+	nline = ft_strtrim(line, " ");
 	if (!chunks[reach]->cmd
 		&& !chunks[reach]->inputs->content
 		&& !chunks[reach]->outputs->content)
-		return (true);
-	return (false);
+	{
+		if (nline[ft_strlen(nline) - 1] == '<' || nline[ft_strlen(nline) - 1] == '>')
+		{
+			if (chunks[reach + 1] == NULL)
+				return (perror("syntax error near unexpected token `newline'"),
+					free(nline), false);
+			return (perror("syntax error near unexpected token `|'"),
+					free(nline), false);
+		}
+		return (free(nline), false);
+	}
+	return (free(nline), true);
 }
 
 static void	add_back(t_list **lst, t_list *new_node)
@@ -87,7 +100,7 @@ t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
 					ft_lstnew(ms_get_next_redirect(&string_head, token)));
 			else if (token == 2)
 				chunks[i]->cmd = ms_get_fullcmd(&string_head);
-			else if (token == -1 && is_err(chunks, i))
+			else if (token == -1 && is_err(chunks, i, string_head))
 				return (NULL);
 		}
 	}

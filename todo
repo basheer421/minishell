@@ -3,7 +3,10 @@ handle expansions for env vars, also:
 	$0 - name of running process // not required
 	$? - last return value
 	$$ - pid of the currently running process // not required
+	$N - if N is a digit handle $N to print {$N} 
+	$"string" - should expand to {string}
 	.. there will be more
+
 
 ERROR MESSAGES
 make function to print error messages in the foll format:

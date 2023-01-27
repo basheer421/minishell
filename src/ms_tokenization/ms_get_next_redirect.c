@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 16:17:25 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/26 22:14:05 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/27 16:37:32 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ static int	end_pos(char *str, t_inside *inside)
 	}
 	return (i);
 }
-
-// static void report_unexpected_token(char next_c)
-// {
-// }
 
 t_file	*ms_get_next_redirect(char **line_chunk, char type)
 {

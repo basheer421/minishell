@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/25 02:44:30 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/27 18:43:27 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include <sys/param.h>
 # include <signal.h>
 # include <sys/stat.h>
+
+# define UNEXPECTED_TOKEN 258
 
 extern int	g_exit_status;
 
@@ -69,16 +71,6 @@ typedef struct s_cmd_chunk
 	t_list		*outputs;
 }				t_cmd_chunk;
 
-// typedef struct s_cmd_chunk
-// {
-// 	char		**cmd;
-// 	bool		input_isheredoc;
-// 	bool		append_to_output;
-// 	int			input_fd;
-// 	int			output_fd;
-// }				t_cmd_chunk;
-
-
 /**
  * @brief Reads the environment variables and stores them inside a struct.
  * 	Also gets the current working dir
@@ -104,6 +96,22 @@ void			ms_destroy(t_ms *shell);
  */
 int				ms_line_read(const char *prompt, t_ms *shell);
 
+/**
+ * @brief Tells if the line is empty.
+ * 
+ * @param line user input
+ * @return boolean, true if it's empty.
+ */
+bool			ms_line_isempty(char *line);
+
+/**
+ * @brief tells if the line is empty and prints the syntax error.
+ * 
+ * @param line user input 
+ * @return boolean, true if it's a valid complete line, false other wise.
+ */
+bool			ms_line_iscomplete(char *line, char **string_chunks);
+
 // Helper functions for split_with_no_quotes
 char			*chrskip(char *s, char c);
 int				split_with_no_quotes_len(char *line, int c);
@@ -117,14 +125,6 @@ int				*ms_char_positions(char *line, int c);
  * @return array of strings 
  */
 char			**split_with_no_quotes(char *line, int c);
-
-/**
- * @brief Tells if the line is empty.
- * 
- * @param line user input
- * @return boolean, true if it's empty.
- */
-bool			ms_line_isempty(char *line);
 
 /**
  * @brief Edits the given to expand any env vars.
@@ -188,22 +188,6 @@ char			*ms_get_cmd(char *line_chunk);
  * @return Command arguments or NULL if not found
  */
 char			**ms_get_fullcmd(char **line_piece);
-
-/**
- * @brief Tells if the given line has output.
- * 
- * @param line_chunk 
- * @return boolean
- */
-// bool			ms_contains_output(char *line_chunk);
-
-/**
- * @brief Reads the line for the output file name
- * 
- * @param line_chunk 
- * @return file_name (malloced string)
- */
-// t_file			*ms_get_next_output(char **line_chunk);
 
 /**
  * @brief Gets the command chunks from the divided line.
