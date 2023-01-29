@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ms_chunks_iscomplete.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/29 16:07:37 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/28 18:34:53 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/29 18:50:31 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exit_status = 0;
+// bool	ms_chunks_iscomplete(char **chunks)
+// {
+// 	int		i;
+// 	char	str;
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_ms	*shell;
-
-	shell = ms_init(envp);
-	if (!shell)
-		return (1);
-	while (shell->error_code != -1)
-	{
-		signal(SIGINT, ms_sigint_handler);
-		signal(SIGQUIT, SIG_IGN);
-		ms_line_read("\033[0;35mpsh\033[0m$ ", shell);
-	}
-	(void)argc;
-	(void)argv;
-	ms_destroy(shell);
-	clear_history();
-	return (0);
-}
+// 	i = -1;
+// 	while (chunks[++i])
+// 	{
+// 		str = ft_strtrim(str, " ");
+// 		if (str[0] )
+// 	}
+// }

@@ -21,10 +21,10 @@ int	ms_get_sig_status(int sig_no)
 		printf("Quit\n");
 		return (131);
 	}
-	if (sig_no == SIGSEGV)
-	{
-		printf("Segmentation fault\n");
-		return (139);
-	}
+	// if (sig_no == SIGSEGV)
+	// {
+	// 	printf("Segmentation fault\n");
+	// 	return (139);
+	// }
 	return (1);
 }

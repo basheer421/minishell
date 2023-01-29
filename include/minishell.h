@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/28 01:50:41 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 18:38:27 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ bool		ms_line_isempty(char *line);
  * @param line user input 
  * @return boolean, true if it's a valid complete line, false other wise.
  */
-bool		ms_line_iscomplete(char *line, char **string_chunks);
+bool		ms_line_iscomplete(char *line);
 
 // Helper functions for split_with_no_quotes
 char		*chrskip(char *s, char c);
@@ -176,6 +176,14 @@ char		*value_at(char *line, int pos, t_ms *shell);
  * @return pipes count 
  */
 size_t		ms_pipes_count(char *line);
+
+/**
+ * @brief checks and prints the errors
+ * 
+ * @param line_chunks
+ * @return boolean
+ */
+bool		ms_chunks_iscomplete(char **chunks);
 
 /**
  * @brief Tells if the given line has input.

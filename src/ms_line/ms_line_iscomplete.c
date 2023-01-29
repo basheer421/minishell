@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:47:00 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/28 01:58:39 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 18:30:32 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,61 +20,73 @@ static void	tick_inside_vars(t_inside *inside, char c)
 		inside->dquotes = !inside->dquotes;
 }
 
-static bool	contains_mutlipipes(char *line)
+// static bool	contains_mutlipipes(char *line)
+// {
+// 	t_inside	inside;
+// 	int			i;
+
+// 	ft_bzero(&inside, sizeof(t_inside));
+// 	i = -1;
+// 	while (line[++i])
+// 	{
+// 		tick_inside_vars(&inside, line[i]);
+// 		if (line[i] == '|' && line[i + 1] == '|'
+// 			&& !inside.quotes && !inside.dquotes)
+// 			return (true);
+// 	}
+// 	return (false);
+// }
+
+static bool	unclosed_token(char *line)
 {
 	t_inside	inside;
+	bool		inpipe;
 	int			i;
 
 	ft_bzero(&inside, sizeof(t_inside));
+	inpipe = false;
 	i = -1;
 	while (line[++i])
 	{
-		tick_inside_vars(&inside, line[i]);
-		if (line[i] == '|' && line[i + 1] == '|'
-			&& !inside.quotes && !inside.dquotes)
+		if (line[i] == '|' && inpipe && !inside.dquotes && !inside.quotes)
 			return (true);
-	}
-	return (false);
-}
-
-static bool	unclosed_quotes_redirects(char *line)
-{
-	t_inside	inside;
-	int			i;
-
-	ft_bzero(&inside, sizeof(t_inside));
-	i = -1;
-	while (line[++i])
+		else if (line[i] == '|' && !inpipe && !inside.dquotes && !inside.quotes)
+			inpipe = true;
+		else if (line[i] != '|' && !ft_is_space(line[i])
+			&& inpipe && !inside.dquotes && !inside.quotes)
+			inpipe = false;
 		tick_inside_vars(&inside, line[i]);
-	return (inside.quotes || inside.dquotes);
-}
-
-static bool	contains_empty_str(char **str_chunks)
-{
-	int	i;
-
-	i = -1;
-	while (str_chunks[++i])
-	{
-		if (!*ft_skip_spaces(str_chunks[i]))
-			return (true);
 	}
-	return (false);
+	return (inside.quotes || inside.dquotes || inpipe);
 }
 
-bool	ms_line_iscomplete(char *line, char **string_chunks)
+// static bool	contains_empty_str(char *line)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (line[++i])
+// 	{
+// 		if (!*ft_skip_spaces(str_chunks[i]))
+// 			return (true);
+// 	}
+// 	return (false);
+// }
+
+bool	ms_line_iscomplete(char *line)
 {
 	char	*nline;
 
 	nline = ft_strtrim(line, " ");
 	if (!nline)
 		return (false);
-	if (!*nline || nline[0] == '|' || contains_mutlipipes(nline)
-		|| contains_empty_str(string_chunks))
-		return (perror("syntax error near unexpected token `|'"),
+	if (!*nline || nline[0] == '|'
+		|| nline[ft_strlen(nline) - 1] == '|'
+		|| unclosed_token(nline))
+	{
+		g_exit_status = UNEXPECTED_TOKEN;
+		return (perror("syntax error, unexpected token"),
 			free(nline), false);
-	if (nline[ft_strlen(nline) - 1] == '|' || unclosed_quotes_redirects(nline))
-		return (perror("syntax error near unexpected token `newline'"),
-			free(nline), false);
+	}
 	return (free(nline), true);
 }

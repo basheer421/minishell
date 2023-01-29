@@ -13,19 +13,38 @@
 #include "minishell.h"
 
 // only for testing, remove later
-static	void	show_chunks(t_cmd_chunk **chunks)
+static  void    show_chunks(t_cmd_chunk **chunks)
 {
-	int	i;
-	int	j;
-
-	i = -1;
-	while (chunks[++i])
-	{
-		printf("chunk %d\n", i);
-		j = -1;
-		while (chunks[i]->cmd[++j] != NULL)
-			printf("cmds:%s\n", chunks[i]->cmd[j]);
-	}
+    int     i;
+    int     j;
+    t_file  *file;
+    t_list  *node;
+    i = -1;
+    while (chunks[++i])
+    {
+        printf("chunk %d\n", i);
+        j = -1;
+        while (chunks[i]->cmd[++j] != NULL)
+            printf("cmds:%s\n", chunks[i]->cmd[j]);
+        node = (t_list *)chunks[i]->inputs;
+        printf("input redirects: \n");
+        while (node)
+        {
+            file = (t_file *)node->content;
+            if (file)
+                printf("%s %d\n", file->name, file->is_extra);
+            node = node->next;
+        }
+		node = (t_list *)chunks[i]->outputs;
+        printf("output redirects: \n");
+        while (node)
+        {
+            file = (t_file *)node->content;
+            if (file)
+                printf("%s %d\n", file->name, file->is_extra);
+            node = node->next;
+        }
+    }
 }
 
 static void	show_string_chunks(char **chunks)
@@ -52,20 +71,22 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	line = readline(prompt);
 	if (!line)	
 		ms_exit(NULL, 0, shell);
-	if (ms_line_isempty(line))
+	if (ms_line_isempty(ft_skip_spaces(line)))
 		return (free(line), 0);
 	add_history(line);
+	if (!ms_line_iscomplete(line))
+		return (ms_clean(NULL, NULL, line), 1);
 	ms_line_expand_vars(&line, shell);
+	if (ms_line_isempty(ft_skip_spaces(line)))
+		return (free(line), 0);
 	string_chunks = split_with_no_quotes(line, '|');
 	if (!string_chunks)
-		return (free(line), 1);
-	if (!ms_line_iscomplete(line, string_chunks))
-		return (ms_clean(NULL, string_chunks, line), UNEXPECTED_TOKEN);
+		return (ms_clean(NULL, NULL, line), 1);
 	pipe_count = ms_pipes_count(line);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
 		return (ms_clean(chunks, string_chunks, line), 0);
-	// show_chunks(chunks);
+	show_chunks(chunks);
 	cmd_is_builtin = false;
 	if (pipe_count == 0)
 		cmd_is_builtin = handle_builtins(chunks[0]->cmd, shell);
