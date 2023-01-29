@@ -49,7 +49,10 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	pipe_count = ms_pipes_count(line);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
+	{
+		printf("Parse error\n");
 		return (ft_split_destroy(string_chunks), 0);
+	}
 	cmd_is_builtin = false;
 	if (pipe_count == 0)
 		cmd_is_builtin = handle_builtins(chunks[0]->cmd, shell);

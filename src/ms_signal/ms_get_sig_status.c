@@ -23,7 +23,7 @@ int	ms_get_sig_status(int sig_no)
 	}
 	if (sig_no == SIGSEGV)
 	{
-		printf("Segmentation fault\n");
+		printf("Segmentation faultt\n");
 		return (139);
 	}
 	return (1);
