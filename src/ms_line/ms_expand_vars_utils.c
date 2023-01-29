@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_expand_vars_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:19:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/22 16:42:41 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:58:52 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ char	*value_at(char *line, int pos, t_ms *shell)
 
 	if (line[pos + 1] == '?')
 		return (ft_itoa(g_exit_status));
-		// return (ft_itoa(shell->error_code));
-		// put here the prev error code {$?}
 	var = ft_substr(line, pos + 1, ft_next_nonalnum(line, pos + 1) - pos - 1);
 	if (ht_contains(shell->env_vars, var))
 	{

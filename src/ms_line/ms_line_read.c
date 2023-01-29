@@ -28,6 +28,19 @@
 // 	}
 // }
 
+// static void	show_string_chunks(char **chunks)
+// {
+// 	int	i;
+// 	int	j;
+
+// 	i = -1;
+// 	while (chunks[++i])
+// 	{
+// 		printf("string %d\n", i);
+// 		printf("chunk:%s\n", chunks[i]);
+// 	}
+// }
+
 int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
@@ -43,16 +56,19 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 		return (free(line), 0);
 	add_history(line);
 	ms_line_expand_vars(&line, shell);
-	string_chunks = ms_pipes_divide(line);
+	string_chunks = split_with_no_quotes(line, '|');
 	if (!string_chunks)
 		return (free(line), 1);
+	if (!ms_line_iscomplete(line, string_chunks))
+		return (ms_clean(NULL, string_chunks, line), UNEXPECTED_TOKEN);
 	pipe_count = ms_pipes_count(line);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
 	{
 		printf("Parse error\n");
-		return (ft_split_destroy(string_chunks), 0);
+		return (ms_clean(chunks, string_chunks, line), 0);
 	}
+	// show_chunks(chunks);
 	cmd_is_builtin = false;
 	if (pipe_count == 0)
 		cmd_is_builtin = handle_builtins(chunks[0]->cmd, shell);

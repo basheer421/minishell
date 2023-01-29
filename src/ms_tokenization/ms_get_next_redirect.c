@@ -1,23 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_get_next_output.c                               :+:      :+:    :+:   */
+/*   ms_get_next_redirect.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/04 17:44:33 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 21:32:21 by bammar           ###   ########.fr       */
+/*   Created: 2023/01/03 16:17:25 by bammar            #+#    #+#             */
+/*   Updated: 2023/01/28 02:01:28 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-typedef struct s_inside
-{
-	bool	quotes;
-	bool	dquotes;
-}			t_inside;
-
 
 static int	end_pos(char *str, t_inside *inside)
 {
@@ -37,18 +30,26 @@ static int	end_pos(char *str, t_inside *inside)
 	return (i);
 }
 
-char	*ms_get_next_output(char **line_chunk)
+t_file	*ms_get_next_redirect(char **line_chunk, char type)
 {
-	char		*name;
 	int			len;
 	t_inside	inside;
+	t_file		*file;
+	char		*temp;
 
 	ft_bzero(&inside, sizeof(inside));
+	file = ft_malloc(sizeof(t_file));
 	*line_chunk = ft_skip_spaces(ft_skip_spaces(*line_chunk) + 1);
+	file->is_extra = **line_chunk == type;
+	*line_chunk += file->is_extra;
+	*line_chunk = ft_skip_spaces(*line_chunk);
 	len = end_pos(*line_chunk, &inside);
-	*line_chunk += inside.dquotes || inside.quotes;
-	name = ft_malloc(len + 1);
-	ft_strlcpy(name, *line_chunk, len + 1);
+	if (len == 0)
+		return (NULL);
+	*line_chunk += (inside.dquotes || inside.quotes);
+	file->name = ft_substr(file->name, 0, len);
+	temp = file->name;
+	file->name = ft_exclude_quotes(file->name);
 	*line_chunk += len + (inside.dquotes || inside.quotes);
-	return (name);
+	return (free(temp), file);
 }

@@ -24,6 +24,12 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 
+typedef struct s_inside
+{
+	int		quotes;
+	int		dquotes;
+}			t_inside;
+
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -65,6 +71,7 @@ int		ft_is_space(int c);
 char	*ft_skip_spaces(char *str);
 int		ft_index(const char *str, int c);
 int		ft_next_nonalnum(char *str, int start);
+char	*ft_exclude_quotes(char *str);
 
 typedef struct s_list
 {

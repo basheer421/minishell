@@ -19,6 +19,7 @@ SRCS	=	ft_isalpha.c	ft_isdigit.c	ft_isalnum.c	ft_isascii.c \
 			ft_itoa.c		ft_strmapi.c	ft_striteri.c	ft_putchar_fd.c \
 			ft_skip_spaces.c				ft_is_space.c	ft_index.c \
 			ft_putstr_fd.c	ft_putendl_fd.c	ft_putnbr_fd.c 	ft_split_destroy.c \
+			ft_exclude_quotes.c \
 			ft_printf.c		ft_printf_utils.c				ft_next_nonalnum.c \
 			get_next_line.c	get_next_line_utils.c \
 			ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c \
@@ -30,8 +31,6 @@ SRCS	=	ft_isalpha.c	ft_isdigit.c	ft_isalnum.c	ft_isascii.c \
 HEADER	=	../../include
 
 OBJS		= ${SRCS:.c=.o}
-
-BOBJS 		= ${BSRCS:.c=.o}
 
 NAME		= libft.a
 
@@ -49,7 +48,6 @@ all:		${NAME}
 
 clean:
 			/bin/rm -f ${OBJS}
-			/bin/rm -f ${BOBJS}
 
 fclean:		clean
 			/bin/rm -f ${NAME}

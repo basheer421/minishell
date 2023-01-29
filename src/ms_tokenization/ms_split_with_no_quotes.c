@@ -6,20 +6,11 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 21:18:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/20 15:36:17 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/28 01:16:04 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-typedef struct s_split
-{
-	char		*line;
-	char		c;
-	char		**content;
-	int			*positions;
-	size_t		content_size;
-}				t_split_vars;
 
 static size_t	get_length(char *line, char *start_pos, int next_c)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 22:39:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/18 14:58:52 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/28 01:51:49 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	is_separator(char s, char *sep)
 {
 	int	i;
-	
+
 	i = -1;
 	while (sep[++i])
 		if (s == sep[i])
@@ -38,7 +38,7 @@ static int	count_words(const char *s, char *c)
 		{
 			count++;
 			word_found = 0;
-		}	
+		}
 		else if (!is_separator(s[i], c))
 			word_found = 1;
 	}
@@ -61,7 +61,7 @@ static char	**create_list(int *count, const char *s, char *c)
 	if (!s)
 		return (0);
 	*count = count_words(s, c);
-	list = (char **) malloc((*count + 1) * sizeof(char **));
+	list = (char **)malloc((*count + 1) * sizeof(char **));
 	if (!list)
 		return (0);
 	return (list);
