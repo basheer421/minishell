@@ -13,39 +13,39 @@
 #include "minishell.h"
 
 // only for testing, remove later
-static  void    show_chunks(t_cmd_chunk **chunks)
-{
-    int     i;
-    int     j;
-    t_file  *file;
-    t_list  *node;
-    i = -1;
-    while (chunks[++i])
-    {
-        printf("chunk %d\n", i);
-        j = -1;
-        while (chunks[i]->cmd[++j] != NULL)
-            printf("cmds:%s\n", chunks[i]->cmd[j]);
-        node = (t_list *)chunks[i]->inputs;
-        printf("input redirects: \n");
-        while (node)
-        {
-            file = (t_file *)node->content;
-            if (file)
-                printf("%s %d\n", file->name, file->is_extra);
-            node = node->next;
-        }
-		node = (t_list *)chunks[i]->outputs;
-        printf("output redirects: \n");
-        while (node)
-        {
-            file = (t_file *)node->content;
-            if (file)
-                printf("%s %d\n", file->name, file->is_extra);
-            node = node->next;
-        }
-    }
-}
+// static  void    show_chunks(t_cmd_chunk **chunks)
+// {
+//     int     i;
+//     int     j;
+//     t_file  *file;
+//     t_list  *node;
+//     i = -1;
+//     while (chunks[++i])
+//     {
+//         printf("chunk %d\n", i);
+//         j = -1;
+//         while (chunks[i]->cmd[++j] != NULL)
+//             printf("cmds:%s\n", chunks[i]->cmd[j]);
+//         node = (t_list *)chunks[i]->inputs;
+//         printf("input redirects: \n");
+//         while (node)
+//         {
+//             file = (t_file *)node->content;
+//             if (file)
+//                 printf("%s %d\n", file->name, file->is_extra);
+//             node = node->next;
+//         }
+// 		node = (t_list *)chunks[i]->outputs;
+//         printf("output redirects: \n");
+//         while (node)
+//         {
+//             file = (t_file *)node->content;
+//             if (file)
+//                 printf("%s %d\n", file->name, file->is_extra);
+//             node = node->next;
+//         }
+//     }
+// }
 
 // static void	show_string_chunks(char **chunks)
 // {
@@ -85,10 +85,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	pipe_count = ms_pipes_count(line);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
-	{
-		printf("Parse error\n");
 		return (ms_clean(chunks, string_chunks, line), 0);
-	}
 	// show_chunks(chunks);
 	cmd_is_builtin = false;
 	if (pipe_count == 0)
