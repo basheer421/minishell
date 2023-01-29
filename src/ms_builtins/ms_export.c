@@ -40,7 +40,7 @@ static	char	**sort_lexical(t_ms *shell)
 	size_t		i;
 	size_t		j;
 	char		*temp;
-	char 		**keys;
+	char		**keys;
 
 	keys = dup_env_vars(shell);
 	i = -1;
@@ -111,7 +111,7 @@ int	ms_export(t_ms *shell, char **args, int arg_count)
 			if (args[i][0] == '=')
 			{
 				printf("export: \'%s\': not a valid identifier\n", args[i]);
-				return (EXIT_FAILURE);
+				// return (EXIT_FAILURE);
 			}
 			else
 				export_var(shell, args[i]);

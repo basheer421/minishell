@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/23 20:07:48 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/29 14:31:55 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static char	**create_envp(t_ms *shell)
 	t_node	*env;
 	size_t	i;
 	int		len;
-	int		shl_lvl;
 
 	envp = (char **)ft_malloc(sizeof(char *) * (shell->env_vars->size + 1));
 	env = *(shell->env_vars->array);
@@ -80,6 +79,7 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 	exit(err_code);
 }
 
+// check in PATH only if it doesnt contain a /, check dir
 t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell)
 {
 	char		*path_name;
@@ -89,6 +89,7 @@ t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell)
 	if (!cmd || !cmd[0])
 		exit_msg("", CMD_ERR, 127, cmd_info);
 	path_name = get_pathname(cmd[0], cmd_info->envp);
+	// only check if its an abs path if it has /s
 	if (!path_name && access(cmd[0], F_OK) == 0)
 		path_name = ft_strdup(cmd[0]);
 	else if (!path_name)

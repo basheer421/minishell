@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
+#    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/01/27 16:48:10 by bammar           ###   ########.fr        #
+#    Updated: 2023/01/29 14:37:50 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,10 +56,10 @@ FILES	=		src/minishell.c \
 
 CC		=	cc
 
-# CFLAGS	=	-Wall -Wextra -Werror -g -Ofast
-CFLAGS	=	-I/usr/local/opt/readline/include -Wall -Wextra -g -Ofast
+CFLAGS	=	-Wall -Wextra -Werror -g -Ofast -I/usr/local/opt/readline/include
+# CFLAGS	=	-Wall -Wextra -g -Ofast
 
-LINKS	=	-L/usr/local/opt/readline/lib -lreadline 
+LINKS	=	-lreadline -L/usr/local/opt/readline/lib
 
 OBJS	= $(FILES:.c=.o)
 
@@ -74,17 +74,14 @@ all: 		$(NAME)
 
 $(NAME):	$(OBJS)
 			${MAKE} -C src/libft
-#			${MAKE} -C src/pipex
 			$(CC) $(OBJS) $(CFLAGS) $(LIBFT) $(LINKS) -o $(NAME)
 
 clean:
 			${MAKE} -C src/libft clean
-#			${MAKE} -C src/pipex clean
 			/bin/rm -f $(OBJS)
 
 fclean:		clean
 			${MAKE} -C src/libft fclean
-#			${MAKE} -C src/pipex fclean
 			/bin/rm -f $(NAME)
 
 re:			fclean all

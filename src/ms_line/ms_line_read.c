@@ -47,18 +47,18 @@ static  void    show_chunks(t_cmd_chunk **chunks)
     }
 }
 
-static void	show_string_chunks(char **chunks)
-{
-	int	i;
-	int	j;
+// static void	show_string_chunks(char **chunks)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = -1;
-	while (chunks[++i])
-	{
-		printf("string %d\n", i);
-		printf("chunk:%s\n", chunks[i]);
-	}
-}
+// 	i = -1;
+// 	while (chunks[++i])
+// 	{
+// 		printf("string %d\n", i);
+// 		printf("chunk:%s\n", chunks[i]);
+// 	}
+// }
 
 int	ms_line_read(const char *prompt, t_ms *shell)
 {
@@ -69,7 +69,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	t_cmd_chunk		**chunks;
 
 	line = readline(prompt);
-	if (!line)	
+	if (!line)
 		ms_exit(NULL, 0, shell);
 	if (ms_line_isempty(ft_skip_spaces(line)))
 		return (free(line), 0);
@@ -85,8 +85,11 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	pipe_count = ms_pipes_count(line);
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
+	{
+		printf("Parse error\n");
 		return (ms_clean(chunks, string_chunks, line), 0);
-	show_chunks(chunks);
+	}
+	// show_chunks(chunks);
 	cmd_is_builtin = false;
 	if (pipe_count == 0)
 		cmd_is_builtin = handle_builtins(chunks[0]->cmd, shell);
