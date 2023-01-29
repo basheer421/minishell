@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/24 02:41:11 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/29 15:06:28 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct s_file
 {
 	char	*name;
 	bool	is_extra;
-						
 }				t_file;
 
 /**

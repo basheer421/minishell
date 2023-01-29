@@ -68,9 +68,9 @@ int	redirect_input(t_list *inputs, int p[])
 		else
 		{
 			// is last node and redirection failed
-			if (!node->next && !redirect_file(input_file->name, p[0], O_RDONLY));
+			if (!node->next && !redirect_file(input_file->name, p[0], O_RDONLY))
 				return (close(temp_pipe[0]), close(temp_pipe[1]), 0);
-			else if (node->next && !redirect_file(input_file->name, temp_pipe[0], O_RDONLY));
+			else if (node->next && !redirect_file(input_file->name, temp_pipe[0], O_RDONLY))
 				return (close(temp_pipe[0]), close(temp_pipe[1]), 0);
 		}
 		node = node->next;
