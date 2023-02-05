@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/28 01:50:41 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/29 15:16:21 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_file
 {
 	char	*name;
 	bool	is_extra;
-}			t_file;
+}				t_file;
 
 /**
  * @brief This is a command chunk, should be like this
@@ -266,6 +266,8 @@ int			ms_unset(t_ms *shell, char **strs, int arg_count);
 int			ms_command_chunk_execute(t_cmd_chunk *command_chunk,
 				t_ms *shell);
 int			pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
+int			redirect_input(t_list *inputs, int p[]);
+int			redirect_output(t_list *outputs, int p[]);
 t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
 void		check_cmd_minishell(char *cmd_name, char **envp);

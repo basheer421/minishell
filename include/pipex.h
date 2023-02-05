@@ -37,7 +37,7 @@ typedef struct s_alloced
 
 char		**parse_path(char **envp);
 char		*get_pathname(char *cmd_name, char **envp);
-int			redirect_file(char *file_name, int pipe_end, int open_flags);
+// int			redirect_file(char *file_name, int pipe_end, int open_flags);
 void		free_strs(char **args, char *str, int index);
 int			check_err(char *func_name, int ret_value);
 void		exit_msg(char *head, char *err_msg, int err_code, t_alloced *mem);

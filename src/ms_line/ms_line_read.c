@@ -13,20 +13,40 @@
 #include "minishell.h"
 
 // only for testing, remove later
-// static	void	show_chunks(t_cmd_chunk **chunks)
-// {
-// 	int	i;
-// 	int	j;
+static	void	show_chunks(t_cmd_chunk **chunks)
+{
+	int		i;
+	int		j;
+	t_file	*file;
+	t_list	*node;
 
-// 	i = -1;
-// 	while (chunks[++i])
-// 	{
-// 		printf("chunk %d\n", i);
-// 		j = -1;
-// 		while (chunks[i]->cmd[++j] != NULL)
-// 			printf("cmds:%s\n", chunks[i]->cmd[j]);
-// 	}
-// }
+	i = -1;
+	while (chunks[++i])
+	{
+		printf("chunk %d\n", i);
+		j = -1;
+		while (chunks[i]->cmd[++j] != NULL)
+			printf("cmds:%s\n", chunks[i]->cmd[j]);
+		node = (t_list *)chunks[i]->inputs;
+		printf("input redirects: \n");
+		while (node)
+		{
+			file = (t_file *)node->content;
+			if (file)
+				printf("%s %d\n", file->name, file->is_extra);
+			node = node->next;
+		}
+		node = (t_list *)chunks[i]->outputs;
+		printf("output redirects: \n");
+		while (node)
+		{
+			file = (t_file *)node->content;
+			if (file)
+				printf("%s %d\n", file->name, file->is_extra);
+			node = node->next;
+		}
+	}
+}
 
 // static void	show_string_chunks(char **chunks)
 // {
