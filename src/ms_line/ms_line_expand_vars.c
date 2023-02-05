@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/28 01:12:55 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/29 21:05:49 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	tick_inside_vars(t_inside2 *inside, char c, char next)
 		inside->quotes = !inside->quotes;
 	else if (c == '\"' && !inside->quotes)
 		inside->dquotes = !inside->dquotes;
-	else if (c == '$' && !inside->quotes && (ft_isalnum(next) || next == '?'))
+	else if (c == '$' && !inside->quotes && (ft_isalpha(next) || next == '?'))
 		inside->var = true;
 	else if (!ft_isalnum(c) || c != '?')
 		inside->var = false;

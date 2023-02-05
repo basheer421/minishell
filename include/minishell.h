@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/29 15:16:21 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/05 18:09:26 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ bool		ms_line_isempty(char *line);
  * @param line user input 
  * @return boolean, true if it's a valid complete line, false other wise.
  */
-bool		ms_line_iscomplete(char *line, char **string_chunks);
+bool		ms_line_iscomplete(char *line);
 
 // Helper functions for split_with_no_quotes
 char		*chrskip(char *s, char c);
@@ -176,6 +176,14 @@ char		*value_at(char *line, int pos, t_ms *shell);
  * @return pipes count 
  */
 size_t		ms_pipes_count(char *line);
+
+/**
+ * @brief checks and prints the errors
+ * 
+ * @param line_chunks
+ * @return boolean
+ */
+bool		ms_chunks_iscomplete(char **chunks);
 
 /**
  * @brief Tells if the given line has input.
@@ -266,8 +274,8 @@ int			ms_unset(t_ms *shell, char **strs, int arg_count);
 int			ms_command_chunk_execute(t_cmd_chunk *command_chunk,
 				t_ms *shell);
 int			pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
-int			redirect_input(t_list *inputs, int p[]);
-int			redirect_output(t_list *outputs, int p[]);
+int			redirect_input(t_list *inputs, int p[], bool is_first);
+int			redirect_output(t_list *outputs, int p[], bool is_last);
 t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
 void		check_cmd_minishell(char *cmd_name, char **envp);

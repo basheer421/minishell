@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/24 21:16:09 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/05 16:46:57 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	main(int argc, char **argv, char **envp)
 	while (shell->error_code != -1)
 	{
 		signal(SIGINT, ms_sigint_handler);
-		signal(SIGQUIT, ms_sigquit_handler);
-		ms_line_read("\033[0;35mminishell\033[0m$ ", shell);
+		signal(SIGQUIT, SIG_IGN);
+		ms_line_read("\033[0;35mpsh\033[0m$ ", shell);
 	}
 	(void)argc;
 	(void)argv;

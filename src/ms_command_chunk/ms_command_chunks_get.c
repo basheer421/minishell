@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/28 01:59:19 by bammar           ###   ########.fr       */
+/*   Updated: 2023/01/29 20:20:56 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,30 @@ static bool	is_err(t_cmd_chunk **chunks, int reach, char *line)
 	nline = ft_strtrim(line, " ");
 	if (!chunks[reach]->cmd && !chunks[reach]->inputs->content
 		&& !chunks[reach]->outputs->content)
-	{
-		if (nline[ft_strlen(nline) - 1] == '<'
-			|| nline[ft_strlen(nline) - 1] == '>')
-		{
-			if (chunks[reach + 1] == NULL)
-				return (perror("syntax error near unexpected token `newline'"),
-					free(nline), false);
-			return (perror("syntax error near unexpected token `|'"),
-				free(nline), false);
-		}
-		return (free(nline), false);
-	}
-	return (free(nline), true);
+		return (free(nline), true);
+	return (free(nline), false);
 }
 
-static void	add_back(t_list **lst, t_list *new_node)
+static bool	add_back(t_cmd_chunk *chunk, char type, t_file *new_node)
 {
 	t_list	*temp;
+	t_list	**lst;
 
-	ft_lstadd_back(lst, new_node);
+	if (!new_node)
+		return (false);
+	lst = NULL;
+	if (type == '>')
+		lst = &(chunk->outputs);
+	else if (type == '<')
+		lst = &(chunk->inputs);
+	ft_lstadd_back(lst, ft_lstnew(new_node));
 	if ((*lst)->content == NULL)
 	{
 		temp = (*lst);
 		(*lst) = (*lst)->next;
 		free(temp);
 	}
+	return (true);
 }
 
 t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
@@ -95,14 +93,14 @@ t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
 		while (string_head && *ft_skip_spaces(string_head))
 		{
 			token = token_type(string_head);
-			if (token == '<' || token == '>')
-				add_back(&(chunks[i]->inputs),
-					ft_lstnew(
-						ms_get_next_redirect(&string_head, token)));
+			if (token == -1 && is_err(chunks, i, string_head))
+				return (NULL);
 			else if (token == 2)
 				chunks[i]->cmd = ms_get_fullcmd(&string_head);
-			else if (token == -1 && is_err(chunks, i, string_head))
-				return (NULL);
+			else if (token == '<' || token == '>')
+				if (!add_back(chunks[i], token,
+						ms_get_next_redirect(&string_head, token)))
+							return (NULL);
 		}
 	}
 	return (chunks);

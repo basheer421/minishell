@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_signal_handler.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 22:02:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/24 00:18:29 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/01/29 16:07:32 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	ms_sigint_handler(int sig)
 	// }
 }
 
-void	ms_sigquit_handler(int sig)
-{
-	if (sig == SIGQUIT)
-		;
-}
+// void	ms_sigquit_handler(int sig)
+// {
+// 	if (sig == SIGQUIT)
+// 		;
+// }

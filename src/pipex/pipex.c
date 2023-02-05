@@ -64,19 +64,22 @@ int	pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell)
 	pids = (int *)malloc(sizeof(int) * (cmd_count));
 	pipe_no = 0;
 	i = -1;
-	dup2(STDIN_FILENO, pipes[0][0]);					// will remove later
+	// dup2(STDIN_FILENO, pipes[0][0]);					// will remove later
+	// printf("\ncmd_count = %d\n", cmd_count);
 	while (chunks[++i])
 	{
-		// if (!redirect_input(chunks[i]->inputs, pipes[pipe_no]) || \
-		// 	!redirect_output(chunks[i]->outputs, pipes[!pipe_no]))
-		// 	return (1);
 		check_err("pipe", pipe(pipes[!pipe_no]));
-		if (!chunks[i + 1])								// will remove later
-			dup2(STDOUT_FILENO, pipes[!pipe_no][1]); 	// because chunks->input and chunks->output will be used instead
+		if (!redirect_input(chunks[i]->inputs, pipes[pipe_no], (i == 0)) || \
+			!redirect_output(chunks[i]->outputs, pipes[!pipe_no], (i == cmd_count - 1)))
+		{
+			printf("redirect error\n");
+			return (1); // redirect error 
+		}
+		// if (!chunks[i + 1])								// will remove later
+		// 	dup2(STDOUT_FILENO, pipes[!pipe_no][1]); 	// because chunks->input and chunks->output will be used instead
 		pids[i] = exec_cmd(pipes[pipe_no], pipes[!pipe_no], chunks[i]->cmd, shell);
 		pipe_no = !pipe_no;
 	}
 	close(pipes[pipe_no][0]);
-	// (void)shell;
 	return (wait_cmds(pids, i));
 }
