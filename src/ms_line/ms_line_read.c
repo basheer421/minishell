@@ -99,6 +99,5 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 		cmd_is_builtin = handle_builtins(chunks[0]->cmd, shell);
 	if (pipe_count > 0 || !cmd_is_builtin)
 		g_exit_status = pipex(chunks, pipe_count + 1, shell);
-	printf("new prompt!!\n");
 	return (ms_clean(chunks, string_chunks, line), 0);
 }

@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/29 14:38:32 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:44:10 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_ms	*ms_init(char **envp)
 {
 	t_ms	*shell;
 
-	if (!envp || !*envp)
+	if (!envp || !*envp) 
 		return (NULL);
 	shell = ft_calloc(1, sizeof(t_ms));
 	if (!shell)

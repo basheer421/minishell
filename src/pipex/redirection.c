@@ -35,10 +35,7 @@ static int	open_file(char *file_name, int open_flags)
 
 	file = open(file_name, open_flags, 0777);
 	if (file == -1)
-	{
-		printf("open_file: oh naurr\n");
 		perror(file_name);
-	}
 	return (file);
 }
 
@@ -127,7 +124,6 @@ void	redirect_input(t_cmd_chunk **chunks)
 	}
 }
 
-// 
 void redirect_output(t_cmd_chunk **chunks)
 {
 	int		i;
@@ -159,12 +155,10 @@ void redirect_output(t_cmd_chunk **chunks)
 						open_flags = O_WRONLY | O_APPEND | O_CREAT;
 					chunks[i]->out_redir_fd = open_file(output_file->name, open_flags);
 					if (chunks[i]->out_redir_fd == -1)
-					{
-						printf("err from openfile for out \n");
 						break;
-					}
 					if (node->next)
 						close(chunks[i]->out_redir_fd);
+					node = node->next;
 				}
 			}
 		}

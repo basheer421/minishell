@@ -70,14 +70,13 @@ int	pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell)
 	redirect_output(chunks);
 	while (chunks[++i])
 	{
-		check_err("pipee", pipe(pipes[!pipe_no]));
-		printf("in redir = %d\n", chunks[i]->in_redir_fd);
+		check_err("pipe", pipe(pipes[!pipe_no]));
 		if (chunks[i]->in_redir_fd >= 0)
 		{
 			dup2(chunks[i]->in_redir_fd, pipes[pipe_no][0]);
-			// close(chunks[i]->in_redir_fd);
+			if (chunks[i]->in_redir_fd != 0)
+				close(chunks[i]->in_redir_fd);
 		}
-		printf("out redir = %d\n", chunks[i]->out_redir_fd);
 		if (chunks[i]->out_redir_fd >= 0)
 		{
 			dup2(chunks[i]->out_redir_fd, pipes[!pipe_no][1]);
