@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+// REMOVE
 // go thru all inputs first
 // while (go through all heredocs)
 // if you see a heredoc

@@ -65,9 +65,6 @@ int	pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell)
 	pipe_no = 0;
 	i = -1;
 	// dup2(STDIN_FILENO, pipes[0][0]);					// will remove later
-
-	redirect_input(chunks);
-	redirect_output(chunks);
 	while (chunks[++i])
 	{
 		check_err("pipe", pipe(pipes[!pipe_no]));

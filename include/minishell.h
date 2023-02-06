@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/06 17:53:09 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/06 23:53:06 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ int			ms_errno_check(char *err_header, int ret_value);
 void		ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
 // void	handle_builtins(char **strs, t_ms *shell);
 bool		handle_builtins(char **cmd, t_ms *shell);
-
+bool		exec_builtin_solo(t_cmd_chunk *chunk, t_ms *shell);
 /**
  * @brief Runs the echo command on the given strings
  * 

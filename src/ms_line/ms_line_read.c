@@ -13,45 +13,48 @@
 #include "minishell.h"
 
 // only for testing, remove later
-static  void    show_chunks(t_cmd_chunk **chunks)
-{
-	int		i;
-	int		j;
-	t_file	*file;
-	t_list	*node;
+// static  void    show_chunks(t_cmd_chunk **chunks)
+// {
+// 	int		i;
+// 	int		j;
+// 	t_file	*file;
+// 	t_list	*node;
 
-	i = -1;
-	printf("\n");
-	while (chunks[++i])
-	{
-		printf("chunk %d\n", i);
-		j = -1;
-		while (chunks[i]->cmd[++j] != NULL)
-			printf("cmds:%s\n", chunks[i]->cmd[j]);
-		node = (t_list *)chunks[i]->inputs;
-		printf("input redirects: \n");
-		while (node)
-		{
-			file = (t_file *)node->content;
-			if (file)
-				printf("%s %d\n", file->name, file->is_extra);
-			else
-				printf("end\n");
-			node = node->next;
-		}
-		node = (t_list *)chunks[i]->outputs;
-		printf("output redirects: \n");
-		while (node)
-		{
-			file = (t_file *)node->content;
-			if (file)
-				printf("%s %d\n", file->name, file->is_extra);
-			else
-				printf("end\n");
-			node = node->next;
-		}
-	}
-}
+// 	i = -1;
+// 	printf("\n");
+
+// 	while (chunks[++i])
+// 	{
+// 		printf("chunk %d\n", i);
+// 		j = -1;
+// 		if (chunks[i]->cmd)
+// 			while (chunks[i]->cmd[++j] != NULL)
+// 				printf("cmds:%s\n", chunks[i]->cmd[j]);
+// 		node = (t_list *)chunks[i]->inputs;
+// 		printf("input redirects: \n");
+// 		while (node)
+// 		{
+// 			file = (t_file *)node->content;
+// 			if (file)
+// 				printf("%s %d\n", file->name, file->is_extra);
+// 			else
+// 				printf("end\n");
+// 			node = node->next;
+// 		}
+// 		node = (t_list *)chunks[i]->outputs;
+// 		printf("output redirects: \n");
+// 		while (node)
+// 		{
+// 			file = (t_file *)node->content;
+// 			if (file)
+// 				printf("%s %d\n", file->name, file->is_extra);
+// 			else
+// 				printf("end\n");
+// 			node = node->next;
+// 		}
+// 	}
+// 	printf("--------------\n\n");
+// }
 
 // static void	show_string_chunks(char **chunks)
 // {
@@ -93,10 +96,11 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (!chunks)
 		return (ms_clean(chunks, string_chunks, line), 0);
 	// show_chunks(chunks);
+	redirect_input(chunks);
+	redirect_output(chunks);
 	cmd_is_builtin = false;
-	// if there's only 1 cmd and its a builtin, it should be run in parent proc
-	if (pipe_count == 0)
-		cmd_is_builtin = handle_builtins(chunks[0]->cmd, shell);
+	if (pipe_count == 0 && chunks[0]->in_redir_fd >= 0)		
+		cmd_is_builtin = exec_builtin_solo(chunks[0], shell);
 	if (pipe_count > 0 || !cmd_is_builtin)
 		g_exit_status = pipex(chunks, pipe_count + 1, shell);
 	return (ms_clean(chunks, string_chunks, line), 0);
