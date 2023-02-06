@@ -35,7 +35,10 @@ static int	open_file(char *file_name, int open_flags)
 
 	file = open(file_name, open_flags, 0777);
 	if (file == -1)
+	{
+		printf("open_file: oh naurr\n");
 		perror(file_name);
+	}
 	return (file);
 }
 
@@ -80,20 +83,20 @@ int	get_heredoc(char *delim)
 void	redirect_input(t_cmd_chunk **chunks)
 {
 	int		i;
-	int		temp;
 	t_list	*node;
 	t_file	*input_file;
 
 	i = -1;
-	chunks[i]->in_redir_fd = -1;
 	while (chunks[++i])
 	{
+		chunks[i]->in_redir_fd = -1;
 		node = chunks[i]->inputs;
 		if (node && !node->content) // there are no redirs for this cmd_chunk
 		{
 			if (i == 0) // if this is the first cmd 
 				chunks[i]->in_redir_fd = STDIN_FILENO;
-			chunks[i]->in_redir_fd = -2;
+			else
+				chunks[i]->in_redir_fd = -2;
 		}
 		else
 		{
@@ -135,6 +138,7 @@ void redirect_output(t_cmd_chunk **chunks)
 	i = -1;
 	while (chunks[++i])
 	{
+		chunks[i]->out_redir_fd = -1;
 		if (chunks[i]->in_redir_fd != -1)
 		{
 			node = chunks[i]->outputs;
@@ -142,7 +146,8 @@ void redirect_output(t_cmd_chunk **chunks)
 			{
 				if (!chunks[i + 1]) // is the last command
 					chunks[i]->out_redir_fd = STDOUT_FILENO;
-				chunks[i]->out_redir_fd = -2; // no output redirs for this cmd_chunk
+				else
+					chunks[i]->out_redir_fd = -2; // no output redirs for this cmd_chunk
 			}
 			else
 			{
@@ -154,12 +159,14 @@ void redirect_output(t_cmd_chunk **chunks)
 						open_flags = O_WRONLY | O_APPEND | O_CREAT;
 					chunks[i]->out_redir_fd = open_file(output_file->name, open_flags);
 					if (chunks[i]->out_redir_fd == -1)
+					{
+						printf("err from openfile for out \n");
 						break;
+					}
 					if (node->next)
 						close(chunks[i]->out_redir_fd);
 				}
 			}
 		}
 	}
-
 }

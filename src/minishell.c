@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/05 16:46:57 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/06 18:49:27 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = ms_init(envp);
 	if (!shell)
 		return (1);
-	while (shell->error_code != -1)
+	while (1)
 	{
 		signal(SIGINT, ms_sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
@@ -29,6 +29,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	(void)argc;
 	(void)argv;
+	printf("we done\n");
 	ms_destroy(shell);
 	clear_history();
 	return (0);
