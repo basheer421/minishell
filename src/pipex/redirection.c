@@ -12,139 +12,6 @@
 
 #include "minishell.h"
 
-void	get_heredoc(char *delim, int pipe[])
-{
-	char	*line;
-	int		d_len;
-
-	d_len = ft_strlen(delim);
-	write(STDOUT_FILENO, "> ", 2);
-	line = get_next_line(STDIN_FILENO);
-	while (line)
-	{
-		if (!ft_strncmp(line, delim, d_len) && !line[d_len + 1])
-			break ;
-		write(pipe[1], line, ft_strlen(line));
-		write(STDOUT_FILENO, "> ", 2);
-		free(line);
-		line = get_next_line(STDIN_FILENO);
-	}
-	free(line);
-}
-
-int	redirect_file(char *file_name, int pipe_end, int open_flags)
-{
-	int	file;
-
-	file = open(file_name, open_flags, 0777);
-	if (file == -1)
-	{
-		perror(file_name);
-		close(file);
-		return (0);
-	}
-	dup2(file, pipe_end);
-	close(file);
-	return (1);
-}
-
-int	redirect_input(t_list *inputs, int p[], bool is_first)
-{
-	// if (is_first)
-	// {
-	// 	printf("is first\n");
-	// 	dup2(STDIN_FILENO, p[0]);
-	// }
-	// (void)inputs;
-	// (void)p;
-	// return (1);
-
-	int		i;
-	int		temp_pipe[2];
-	t_list	*node;
-	t_file	*input_file;
-
-	i = -1;
-	node = inputs;
-	check_err("pipe", pipe(temp_pipe));
-	if (!node->content && is_first)
-	{
-		printf("is first\n");
-		dup2(STDIN_FILENO, p[0]);
-	}
-	else
-		while (node)
-		{
-			input_file = (t_file *)node->content;
-			if (!input_file)
-				break ;
-			if (input_file->is_extra && !node->next)// is a heredoc
-			{
-				printf("heredoc to real pipe\n");
-				get_heredoc(input_file->name, p);
-			}
-			else if (input_file->is_extra)
-			{
-				printf("heredoc to fake pipe\n");
-				get_heredoc(input_file->name, temp_pipe);
-			}
-			else
-			{
-				// is last node and redirection failed
-				if (!node->next && !redirect_file(input_file->name, p[0], O_RDONLY))
-					return (close(temp_pipe[0]), close(temp_pipe[1]), 0);
-				else if (node->next && !redirect_file(input_file->name, temp_pipe[0], O_RDONLY))
-					return (close(temp_pipe[0]), close(temp_pipe[1]), 0);
-			}
-			node = node->next;
-		}
-	return (close(temp_pipe[0]), close(temp_pipe[1]), 1);
-}
-
-int	redirect_output(t_list *outputs, int p[], bool is_last)
-{
-	// if (is_last)
-	// {
-	// 	printf("is last\n");
-	// 	dup2(STDOUT_FILENO, p[1]);
-	// }
-	// (void)outputs;
-	// (void)p;
-	// return (1);
-
-	int		i;
-	int		temp_pipe[2];
-	int		open_flags;
-	t_list	*node;
-	t_file	*output_file;
-
-	i = -1;
-	node = outputs;
-	check_err("pipe", pipe(temp_pipe));
-	if (!node->content && is_last) // no o/p redirects and is the last cmd
-	{
-		printf("is last\n\n");
-		dup2(STDOUT_FILENO, p[1]);
-	}
-	else
-		while (node)
-		{
-			output_file = (t_file *)node->content;
-			if (!output_file)
-				break ;
-			if (output_file->is_extra)
-				open_flags = O_WRONLY | O_APPEND | O_CREAT;
-			else
-				open_flags = O_WRONLY | O_TRUNC | O_CREAT;
-			if (!node->next && !redirect_file(output_file->name, p[1], open_flags))
-				return (close(temp_pipe[0]), close(temp_pipe[1]), 0);
-			else if (node->next && !redirect_file(output_file->name, temp_pipe[1], open_flags))
-					return (close(temp_pipe[0]), close(temp_pipe[1]), 0);
-			node = node->next;
-		}
-	return (close(temp_pipe[0]), close(temp_pipe[1]), 1);
-}
-
 // go thru all inputs first
 // while (go through all heredocs)
 // if you see a heredoc
@@ -158,3 +25,141 @@ int	redirect_output(t_list *outputs, int p[], bool is_last)
 //			finalfd = open(file)
 //		else if its not the last input
 //			tempfd = open(file), close tempfd
+
+// if there is no redir, then run the cmd normally with the prev pipe,
+// if there is a redir but the file is invalid, then dont run the cmd
+
+static int	open_file(char *file_name, int open_flags)
+{
+	int	file;
+
+	file = open(file_name, open_flags, 0777);
+	if (file == -1)
+		perror(file_name);
+	return (file);
+}
+
+// creates a pipe, writes to it whatever is read from STDIN till delim is input, 
+// returns the read end of the pipe and closes the write end
+int	get_heredoc(char *delim)
+{
+	int		p[2];
+	char	*line;
+	int		d_len;
+	int		pid;
+	int		status;
+
+	check_err("pipe", pipe(p));
+	pid = check_err("fork", fork());
+	if (pid == 0)
+	{
+		d_len = ft_strlen(delim);
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line(STDIN_FILENO);
+		while (line)
+		{
+			if (!ft_strncmp(line, delim, d_len) && !line[d_len + 1])
+				break ;
+			write(p[1], line, ft_strlen(line));
+			write(STDOUT_FILENO, "> ", 2);
+			free(line);
+			line = get_next_line(STDIN_FILENO);
+		}
+		free(line);
+		close(p[1]);
+		close(p[0]);
+	}
+	close(p[1]);
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status))
+		g_exit_status = ms_get_sig_status(WTERMSIG(status));
+	return (p[0]);
+}
+
+// chunks[i]->in_redir_fd is set to -2 if there is no input redir, -1 if the given redir was an invalid file
+void	redirect_input(t_cmd_chunk **chunks)
+{
+	int		i;
+	int		temp;
+	t_list	*node;
+	t_file	*input_file;
+
+	i = -1;
+	chunks[i]->in_redir_fd = -1;
+	while (chunks[++i])
+	{
+		node = chunks[i]->inputs;
+		if (node && !node->content) // there are no redirs for this cmd_chunk
+		{
+			if (i == 0) // if this is the first cmd 
+				chunks[i]->in_redir_fd = STDIN_FILENO;
+			chunks[i]->in_redir_fd = -2;
+		}
+		else
+		{
+			while (node) // check heredocs
+			{
+				input_file = (t_file *)node->content;
+				if (input_file->is_extra && !node->next) // is a heredoc and is the last input
+					chunks[i]->in_redir_fd = get_heredoc(input_file->name);
+				else if (input_file->is_extra)
+					check_err("close", close(get_heredoc(input_file->name)));
+				node = node->next;
+			}
+			node = chunks[i]->inputs;
+			while (node) // check input files
+			{
+				input_file = (t_file *)node->content;
+				if (!input_file->is_extra)
+				{
+					chunks[i]->in_redir_fd = open_file(input_file->name, O_RDONLY);
+					if (chunks[i]->in_redir_fd == -1)
+						break;
+					if (node->next)
+						close(chunks[i]->in_redir_fd);
+				}
+				node = node->next;
+			}
+		}
+	}
+}
+
+// 
+void redirect_output(t_cmd_chunk **chunks)
+{
+	int		i;
+	int		open_flags;
+	t_list	*node;
+	t_file	*output_file;
+
+	i = -1;
+	while (chunks[++i])
+	{
+		if (chunks[i]->in_redir_fd != -1)
+		{
+			node = chunks[i]->outputs;
+			if (node && !node->content)
+			{
+				if (!chunks[i + 1]) // is the last command
+					chunks[i]->out_redir_fd = STDOUT_FILENO;
+				chunks[i]->out_redir_fd = -2; // no output redirs for this cmd_chunk
+			}
+			else
+			{
+				while (node)
+				{
+					output_file = (t_file *)node->content;
+					open_flags = O_WRONLY | O_TRUNC | O_CREAT;
+					if (output_file->is_extra)
+						open_flags = O_WRONLY | O_APPEND | O_CREAT;
+					chunks[i]->out_redir_fd = open_file(output_file->name, open_flags);
+					if (chunks[i]->out_redir_fd == -1)
+						break;
+					if (node->next)
+						close(chunks[i]->out_redir_fd);
+				}
+			}
+		}
+	}
+
+}

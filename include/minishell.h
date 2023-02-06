@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/05 18:09:26 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/06 17:53:09 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ typedef struct s_cmd_chunk
 	char	**cmd;
 	t_list	*inputs;
 	t_list	*outputs;
+	int		in_redir_fd;
+	int		out_redir_fd;
 }			t_cmd_chunk;
 
 /**
@@ -274,8 +276,12 @@ int			ms_unset(t_ms *shell, char **strs, int arg_count);
 int			ms_command_chunk_execute(t_cmd_chunk *command_chunk,
 				t_ms *shell);
 int			pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
-int			redirect_input(t_list *inputs, int p[], bool is_first);
-int			redirect_output(t_list *outputs, int p[], bool is_last);
+
+// int			redirect_input(t_list *inputs, int p[], bool is_first);
+// int			redirect_output(t_list *outputs, int p[], bool is_last);
+void		redirect_input(t_cmd_chunk **chunks);
+void 		redirect_output(t_cmd_chunk **chunks);
+
 t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
 void		check_cmd_minishell(char *cmd_name, char **envp);
