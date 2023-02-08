@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+int	open_file(char *file_name, int open_flags)
+{
+	int	file;
+
+	file = open(file_name, open_flags, 0777);
+	if (file == -1)
+		perror(file_name);
+	return (file);
+}
+
 // should i make it handle negative numbers and INTMAX/INTMIN?
 void	check_cmd_minishell(char *cmd_name, char **envp)
 {

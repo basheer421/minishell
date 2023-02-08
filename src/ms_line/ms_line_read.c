@@ -96,7 +96,13 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (!chunks)
 		return (ms_clean(chunks, string_chunks, line), 0);
 	// show_chunks(chunks);
+	
 	redirect_input(chunks);
+	if (g_exit_status == 130)
+	{
+		printf("130 ret value\n");
+		return (ms_clean(chunks, string_chunks, line), 0);
+	}
 	redirect_output(chunks);
 	cmd_is_builtin = false;
 	if (pipe_count == 0 && chunks[0]->in_redir_fd >= 0)		

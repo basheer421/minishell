@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/06 23:53:06 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/09 02:42:28 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,26 +266,16 @@ int			ms_env(t_ms *shell);
 int			ms_export(t_ms *shell, char **args, int arg_count);
 int			ms_unset(t_ms *shell, char **strs, int arg_count);
 
-/**
- * @brief Executes a command chunk.
- * Make sure everything is done in new temporary shell.
- * 
- * @param command_chunk 
- * @return {int} Error code
- */
-int			ms_command_chunk_execute(t_cmd_chunk *command_chunk,
-				t_ms *shell);
+
 int			pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
-
-// int			redirect_input(t_list *inputs, int p[], bool is_first);
-// int			redirect_output(t_list *outputs, int p[], bool is_last);
-void		redirect_input(t_cmd_chunk **chunks);
-void 		redirect_output(t_cmd_chunk **chunks);
-
 t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
 void		check_cmd_minishell(char *cmd_name, char **envp);
 int			exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell);
+
+void		redirect_input(t_cmd_chunk **chunks);
+void 		redirect_output(t_cmd_chunk **chunks);
+int			open_file(char *file_name, int open_flags);
 
 void		ms_sigint_handler(int n);
 void		ms_sigquit_handler(int sig);

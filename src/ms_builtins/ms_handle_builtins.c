@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	count_args(char **cmd)
+static int	count_args(char **cmd)
 {
 	int	arg_count;
 
@@ -58,20 +58,24 @@ bool	exec_builtin_solo(t_cmd_chunk *chunk, t_ms *shell)
 	int	og_stdout;
 	int	cmd_is_builtin;
 
-	og_stdin = dup(STDIN_FILENO);
-	og_stdout = dup(STDOUT_FILENO);
-	if (chunk->in_redir_fd > 0)
-	{
-		dup2(chunk->in_redir_fd, STDIN_FILENO);
-		close(chunk->in_redir_fd);
-	}
-	if (chunk->out_redir_fd > 1)
-	{
-		dup2(chunk->out_redir_fd, STDOUT_FILENO);
-		close(chunk->out_redir_fd);
-	}
+	// og_stdin = dup(STDIN_FILENO);
+	// og_stdout = dup(STDOUT_FILENO);
+	// printf("og_stdin = %d\n", og_stdin);
+	// printf("og_stdout = %d\n", og_stdout);
+	// if (chunk->in_redir_fd > 0)
+	// {
+	// 	dup2(chunk->in_redir_fd, STDIN_FILENO);
+	// 	close(chunk->in_redir_fd);
+	// }
+	// if (chunk->out_redir_fd > 1)
+	// {
+	// 	dup2(chunk->out_redir_fd, STDOUT_FILENO);
+	// 	close(chunk->out_redir_fd);
+	// }
 	cmd_is_builtin = handle_builtins(chunk->cmd, shell);
-	dup2(og_stdin, STDIN_FILENO);
-	dup2(og_stdout, STDOUT_FILENO);
+	// dup2(STDIN_FILENO, STDIN_FILENO);
+	// dup2(STDOUT_FILENO, STDOUT_FILENO);
+	// close(og_stdin);
+	// close(og_stdout);
 	return (cmd_is_builtin);
 }
