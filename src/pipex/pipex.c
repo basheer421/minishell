@@ -19,13 +19,13 @@ int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
 
 	pid = check_err("fork", fork());
 	if (pid == 0)
-	{	
+	{
 		close(p2[0]);
 		dup2(p1[0], STDIN_FILENO);
 		close(p1[0]);
 		dup2(p2[1], STDOUT_FILENO);
 		close(p2[1]);
-		if (handle_builtins(cmd, shell))
+		if (handle_builtins(cmd, shell, get_builtin_no(cmd)))
 			exit(g_exit_status);
 		c = check_cmd_path(p1, p2, cmd, shell);
 		check_err("execve", execve(c->path, cmd, c->envp));
@@ -51,53 +51,42 @@ int	wait_cmds(int *pids, int count)
 	return (1);
 }
 
-// for now uses stdin for first command and stdout for last command
-int	pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell)
+static void	redirect_to_pipes(t_cmd_chunk *cmd, int pipes[2][2], int pipe_no)
+{
+	// printf("in = %d, out = %d\n", cmd->in_redir_fd, cmd->out_redir_fd);
+	if (cmd->in_redir_fd >= 0)
+	{
+		dup2(cmd->in_redir_fd, pipes[pipe_no][0]);
+		if (cmd->in_redir_fd != 0)
+			close(cmd->in_redir_fd);
+	}
+	if (cmd->out_redir_fd >= 0)
+	{
+		dup2(cmd->out_redir_fd, pipes[!pipe_no][1]);
+		if (cmd->out_redir_fd != 1)
+			close(cmd->out_redir_fd);
+	}
+}
+
+int	pipex(t_cmd_chunk **cmds, int cmd_count, t_ms *shell)
 {	
-	int		pipes[2][2];
+	int		p[2][2];
 	int		*pids;
 	int		i;
 	int		pipe_no;
 
-	check_err("pipe", pipe(pipes[0]));
-	close(pipes[0][1]);
+	check_err("pipe", pipe(p[0]));
+	close(p[0][1]);
 	pids = (int *)malloc(sizeof(int) * (cmd_count));
 	pipe_no = 0;
 	i = -1;
-	// dup2(STDIN_FILENO, pipes[0][0]);					// will remove later
-	while (chunks[++i])
+	while (cmds[++i])
 	{
-		check_err("pipe", pipe(pipes[!pipe_no]));
-		printf("cmd %d: in = %d, out = %d\n", i, chunks[i]->in_redir_fd, chunks[i]->out_redir_fd);
-		if (chunks[i]->in_redir_fd >= 0)
-		{
-			dup2(chunks[i]->in_redir_fd, pipes[pipe_no][0]);
-			if (chunks[i]->in_redir_fd != 0)
-				close(chunks[i]->in_redir_fd);
-			// printf("reading from %d\n", chunks[i]->in_redir_fd);
-		}
-		if (chunks[i]->out_redir_fd >= 0)
-		{
-			dup2(chunks[i]->out_redir_fd, pipes[!pipe_no][1]);
-			if (chunks[i]->out_redir_fd != 1)
-				close(chunks[i]->out_redir_fd);
-			// printf("writing to %d\n", chunks[i]->out_redir_fd);
-		}
-		
-		// if (!redirect_input(chunks[i]->inputs, pipes[pipe_no], (i == 0)) || \
-		// 	!redirect_output(chunks[i]->outputs, pipes[!pipe_no], (i == cmd_count - 1)))
-		// {
-		// 	printf("redirect error\n");
-		// 	return (1); // redirect error 
-		// }
-		
-		// if (!chunks[i + 1])								// will remove later
-			// dup2(STDOUT_FILENO, pipes[!pipe_no][1]); 	// because chunks->input and chunks->output will be used instead
-		
-		pids[i] = exec_cmd(pipes[pipe_no], pipes[!pipe_no], chunks[i]->cmd, shell);
+		check_err("pipe", pipe(p[!pipe_no]));
+		redirect_to_pipes(cmds[i], p, pipe_no);
+		pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], cmds[i]->cmd, shell);
 		pipe_no = !pipe_no;
 	}
-	close(pipes[pipe_no][0]);
+	close(p[pipe_no][0]);
 	return (wait_cmds(pids, i));
-	return (0);
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void open_op_files(t_cmd_chunk *cmd)
+static void	open_op_files(t_cmd_chunk *cmd)
 {
 	t_list	*node;
 	t_file	*output_file;
@@ -27,14 +27,14 @@ static void open_op_files(t_cmd_chunk *cmd)
 			open_flags = O_WRONLY | O_APPEND | O_CREAT;
 		cmd->out_redir_fd = open_file(output_file->name, open_flags);
 		if (cmd->out_redir_fd == -1)
-			break;
+			break ;
 		if (node->next)
 			close(cmd->out_redir_fd);
 		node = node->next;
 	}
 }
 
-void redirect_output(t_cmd_chunk **cmds)
+void	redirect_output(t_cmd_chunk **cmds)
 {
 	int		i;
 

@@ -69,12 +69,28 @@
 // 	}
 // }
 
+// will move to another file later
+int	exec_cmds(t_cmd_chunk **chunks, int pipe_count, t_ms *shell)
+{
+	bool			cmd_is_builtin;
+
+	redirect_input(chunks);
+	if (g_exit_status == 130)
+		return (ms_clean(chunks, NULL, NULL), 0);
+	redirect_output(chunks);
+	cmd_is_builtin = false;
+	if (pipe_count == 0)
+		cmd_is_builtin = exec_builtin_solo(chunks[0], shell);
+	if (pipe_count > 0 || !cmd_is_builtin)
+		g_exit_status = pipex(chunks, pipe_count + 1, shell);
+	return (ms_clean(chunks, NULL, NULL), 0);
+}
+
 int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
 	char			**string_chunks;
 	size_t			pipe_count;
-	bool			cmd_is_builtin;
 	t_cmd_chunk		**chunks;
 
 	line = readline(prompt);
@@ -95,19 +111,6 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
 	if (!chunks)
 		return (ms_clean(chunks, string_chunks, line), 0);
-	// show_chunks(chunks);
-	
-	redirect_input(chunks);
-	if (g_exit_status == 130)
-	{
-		printf("130 ret value\n");
-		return (ms_clean(chunks, string_chunks, line), 0);
-	}
-	redirect_output(chunks);
-	cmd_is_builtin = false;
-	if (pipe_count == 0 && chunks[0]->in_redir_fd >= 0)		
-		cmd_is_builtin = exec_builtin_solo(chunks[0], shell);
-	if (pipe_count > 0 || !cmd_is_builtin)
-		g_exit_status = pipex(chunks, pipe_count + 1, shell);
-	return (ms_clean(chunks, string_chunks, line), 0);
+	ms_clean(NULL, string_chunks, line);
+	return (exec_cmds(chunks, pipe_count, shell));
 }

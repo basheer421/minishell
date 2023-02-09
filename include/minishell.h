@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/09 02:42:28 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/09 22:05:47 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,8 +249,8 @@ t_cmd_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
  */
 int			ms_errno_check(char *err_header, int ret_value);
 void		ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
-// void	handle_builtins(char **strs, t_ms *shell);
-bool		handle_builtins(char **cmd, t_ms *shell);
+int			get_builtin_no(char **cmd);
+int			handle_builtins(char **cmd, t_ms *shell, int builtin_no);
 bool		exec_builtin_solo(t_cmd_chunk *chunk, t_ms *shell);
 /**
  * @brief Runs the echo command on the given strings
@@ -266,7 +266,6 @@ int			ms_env(t_ms *shell);
 int			ms_export(t_ms *shell, char **args, int arg_count);
 int			ms_unset(t_ms *shell, char **strs, int arg_count);
 
-
 int			pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
 t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
 t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
@@ -274,11 +273,12 @@ void		check_cmd_minishell(char *cmd_name, char **envp);
 int			exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell);
 
 void		redirect_input(t_cmd_chunk **chunks);
-void 		redirect_output(t_cmd_chunk **chunks);
+void		redirect_output(t_cmd_chunk **chunks);
 int			open_file(char *file_name, int open_flags);
 
 void		ms_sigint_handler(int n);
 void		ms_sigquit_handler(int sig);
+void		ms_hdoc_sigint_handler(int sig);
 int			ms_get_sig_status(int sig_no);
 void		ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line);
 

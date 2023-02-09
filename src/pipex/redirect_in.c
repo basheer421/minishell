@@ -17,18 +17,21 @@ static void	run_heredoc(int p[], char *delim)
 	char	*line;
 	int		d_len;
 
+	signal(SIGINT, ms_hdoc_sigint_handler);
 	d_len = ft_strlen(delim);
 	write(STDOUT_FILENO, "> ", 2);
 	line = get_next_line(STDIN_FILENO);
 	while (line)
 	{
+		// try removing g_exit_status check here and see if it still works, most likely will still work
 		if (g_exit_status == 130 || \
 			(!ft_strncmp(line, delim, d_len) && !line[d_len + 1]))
 			break ;
 		write(p[1], line, ft_strlen(line));
 		write(STDOUT_FILENO, "> ", 2);
 		free(line);
-		line = get_next_line(STDIN_FILENO);
+		if (g_exit_status != 130)
+			line = get_next_line(STDIN_FILENO);
 	}
 	free(line);
 	close(p[1]);
@@ -77,7 +80,7 @@ static void	check_heredocs(t_cmd_chunk *cmd)
 	}
 }
 
-static void		check_input_files(t_cmd_chunk *cmd)
+static	void	check_input_files(t_cmd_chunk *cmd)
 {
 	t_list	*node;
 	t_file	*input_file;
@@ -93,8 +96,8 @@ static void		check_input_files(t_cmd_chunk *cmd)
 			if (infile_fd == -1)
 			{
 				g_exit_status = 1;
-				break;
-			}	
+				break ;
+			}
 			if (!node->next)
 				cmd->in_redir_fd = infile_fd;
 			else
@@ -116,7 +119,7 @@ void	redirect_input(t_cmd_chunk **cmds)
 	while (cmds[++i])
 	{
 		cmds[i]->in_redir_fd = -1;
-		if (cmds[i]->inputs && !(cmds[i]->inputs->content)) // there are no redirs for this cmd_chunk
+		if (cmds[i]->inputs && !(cmds[i]->inputs->content)) // if there are no redirs for this cmd_chunk
 			cmds[i]->in_redir_fd = -2;
 		else
 			check_heredocs(cmds[i]);

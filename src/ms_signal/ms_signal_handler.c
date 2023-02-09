@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 22:02:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/09 01:10:38 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/09 22:12:11 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ms_sigint_handler(int sig)
 {
-	bool is_parent_proc;
+	bool	is_parent_proc;
 
 	is_parent_proc = (waitpid(-1, NULL, WNOHANG) == -1);
 	if (is_parent_proc)
@@ -28,8 +28,19 @@ void	ms_sigint_handler(int sig)
 	(void)sig;
 }
 
-// void	ms_sigquit_handler(int sig)
-// {
-// 	if (sig == SIGQUIT)
-// 		;
-// }
+void	ms_hdoc_sigint_handler(int sig)
+{
+	bool	is_parent_proc;
+
+	is_parent_proc = (waitpid(-1, NULL, WNOHANG) == -1);
+	if (is_parent_proc)
+	{
+		close(0);
+		write(2, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		// rl_redisplay();
+	}
+	g_exit_status = 130;
+	(void)sig;
+}

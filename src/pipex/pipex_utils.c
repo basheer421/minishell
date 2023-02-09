@@ -16,7 +16,7 @@ int	open_file(char *file_name, int open_flags)
 {
 	int	file;
 
-	file = open(file_name, open_flags, 0777);
+	file = open(file_name, open_flags, 0644);
 	if (file == -1)
 		perror(file_name);
 	return (file);
@@ -40,9 +40,9 @@ void	check_cmd_minishell(char *cmd_name, char **envp)
 			{
 				new_shlvl = ft_itoa(ft_atoi(ft_strchr(envp[i], '=') + 1) + 1);
 				free(envp[i]);
-				envp[i] = ft_strjoin("SHLVL=", new_shlvl);			
+				envp[i] = ft_strjoin("SHLVL=", new_shlvl);
 				free(new_shlvl);
-				break;
+				break ;
 			}
 		}
 	}
@@ -87,7 +87,6 @@ char	*get_pathname(char *cmd_name, char **envp)
 	paths = parse_path(envp);
 	if (!paths)
 		return (NULL);
-		// exit_msg(cmd_name, NO_FILE_ERR, 127, )
 	file_name = ft_strjoin("/", cmd_name);
 	i = -1;
 	while (paths[++i])
