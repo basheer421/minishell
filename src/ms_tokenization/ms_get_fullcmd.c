@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:28:19 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/26 22:19:40 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/07 01:36:08 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,44 @@ static void	remove_quotes(char **arr)
 	}
 }
 
+static int	tick_inside_vars(t_inside *inside, char c)
+{
+	if (c == '\'' && !inside->dquotes)
+		inside->quotes = !inside->quotes;
+	else if (c == '\"' && !inside->quotes)
+		inside->dquotes = !inside->dquotes;
+	return (1);
+}
+
+static bool	is_end(char c, t_inside *inside)
+{
+	if (!inside->dquotes && !inside->dquotes && (c == 0 || c == '>'
+			|| c == '<'))
+		return (true);
+	return (false);
+}
+
 char	**ms_get_fullcmd(char **line_piece)
 {
-	char	**cmds;
-	char	*temp;
-	int		cmds_length;
+	char		**cmds;
+	char		*temp;
+	int			cmds_length;
+	t_inside	inside;
 
 	if (!*line_piece || !**line_piece)
 		return (0);
 	cmds_length = 0;
-	while (line_piece[0][cmds_length] && line_piece[0][cmds_length] != '>'
-		&& line_piece[0][cmds_length] != '<'
-		&& *ft_skip_spaces(&(line_piece[0][cmds_length])))
-		cmds_length++;
+	ft_bzero(&inside, sizeof(t_inside));
+	while (!is_end(line_piece[0][cmds_length], &inside)
+		&& *ft_skip_spaces(line_piece[0]))
+		cmds_length += tick_inside_vars(&inside,
+				line_piece[0][cmds_length]);
 	if (!ms_contains_cmd(line_piece[0]) || cmds_length == 0)
 		return (NULL);
 	temp = ft_substr(*line_piece, 0, cmds_length);
-	if (!temp)
-		return (NULL);
 	cmds = split_with_no_quotes(temp, ' ');
 	if (!cmds)
 		return (free(temp), NULL);
 	*line_piece += cmds_length;
-	remove_quotes(cmds);
-	return (free(temp), cmds);
+	return (free(temp), remove_quotes(cmds), cmds);
 }
