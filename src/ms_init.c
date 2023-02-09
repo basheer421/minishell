@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/06 20:44:10 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/09 13:53:02 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static bool	fill_ht(char **envp, t_ht *table)
 	int		i;
 	char	**splited_env_value;
 
+	if (!envp)
+		return (true);
 	i = -1;
 	while (envp[++i])
 	{
@@ -74,8 +76,6 @@ t_ms	*ms_init(char **envp)
 {
 	t_ms	*shell;
 
-	if (!envp || !*envp) 
-		return (NULL);
 	shell = ft_calloc(1, sizeof(t_ms));
 	if (!shell)
 		return (NULL);
