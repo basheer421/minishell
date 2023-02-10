@@ -80,7 +80,7 @@ static void	display_sorted_env(t_ms *shell)
 	free(sorted_keys);
 }
 
-void	export_var(t_ms *shell, char *env_var)
+static void	export_var(t_ms *shell, char *env_var)
 {
 	char	*value_address;
 
@@ -100,22 +100,25 @@ void	export_var(t_ms *shell, char *env_var)
 int	ms_export(t_ms *shell, char **args, int arg_count)
 {
 	int	i;
+	int	exit_status;
 
 	i = 0;
+	exit_status = EXIT_SUCCESS;
 	if (arg_count == 1)
 		display_sorted_env(shell);
 	else
 	{
 		while (args[++i])
 		{
-			if (args[i][0] == '=')
+			if (!args[i][0] || (!ft_isalpha(args[i][0]) && args[i][0] != '_'))
 			{
 				printf("export: \'%s\': not a valid identifier\n", args[i]);
-				// return (EXIT_FAILURE);
+				if (!args[i + 1])
+					exit_status = EXIT_FAILURE;
 			}
 			else
 				export_var(shell, args[i]);
 		}
 	}
-	return (EXIT_SUCCESS);
+	return (exit_status);
 }

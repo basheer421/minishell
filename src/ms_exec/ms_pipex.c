@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
+static int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
 {
 	int			pid;
 	t_alloced	*c;
@@ -27,7 +27,7 @@ int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
 		close(p2[1]);
 		if (handle_builtins(cmd, shell, get_builtin_no(cmd)))
 			exit(g_exit_status);
-		c = check_cmd_path(p1, p2, cmd, shell);
+		c = ms_get_path(p1, p2, cmd, shell);
 		check_err("execve", execve(c->path, cmd, c->envp));
 	}
 	close(p1[0]);
@@ -35,7 +35,7 @@ int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
 	return (pid);
 }
 
-int	wait_cmds(int *pids, int count)
+static int	wait_cmds(int *pids, int count)
 {
 	int	i;
 	int	status;
@@ -68,7 +68,7 @@ static void	redirect_to_pipes(t_cmd_chunk *cmd, int pipes[2][2], int pipe_no)
 	}
 }
 
-int	pipex(t_cmd_chunk **cmds, int cmd_count, t_ms *shell)
+int	ms_pipex(t_cmd_chunk **cmds, int cmd_count, t_ms *shell)
 {	
 	int		p[2][2];
 	int		*pids;

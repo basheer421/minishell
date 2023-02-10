@@ -12,80 +12,6 @@
 
 #include "minishell.h"
 
-// only for testing, remove later
-// static  void    show_chunks(t_cmd_chunk **chunks)
-// {
-// 	int		i;
-// 	int		j;
-// 	t_file	*file;
-// 	t_list	*node;
-
-// 	i = -1;
-// 	printf("\n");
-
-// 	while (chunks[++i])
-// 	{
-// 		printf("chunk %d\n", i);
-// 		j = -1;
-// 		if (chunks[i]->cmd)
-// 			while (chunks[i]->cmd[++j] != NULL)
-// 				printf("cmds:%s\n", chunks[i]->cmd[j]);
-// 		node = (t_list *)chunks[i]->inputs;
-// 		printf("input redirects: \n");
-// 		while (node)
-// 		{
-// 			file = (t_file *)node->content;
-// 			if (file)
-// 				printf("%s %d\n", file->name, file->is_extra);
-// 			else
-// 				printf("end\n");
-// 			node = node->next;
-// 		}
-// 		node = (t_list *)chunks[i]->outputs;
-// 		printf("output redirects: \n");
-// 		while (node)
-// 		{
-// 			file = (t_file *)node->content;
-// 			if (file)
-// 				printf("%s %d\n", file->name, file->is_extra);
-// 			else
-// 				printf("end\n");
-// 			node = node->next;
-// 		}
-// 	}
-// 	printf("--------------\n\n");
-// }
-
-// static void	show_string_chunks(char **chunks)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = -1;
-// 	while (chunks[++i])
-// 	{
-// 		printf("string %d\n", i);
-// 		printf("chunk:%s\n", chunks[i]);
-// 	}
-// }
-
-// will move to another file later
-int	exec_cmds(t_cmd_chunk **chunks, int pipe_count, t_ms *shell)
-{
-	bool			cmd_is_builtin;
-
-	redirect_input(chunks);
-	if (g_exit_status == 130)
-		return (ms_clean(chunks, NULL, NULL), 0);
-	redirect_output(chunks);
-	cmd_is_builtin = false;
-	if (pipe_count == 0)
-		cmd_is_builtin = exec_builtin_solo(chunks[0], shell);
-	if (pipe_count > 0 || !cmd_is_builtin)
-		g_exit_status = pipex(chunks, pipe_count + 1, shell);
-	return (ms_clean(chunks, NULL, NULL), 0);
-}
-
 int	ms_line_read(const char *prompt, t_ms *shell)
 {
 	char			*line;
@@ -112,5 +38,5 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (!chunks)
 		return (ms_clean(chunks, string_chunks, line), 0);
 	ms_clean(NULL, string_chunks, line);
-	return (exec_cmds(chunks, pipe_count, shell));
+	return (ms_exec_cmds(chunks, pipe_count, shell));
 }

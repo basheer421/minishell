@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/09 22:05:47 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/10 21:04:27 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include "ht.h"
 # include "libft.h"
-# include "pipex.h"
+# include <stdio.h>
+# include <stdlib.h>
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -23,14 +24,17 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <string.h>
 # include <sys/param.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 # define UNEXPECTED_TOKEN 258
+# define CMD_ERR			"command not found"
+# define PERMISSION_ERR		"permission denied"
+# define IS_A_DIR_ERR		"Is a directory"
 
 extern int	g_exit_status;
 
@@ -38,7 +42,6 @@ extern int	g_exit_status;
  * @brief Stores a hash map of environment variables,
  *  and stores the current dir.
  * 	Note that current_dir is malloced and should be freed.
- *
  */
 typedef struct s_ms
 {
@@ -76,7 +79,6 @@ typedef struct s_cmd_chunk
  * @brief struct type for parsing
  * ; dquotes is for double quotes.
 */
-
 typedef struct s_inside2
 {
 	bool	quotes;
@@ -84,6 +86,7 @@ typedef struct s_inside2
 	bool	var;
 	char	*value;
 }			t_inside2;
+
 // helper for split
 typedef struct s_split
 {
@@ -93,6 +96,7 @@ typedef struct s_split
 	int		*positions;
 	size_t	content_size;
 }			t_split_vars;
+
 // helper for split
 typedef struct s_split_postions
 {
@@ -101,6 +105,14 @@ typedef struct s_split_postions
 	bool	inside_quotes;
 	bool	inside_dquotes;
 }			t_split_postions;
+
+// allocated memory and open fds for execution
+typedef struct s_alloced
+{
+	int		pipes[2][2];
+	char	*path;
+	char	**envp;
+}	t_alloced;
 
 /**
  * @brief Reads the environment variables and stores them inside a struct.
@@ -238,27 +250,21 @@ char		**ms_get_fullcmd(char **line_piece);
  */
 t_cmd_chunk	**ms_command_chunks_get(char **line_pieces, size_t amount);
 
-/**
- * @brief Checks if a function returned an error and if so displays appropriate
- *			error message
- * 
- * @param err_header Name of the function being called, to be used in error 
- * 						message
- * @param ret_value Return value of the function called 
- * @return ret_value
- */
+// error check/handle functions 
+int			check_err(char *func_name, int ret_value);
 int			ms_errno_check(char *err_header, int ret_value);
+int			get_exit_status(int err);
+void		exit_msg(char *head, char *err_msg, int err_code, t_alloced *mem);
+
+// cleanup
 void		ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
+
+// builtins
 int			get_builtin_no(char **cmd);
 int			handle_builtins(char **cmd, t_ms *shell, int builtin_no);
 bool		exec_builtin_solo(t_cmd_chunk *chunk, t_ms *shell);
-/**
- * @brief Runs the echo command on the given strings
- * 
- * @param strs array of strings to be output on the screen
- * @param n_flag if set to true echo will not output a trailing newline
- */
-int			ms_echo(char **strs, bool n_flag);
+
+int			ms_echo(char **strs);
 int			ms_pwd(void);
 int			ms_cd(t_ms *shell, char **path, int arg_count);
 int			ms_exit(char **args, int arg_count, t_ms *shell);
@@ -266,15 +272,18 @@ int			ms_env(t_ms *shell);
 int			ms_export(t_ms *shell, char **args, int arg_count);
 int			ms_unset(t_ms *shell, char **strs, int arg_count);
 
-int			pipex(t_cmd_chunk **chunks, int cmd_count, t_ms *shell);
-t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
-t_alloced	*check_cmd_path(int p1[], int p2[], char **cmd, t_ms *shell);
-void		check_cmd_minishell(char *cmd_name, char **envp);
-int			exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell);
+// execution controller function
+int			ms_exec_cmds(t_cmd_chunk **chunks, int pipe_count, t_ms *shell);
+
+// pipes 
+int			ms_pipex(t_cmd_chunk **cmds, int cmd_count, t_ms *shell);
+t_alloced	*ms_get_path(int p1[], int p2[], char **cmd, t_ms *shell);
+int			open_file(char *file_name, int open_flags);
+int			is_regular_file(const char *path);
+char		*get_pathname(char *cmd_name, char **envp);
 
 void		redirect_input(t_cmd_chunk **chunks);
 void		redirect_output(t_cmd_chunk **chunks);
-int			open_file(char *file_name, int open_flags);
 
 void		ms_sigint_handler(int n);
 void		ms_sigquit_handler(int sig);

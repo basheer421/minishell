@@ -52,8 +52,7 @@ int	handle_builtins(char **cmd, t_ms *shell, int builtin_no)
 	if (cmd && cmd[0])
 	{
 		if (builtin_no == 1)
-			g_exit_status = ms_echo(cmd, (cmd[1] && \
-							ft_strncmp(cmd[1], "-n", 2) == 0));
+			g_exit_status = ms_echo(cmd);
 		else if (builtin_no == 2)
 			g_exit_status = ms_pwd();
 		else if (builtin_no == 3)

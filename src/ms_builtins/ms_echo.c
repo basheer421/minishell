@@ -12,20 +12,46 @@
 
 #include "minishell.h"
 
-int	ms_echo(char **strs, bool n_flag)
+bool	is_n_flag(char *arg)
 {
 	int	i;
 
+	if (!arg)
+		return (false);
+	i = 0;
+	if (arg[0] != '-')
+		return (false);
+	while (arg[++i])
+		if (arg[i] != 'n')
+			return (false);
+	return (true);
+}
+
+/**
+ * @brief Runs the echo command on the given strings
+ * @param strs array of strings to be output on the screen
+ */
+int	ms_echo(char **strs)
+{
+	int	i;
+	int	n_flag;
+
+	i = 0;
+	n_flag = false;
 	if (!strs)
-		exit(0);
-	i = 1;
-	if (n_flag)
-		i = 2;
+		return (EXIT_FAILURE);
+	while (strs[++i])
+	{
+		if (!is_n_flag(strs[i]))
+			break;
+		n_flag = true;
+	}
 	if (strs[i])
+	{
 		ft_printf("%s", strs[i]);
-	if (strs[i])
 		while (strs[++i])
 			ft_printf(" %s", strs[i]);
+	}
 	if (!n_flag)
 		ft_printf("\n");
 	return (EXIT_SUCCESS);
