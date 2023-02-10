@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_line_expand_vars.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/06 18:48:31 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/10 22:43:31 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static void	tick_inside_vars(t_inside2 *inside, char c, char next)
 		inside->dquotes = !inside->dquotes;
 	else if (c == '$' && !inside->quotes && (ft_isalpha(next) || next == '?'))
 		inside->var = true;
-	else if (!ft_isalnum(c) || c != '?')
-		inside->var = false;
 }
 
 static int	len_with_expand(char *line, t_ms *shell)
@@ -44,6 +42,7 @@ static int	len_with_expand(char *line, t_ms *shell)
 				exit(EXIT_FAILURE);
 			total += ft_strlen(value);
 			free(value);
+			inside.var = false;
 			i = get_next_index(line, i) - 1;
 		}
 		else
@@ -60,7 +59,7 @@ static char	*var_init(t_inside2 *inside, char **line, t_ms *shell, int *c_count)
 	inside->quotes = 0;
 	inside->value = NULL;
 	inside->var = 0;
-	nline = ft_malloc(len_with_expand(*line, shell) + 1);
+	nline = ft_malloc(len_with_expand(*line, shell) + 1, 1);
 	*c_count = 0;
 	return (nline);
 }
@@ -83,6 +82,7 @@ void	ms_line_expand_vars(char **line, t_ms *shell)
 			ft_memcpy(nline + c_count, inside.value, ft_strlen(inside.value));
 			c_count += ft_strlen(inside.value);
 			free(inside.value);
+			inside.var = false;
 			i = get_next_index(*line, i) - 1;
 		}
 		else
