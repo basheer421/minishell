@@ -78,15 +78,15 @@ bool	exec_builtin_solo(t_cmd_chunk *chunk, t_ms *shell)
 	builtin_no = get_builtin_no(chunk->cmd);
 	if (builtin_no == 0)
 		return (false);
-	og_stdin = dup(STDIN_FILENO);
-	og_stdout = dup(STDOUT_FILENO);
 	if (chunk->in_redir_fd > 0)
 	{
+		og_stdin = dup(STDIN_FILENO);
 		dup2(chunk->in_redir_fd, STDIN_FILENO);
 		close(chunk->in_redir_fd);
 	}
 	if (chunk->out_redir_fd > 1)
 	{
+		og_stdout = dup(STDOUT_FILENO);
 		dup2(chunk->out_redir_fd, STDOUT_FILENO);
 		close(chunk->out_redir_fd);
 	}
