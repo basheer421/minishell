@@ -44,7 +44,8 @@ static int	wait_cmds(int *pids, int count)
 
 	i = -1;
 	while (++i < count)
-		waitpid(pids[i], &status, 0);
+		if (pids[i] != -1)
+			waitpid(pids[i], &status, 0);
 	free(pids);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -86,7 +87,10 @@ int	ms_pipex(t_cmd_chunk **cmds, int cmd_count, t_ms *shell)
 	{
 		check_err("pipe", pipe(p[!pipe_no]));
 		redirect_to_pipes(cmds[i], p, pipe_no);
-		pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], cmds[i]->cmd, shell);
+		if (cmds[i]->in_redir_fd != -1 && cmds[i]->out_redir_fd != -1)
+			pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], cmds[i]->cmd, shell);
+		else
+			pids[i] = -1;
 		pipe_no = !pipe_no;
 	}
 	close(p[pipe_no][0]);
