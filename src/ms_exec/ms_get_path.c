@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/10 20:14:54 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/11 13:45:55 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_alloced	*ms_get_path(int p1[], int p2[], char **cmd, t_ms *shell)
 
 	cmd_info = set_alloc(p1, p2, shell);
 	if (!cmd || !cmd[0])
-		exit_msg("", CMD_ERR, 127, cmd_info);
+		exit_msg(NULL, NULL, 0, cmd_info);
 	path_name = NULL;
 	if (ft_strchr(cmd[0], '/'))
 	{

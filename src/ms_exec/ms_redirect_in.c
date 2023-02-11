@@ -18,6 +18,7 @@ static void	run_heredoc(int p[], char *delim)
 	int		d_len;
 
 	signal(SIGINT, ms_hdoc_sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 	d_len = ft_strlen(delim);
 	write(STDOUT_FILENO, "> ", 2);
 	line = get_next_line(STDIN_FILENO);
@@ -123,7 +124,7 @@ void	redirect_input(t_cmd_chunk **cmds)
 			cmds[i]->in_redir_fd = -2;
 		else
 			check_heredocs(cmds[i]);
-	}	
+	}
 	i = -1;
 	while (cmds[++i])
 		check_input_files(cmds[i]);

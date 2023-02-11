@@ -27,7 +27,10 @@ static void	open_op_files(t_cmd_chunk *cmd)
 			open_flags = O_WRONLY | O_APPEND | O_CREAT;
 		cmd->out_redir_fd = open_file(output_file->name, open_flags);
 		if (cmd->out_redir_fd == -1)
+		{
+			g_exit_status = 1;
 			break ;
+		}
 		if (node->next)
 			close(cmd->out_redir_fd);
 		node = node->next;
@@ -49,7 +52,7 @@ void	redirect_output(t_cmd_chunk **cmds)
 				if (!cmds[i + 1]) // is the last command
 					cmds[i]->out_redir_fd = STDOUT_FILENO;
 				else
-					cmds[i]->out_redir_fd = -2; // no output redirs for this cmd_chunk
+					cmds[i]->out_redir_fd = -2;
 			}
 			else
 				open_op_files(cmds[i]);

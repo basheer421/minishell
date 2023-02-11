@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_line_expand_vars.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/10 22:43:31 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/11 13:37:56 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static char	*var_init(t_inside2 *inside, char **line, t_ms *shell, int *c_count)
 	inside->quotes = 0;
 	inside->value = NULL;
 	inside->var = 0;
-	nline = ft_malloc(len_with_expand(*line, shell) + 1, 1);
+	nline = ft_malloc(len_with_expand(*line, shell) + 1);
 	*c_count = 0;
 	return (nline);
 }

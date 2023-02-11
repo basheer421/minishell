@@ -21,7 +21,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 
 	line = readline(prompt);
 	if (!line)
-		ms_exit(NULL, 0, shell);
+		ms_exit(NULL, 1, shell);
 	if (ms_line_isempty(ft_skip_spaces(line)))
 		return (free(line), 0);
 	add_history(line);

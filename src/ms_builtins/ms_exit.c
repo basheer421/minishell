@@ -31,17 +31,21 @@ int	ms_exit(char **args, int arg_count, t_ms *shell)
 
 	printf("exit\n");
 	exit_status = 0;
+	printf("g_exit_status = %d, arg_count = %d\n", g_exit_status, arg_count);
 	if (args && args[1])
 	{
 		if (is_invalid_exit_status(args[1]))
 		{
 			printf("exit: numeric argument required\n");
-			exit(2);
+			exit_status = 2;
 		}
-		exit_status = ft_atoi(args[1]);
+		else
+			exit_status = ft_atoi(args[1]);
 	}
 	else if (arg_count == 1)
+	{
 		exit_status = g_exit_status;
+	}
 	else if (arg_count > 2)
 	{
 		printf("exit: too many arguments\n");

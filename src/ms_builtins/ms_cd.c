@@ -22,6 +22,7 @@ static	char	*set_new_dir(t_ms *sh, int arg_count, char **path)
 		if (!new_dir)
 			printf("cd: HOME not set\n");
 	}
+	// else if (path[1])
 	else
 		new_dir = path[1];
 	return (new_dir);

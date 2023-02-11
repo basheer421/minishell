@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_line_clean.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:31:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/01/27 19:48:48 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/11 14:17:14 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ void	ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line)
 			ft_split_destroy(chunks[i]->cmd);
 			ft_lstclear(&(chunks[i]->inputs), t_file_destroy);
 			ft_lstclear(&(chunks[i]->outputs), t_file_destroy);
+			if (chunks[i]->in_redir_fd > 0)
+				close (chunks[i]->in_redir_fd);
+			if (chunks[i]->out_redir_fd > 1)
+				close (chunks[i]->out_redir_fd);
 			free(chunks[i]);
 		}
 		free(chunks);

@@ -71,10 +71,13 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 	int	i;
 
 	i = -1;
-	write(STDERR_FILENO, heading, ft_strlen(heading));
-	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, err_msg, ft_strlen(err_msg));
-	write(STDERR_FILENO, "\n", 1);
+	if (heading && err_msg)
+	{
+		write(STDERR_FILENO, heading, ft_strlen(heading));
+		write(STDERR_FILENO, ": ", 2);
+		write(STDERR_FILENO, err_msg, ft_strlen(err_msg));
+		write(STDERR_FILENO, "\n", 1);
+	}
 	if (mem)
 	{
 		while (++i < 2)

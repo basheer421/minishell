@@ -15,16 +15,10 @@
 int	ms_get_sig_status(int sig_no)
 {
 	if (sig_no == SIGINT)
-		return (130);
-	if (sig_no == SIGQUIT)
-	{
+		;
+	else if (sig_no == SIGQUIT)
 		printf("Quit\n");
-		return (131);
-	}
-	if (sig_no == SIGSEGV) // remove i guess
-	{
+	else if (sig_no == SIGSEGV) // remove i guess
 		printf("Segmentation fault\n");
-		return (139);
-	}
-	return (1);
+	return (128 + sig_no);
 }

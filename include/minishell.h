@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/10 21:04:27 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/11 14:46:48 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,7 @@ void		redirect_input(t_cmd_chunk **chunks);
 void		redirect_output(t_cmd_chunk **chunks);
 
 void		ms_sigint_handler(int n);
-void		ms_sigquit_handler(int sig);
+// void		ms_sigquit_handler(int sig);
 void		ms_hdoc_sigint_handler(int sig);
 int			ms_get_sig_status(int sig_no);
 void		ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line);
