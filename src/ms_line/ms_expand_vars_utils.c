@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:19:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/09 13:38:47 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/11 22:41:25 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,52 @@ int	get_next_index(char *line, char pos)
 	return (ft_next_nonalnum(line, pos + 1));
 }
 
-char	*add_quotes(const char *str)
+// add only around tokens
+static char	*add_tokenquotes(char *str)
 {
-	char	*s;
 	char	*temp;
 
-	s = ft_strjoin("\"", str);
-	if (!s)
+	if (*ft_skip_spaces(str) == '\"' || *ft_skip_spaces(str) == '\'')
+		return (ft_strdup(str));
+	temp = ft_strfjoin(ft_strdup("\""), ft_strdup(str));
+	temp = ft_strfjoin(ft_strdup(temp), ft_strdup("\""));
+	return (temp);
+}
+
+static char	*join_split(char **arr)
+{
+	int		i;
+	char	*big;
+
+	i = -1;
+	big = ft_strdup("\0");
+	while (arr[++i])
+	{
+		if (arr[i + 1])
+			big = ft_strfjoin(big, ft_strfjoin(arr[i], ft_strdup(" ")));
+		else
+			big = ft_strfjoin(big, arr[i]);
+	}
+	return (big);
+}
+
+static char	*fix_quotes(char *str, char c)
+{
+	char	**arr;
+	char	*temp;
+	int		i;
+
+	arr = split_with_no_quotes(str, c);
+	if (!arr)
 		exit(EXIT_FAILURE);
-	temp = s;
-	s = ft_strjoin(s, "\"");
-	if (!s)
-		exit(EXIT_FAILURE);
-	return (free(temp), s);
+	i = -1;
+	while (arr[++i])
+	{
+		temp = arr[i];
+		arr[i] = add_tokenquotes(arr[i]);
+		free(temp);
+	}
+	return (join_split(arr));
 }
 
 char	*value_at(char *line, int pos, t_ms *shell)
@@ -48,7 +81,7 @@ char	*value_at(char *line, int pos, t_ms *shell)
 		free(var);
 		if (!val)
 			return (ft_strdup("\0"));
-		return (add_quotes(val));
+		return (fix_quotes(val, ' '));
 	}
 	return (free(var), ft_strdup("\0"));
 }
