@@ -31,7 +31,6 @@ int	ms_exit(char **args, int arg_count, t_ms *shell)
 
 	printf("exit\n");
 	exit_status = 0;
-	printf("g_exit_status = %d, arg_count = %d\n", g_exit_status, arg_count);
 	if (args && args[1])
 	{
 		if (is_invalid_exit_status(args[1]))

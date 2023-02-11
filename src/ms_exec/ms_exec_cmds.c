@@ -14,7 +14,7 @@
 
 int	ms_exec_cmds(t_cmd_chunk **chunks, int pipe_count, t_ms *shell)
 {
-	bool			cmd_is_builtin;
+	bool	cmd_is_builtin;
 
 	redirect_input(chunks);
 	if (g_exit_status == 130)

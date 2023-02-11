@@ -17,11 +17,11 @@ static int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
 	int			pid;
 	t_alloced	*c;
 
+	signal(SIGINT, ms_child_sigint_handler);
+	signal(SIGQUIT, ms_sigquit_handler);
 	pid = check_err("fork", fork());
 	if (pid == 0)
 	{
-		signal(SIGINT, ms_sigint_handler);
-		signal(SIGQUIT, SIG_IGN);
 		close(p2[0]);
 		dup2(p1[0], STDIN_FILENO);
 		close(p1[0]);
@@ -30,7 +30,6 @@ static int	exec_cmd(int p1[], int p2[], char **cmd, t_ms *shell)
 		if (handle_builtins(cmd, shell, get_builtin_no(cmd)))
 			exit(g_exit_status);
 		c = ms_get_path(p1, p2, cmd, shell);
-		ms_destroy(shell);
 		check_err("execve", execve(c->path, cmd, c->envp));
 	}
 	close(p1[0]);
@@ -47,10 +46,10 @@ static int	wait_cmds(int *pids, int count)
 	while (++i < count)
 		waitpid(pids[i], &status, 0);
 	free(pids);
-	if (WIFSIGNALED(status))
-		return (ms_get_sig_status(WTERMSIG(status)));
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (ms_get_sig_status(WTERMSIG(status)));
 	return (1);
 }
 

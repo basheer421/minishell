@@ -19,6 +19,7 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	size_t			pipe_count;
 	t_cmd_chunk		**chunks;
 
+	printf("new prompt!!!!\n");
 	line = readline(prompt);
 	if (!line)
 		ms_exit(NULL, 1, shell);

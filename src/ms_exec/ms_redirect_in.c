@@ -31,8 +31,7 @@ static void	run_heredoc(int p[], char *delim)
 		write(p[1], line, ft_strlen(line));
 		write(STDOUT_FILENO, "> ", 2);
 		free(line);
-		if (g_exit_status != 130)
-			line = get_next_line(STDIN_FILENO);
+		line = get_next_line(STDIN_FILENO);
 	}
 	free(line);
 	close(p[1]);
@@ -111,7 +110,7 @@ static	void	check_input_files(t_cmd_chunk *cmd)
 // chunks[i]->in_redir_fd is set to -2 if there is no input redir, -1 if the given redir was an invalid file
 void	redirect_input(t_cmd_chunk **cmds)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	g_exit_status = 0;
