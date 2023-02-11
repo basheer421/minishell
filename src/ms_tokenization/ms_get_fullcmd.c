@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:28:19 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/07 01:36:08 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/11 16:20:52 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	tick_inside_vars(t_inside *inside, char c)
 
 static bool	is_end(char c, t_inside *inside)
 {
-	if (!inside->dquotes && !inside->dquotes && (c == 0 || c == '>'
+	if (!inside->dquotes && !inside->quotes && (c == 0 || c == '>'
 			|| c == '<'))
 		return (true);
 	return (false);

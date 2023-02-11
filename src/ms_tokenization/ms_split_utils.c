@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:01:38 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/28 01:56:01 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/11 15:15:13 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	*ms_char_positions(char *line, int c)
 
 	ft_bzero(&vars, sizeof(t_split_postions));
 	vars.positions = ft_malloc(sizeof(int) * (split_with_no_quotes_len(line, c)
-				+ 1));
+				+ 2));
 	i = -1;
 	while (line[++i])
 	{
