@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:47:00 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/12 21:25:04 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/12 21:42:13 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	ms_line_iscomplete(char *line)
 		|| unclosed_token(nline))
 	{
 		g_exit_status = UNEXPECTED_TOKEN;
-		return (perror("syntax error, unexpected token"),
+		return (ft_putendl_fd("syntax error, unexpected token", 2),
 				free(nline),
 				false);
 	}
