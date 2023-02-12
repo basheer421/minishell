@@ -17,8 +17,9 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	char			*line;
 	char			**string_chunks;
 	size_t			pipe_count;
-	t_cmd_chunk		**chunks;
+	// t_cmd_chunk		**chunks;
 
+	shell->cur_cmd = NULL;
 	line = readline(prompt);
 	if (!line)
 		ms_exit(NULL, 1, shell);
@@ -34,9 +35,9 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (!string_chunks)
 		return (ms_clean(NULL, NULL, line), 1);
 	pipe_count = ms_pipes_count(line);
-	chunks = ms_command_chunks_get(string_chunks, pipe_count + 1);
-	if (!chunks)
-		return (ms_clean(chunks, string_chunks, line), 0);
+	shell->cur_cmd = ms_command_chunks_get(string_chunks, pipe_count + 1);
+	if (!shell->cur_cmd)
+		return (ms_clean(shell->cur_cmd, string_chunks, line), 0);
 	ms_clean(NULL, string_chunks, line);
-	return (ms_exec_cmds(chunks, pipe_count, shell));
+	return (ms_exec_cmds(shell, pipe_count));
 }

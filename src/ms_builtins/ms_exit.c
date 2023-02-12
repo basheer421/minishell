@@ -50,7 +50,8 @@ int	ms_exit(char **args, int arg_count, t_ms *shell)
 		printf("exit: too many arguments\n");
 		return (EXIT_FAILURE);
 	}
-	ft_split_destroy(args);
+	// ft_split_destroy(args);
+	// ms_clean(shell->cur_cmd, NULL, NULL);
 	ms_destroy(shell);
 	exit(exit_status);
 }

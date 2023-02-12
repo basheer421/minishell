@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/11 13:45:55 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/12 10:04:31 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell)
 		mem->pipes[1][1] = p2[1];
 		mem->path = NULL;
 		mem->envp = create_envp(shell);
+		mem->shell = shell;
 	}
 	return (mem);
 }
@@ -81,12 +82,14 @@ static void	inc_shlvl(char *cmd_name, char **envp)
 	}
 }
 
-t_alloced	*ms_get_path(int p1[], int p2[], char **cmd, t_ms *shell)
+t_alloced	*ms_get_path(int p1[], int p2[], t_ms *shell, int i)
 {
 	char		*path_name;
 	t_alloced	*cmd_info;
+	char		**cmd;
 
 	cmd_info = set_alloc(p1, p2, shell);
+	cmd = shell->cur_cmd[i]->cmd;
 	if (!cmd || !cmd[0])
 		exit_msg(NULL, NULL, 0, cmd_info);
 	path_name = NULL;

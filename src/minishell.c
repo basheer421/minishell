@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/11 14:50:02 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/12 09:56:08 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	main(int argc, char **argv, char **envp)
 	}
 	(void)argc;
 	(void)argv;
-	printf("exiting here\n");
-	ms_destroy(shell);
-	clear_history();
+	// printf("exiting here\n");
+	// ms_destroy(shell);
+	// clear_history();
 	return (0);
 }

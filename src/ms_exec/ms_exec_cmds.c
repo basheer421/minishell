@@ -12,20 +12,20 @@
 
 #include "minishell.h"
 
-int	ms_exec_cmds(t_cmd_chunk **chunks, int pipe_count, t_ms *shell)
+int	ms_exec_cmds(t_ms *shell, int pipe_count)
 {
 	bool	cmd_is_builtin;
 
-	redirect_input(chunks);
+	redirect_input(shell->cur_cmd);
 	if (g_exit_status == 130)
-		return (ms_clean(chunks, NULL, NULL), 0);
-	redirect_output(chunks);
+		return (ms_clean(shell->cur_cmd, NULL, NULL), 0);
+	redirect_output(shell->cur_cmd);
 	// if (g_exit_status != 0)
 		// return (ms_clean(chunks, NULL, NULL), 0);
 	cmd_is_builtin = false;
 	if (pipe_count == 0)
-		cmd_is_builtin = exec_builtin_solo(chunks[0], shell);
+		cmd_is_builtin = exec_builtin_solo(shell);
 	if (pipe_count > 0 || !cmd_is_builtin)
-		g_exit_status = ms_pipex(chunks, pipe_count + 1, shell);
-	return (ms_clean(chunks, NULL, NULL), 0);
+		g_exit_status = ms_pipex(shell, pipe_count + 1);
+	return (ms_clean(shell->cur_cmd, NULL, NULL), 0);
 }

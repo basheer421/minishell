@@ -89,6 +89,7 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 		}
 		free(mem->path);
 		ft_split_destroy(mem->envp);
+		ms_destroy(mem->shell);
 		free(mem);
 	}
 	exit(err_code);

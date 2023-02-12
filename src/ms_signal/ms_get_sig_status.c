@@ -19,6 +19,6 @@ int	ms_get_sig_status(int sig_no)
 	else if (sig_no == SIGQUIT)
 		printf("Quit\n");
 	else if (sig_no == SIGSEGV) // remove i guess
-		printf("Segmentation fault\n");
+		printf("Segmentation faultt\n");
 	return (128 + sig_no);
 }

@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/11 18:28:33 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/12 10:39:39 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,6 @@
 extern int	g_exit_status;
 
 /**
- * @brief Stores a hash map of environment variables,
- *  and stores the current dir.
- * 	Note that current_dir is malloced and should be freed.
- */
-typedef struct s_ms
-{
-	t_ht	*env_vars;
-	char	*current_dir;
-	bool	is_interactive_mode;
-	int		error_code;
-}			t_ms;
-
-/**
  * @brief 	when name is delim for heredoc, is_extra is set to true
  * 			when file is for append, is_extra is set to true
  */
@@ -74,6 +61,19 @@ typedef struct s_cmd_chunk
 	int		in_redir_fd;
 	int		out_redir_fd;
 }			t_cmd_chunk;
+
+/**
+ * @brief Stores a hash map of environment variables,
+ *  and stores the current dir.
+ * 	Note that current_dir is malloced and should be freed.
+ */
+typedef struct s_ms
+{
+	t_ht		*env_vars;
+	t_cmd_chunk	**cur_cmd;
+	int			*pids;
+	// char	*current_dir;
+}			t_ms;
 
 /**
  * @brief struct type for parsing
@@ -112,6 +112,7 @@ typedef struct s_alloced
 	int		pipes[2][2];
 	char	*path;
 	char	**envp;
+	t_ms	*shell;
 }	t_alloced;
 
 /**
@@ -261,8 +262,8 @@ void		ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
 
 // builtins
 int			get_builtin_no(char **cmd);
-int			handle_builtins(char **cmd, t_ms *shell, int builtin_no);
-bool		exec_builtin_solo(t_cmd_chunk *chunk, t_ms *shell);
+int			handle_builtins(t_ms *shell, int i, int builtin_no);
+bool		exec_builtin_solo(t_ms *shell);
 
 int			ms_echo(char **strs);
 int			ms_pwd(void);
@@ -273,11 +274,11 @@ int			ms_export(t_ms *shell, char **args, int arg_count);
 int			ms_unset(t_ms *shell, char **strs, int arg_count);
 
 // execution controller function
-int			ms_exec_cmds(t_cmd_chunk **chunks, int pipe_count, t_ms *shell);
+int			ms_exec_cmds(t_ms *shell, int pipe_count);
 
 // pipes 
-int			ms_pipex(t_cmd_chunk **cmds, int cmd_count, t_ms *shell);
-t_alloced	*ms_get_path(int p1[], int p2[], char **cmd, t_ms *shell);
+int			ms_pipex(t_ms *shell, int cmd_count);
+t_alloced	*ms_get_path(int p1[], int p2[], t_ms *shell, int i);
 int			open_file(char *file_name, int open_flags);
 int			is_regular_file(const char *path);
 char		*get_pathname(char *cmd_name, char **envp);
