@@ -24,13 +24,13 @@ int	ms_line_read(const char *prompt, t_ms *shell)
 	if (!line)
 		ms_exit(NULL, 1, shell);
 	if (ms_line_isempty(ft_skip_spaces(line)))
-		return (free(line), 0);
+		return (ms_clean(NULL, NULL, line), 0);
 	add_history(line);
 	if (!ms_line_iscomplete(line))
 		return (ms_clean(NULL, NULL, line), 1);
 	ms_line_expand_vars(&line, shell);
 	if (ms_line_isempty(ft_skip_spaces(line)))
-		return (free(line), 0);
+		return (ms_clean(NULL, NULL, line), 0);
 	string_chunks = split_with_no_quotes(line, '|');
 	if (!string_chunks)
 		return (ms_clean(NULL, NULL, line), 1);

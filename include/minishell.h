@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/12 10:39:39 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/12 15:41:26 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ bool		ms_contains_redirect(char *line_chunk, char type);
  * @param line_chunk 
  * @return file_name (malloced string), or NULL if it doesn't exist.
 */
-t_file		*ms_get_next_redirect(char **line_chunk, char type);
+t_file		*ms_get_next_redirect(char *line_chunk, char type, int *ptr);
 
 /**
  * @brief Tells if the given line has a command.
@@ -239,7 +239,7 @@ char		*ms_get_cmd(char *line_chunk);
  * @param chunk to be stored in 
  * @return Command arguments or NULL if not found
  */
-char		**ms_get_fullcmd(char **line_piece);
+char		**ms_get_fullcmd(char *line_piece, int *ptr);
 
 /**
  * @brief Gets the command chunks from the divided line.
