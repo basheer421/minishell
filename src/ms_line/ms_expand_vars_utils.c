@@ -6,13 +6,13 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:19:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/09 13:38:47 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/14 13:41:20 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_next_index(char *line, char pos)
+int	get_next_index(char *line, int pos)
 {
 	if (line[pos + 1] == '?')
 		return (pos + 2);

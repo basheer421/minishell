@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/12 15:41:26 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/14 13:41:31 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ char		**split_with_no_quotes(char *line, int c);
 void		ms_line_expand_vars(char **line, t_ms *shell);
 
 // Helper for line_expand
-int			get_next_index(char *line, char pos);
+int			get_next_index(char *line, int pos);
 
 // Helper for line_expand
 char		*value_at(char *line, int pos, t_ms *shell);
