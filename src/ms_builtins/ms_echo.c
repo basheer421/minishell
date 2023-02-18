@@ -43,7 +43,7 @@ int	ms_echo(char **strs)
 	while (strs[++i])
 	{
 		if (!is_n_flag(strs[i]))
-			break;
+			break ;
 		n_flag = true;
 	}
 	if (strs[i])
