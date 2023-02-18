@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/14 13:41:31 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/18 18:54:52 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,20 @@ int			ms_line_read(const char *prompt, t_ms *shell);
 bool		ms_line_isempty(char *line);
 
 /**
- * @brief tells if the line is empty and prints the syntax error.
+ * @brief Tells if the line is empty and prints the syntax error.
  * 
  * @param line user input 
  * @return boolean, true if it's a valid complete line, false other wise.
  */
 bool		ms_line_iscomplete(char *line);
+
+/**
+ * @brief Replaces all kinds of spaces with ' ' char
+ * 		using ft_is_space() function;
+ * 
+ * @param line address
+ */
+void		ms_add_spaces(char **line);
 
 // Helper functions for split_with_no_quotes
 char		*chrskip(char *s, char c);
@@ -191,14 +199,6 @@ char		*value_at(char *line, int pos, t_ms *shell);
  * @return pipes count 
  */
 size_t		ms_pipes_count(char *line);
-
-/**
- * @brief checks and prints the errors
- * 
- * @param line_chunks
- * @return boolean
- */
-bool		ms_chunks_iscomplete(char **chunks);
 
 /**
  * @brief Tells if the given line has input.

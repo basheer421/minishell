@@ -6,7 +6,7 @@
 #    By: bammar <bammar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/02/12 21:23:07 by bammar           ###   ########.fr        #
+#    Updated: 2023/02/18 18:53:58 by bammar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ FILES	=		src/minishell.c \
 				src/ms_line/ms_line_clean.c \
 				src/ms_line/ms_line_read.c \
 				src/ms_line/ms_line_isempty.c \
+				src/ms_line/ms_add_spaces.c \
 				src/ms_line/ms_line_iscomplete.c \
 				src/ms_line/ms_expand_vars_utils.c \
 				src/ms_line/ms_line_expand_vars.c \
