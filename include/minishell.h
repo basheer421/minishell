@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/12 17:14:07 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/19 16:47:00 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ t_alloced	*ms_get_path(int p1[], int p2[], t_ms *shell, int i);
 int			open_file(char *file_name, int open_flags);
 int			is_regular_file(const char *path);
 char		*get_pathname(char *cmd_name, char **envp);
+t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell);
 
 void		redirect_input(t_ms *shell);
 void		redirect_output(t_cmd_chunk **chunks);

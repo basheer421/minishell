@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/12 10:04:31 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/19 16:45:16 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	**create_envp(t_ms *shell)
 	return (envp);
 }
 
-static t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell)
+t_alloced	*set_alloc(int p1[], int p2[], t_ms *shell)
 {	
 	t_alloced	*mem;
 
