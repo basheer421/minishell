@@ -56,7 +56,7 @@ int	handle_builtins(t_ms *shell, int i, int builtin_no)
 		if (builtin_no == 1)
 			g_exit_status = ms_echo(cmd);
 		else if (builtin_no == 2)
-			g_exit_status = ms_pwd();
+			g_exit_status = ms_pwd(shell);
 		else if (builtin_no == 3)
 			g_exit_status = ms_exit(cmd, arg_count, shell);
 		else if (builtin_no == 4)

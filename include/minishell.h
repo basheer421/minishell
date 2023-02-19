@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/19 16:47:00 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/19 19:31:03 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,20 @@ int			ms_line_read(const char *prompt, t_ms *shell);
 bool		ms_line_isempty(char *line);
 
 /**
- * @brief tells if the line is empty and prints the syntax error.
+ * @brief Tells if the line is empty and prints the syntax error.
  * 
  * @param line user input 
  * @return boolean, true if it's a valid complete line, false other wise.
  */
 bool		ms_line_iscomplete(char *line);
+
+/**
+ * @brief Replaces all kinds of spaces with ' ' char
+ * 		using ft_is_space() function;
+ * 
+ * @param line address
+ */
+void		ms_add_spaces(char **line);
 
 // Helper functions for split_with_no_quotes
 char		*chrskip(char *s, char c);
@@ -179,7 +187,7 @@ char		**split_with_no_quotes(char *line, int c);
 void		ms_line_expand_vars(char **line, t_ms *shell);
 
 // Helper for line_expand
-int			get_next_index(char *line, char pos);
+int			get_next_index(char *line, int pos);
 
 // Helper for line_expand
 char		*value_at(char *line, int pos, t_ms *shell);
@@ -191,14 +199,6 @@ char		*value_at(char *line, int pos, t_ms *shell);
  * @return pipes count 
  */
 size_t		ms_pipes_count(char *line);
-
-/**
- * @brief checks and prints the errors
- * 
- * @param line_chunks
- * @return boolean
- */
-bool		ms_chunks_iscomplete(char **chunks);
 
 /**
  * @brief Tells if the given line has input.
@@ -214,7 +214,7 @@ bool		ms_contains_redirect(char *line_chunk, char type);
  * @param line_chunk 
  * @return file_name (malloced string), or NULL if it doesn't exist.
 */
-t_file		*ms_get_next_redirect(char **line_chunk, char type);
+t_file		*ms_get_next_redirect(char *line_chunk, char type, int *ptr);
 
 /**
  * @brief Tells if the given line has a command.
@@ -239,7 +239,7 @@ char		*ms_get_cmd(char *line_chunk);
  * @param chunk to be stored in 
  * @return Command arguments or NULL if not found
  */
-char		**ms_get_fullcmd(char **line_piece);
+char		**ms_get_fullcmd(char *line_piece, int *ptr);
 
 /**
  * @brief Gets the command chunks from the divided line.
@@ -266,7 +266,7 @@ int			handle_builtins(t_ms *shell, int i, int builtin_no);
 bool		exec_builtin_solo(t_ms *shell);
 
 int			ms_echo(char **strs);
-int			ms_pwd(void);
+int			ms_pwd(t_ms *shell);
 int			ms_cd(t_ms *shell, char **path, int arg_count);
 int			ms_exit(char **args, int arg_count, t_ms *shell);
 int			ms_env(t_ms *shell);

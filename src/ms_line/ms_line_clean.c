@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:31:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/19 14:50:39 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/19 19:30:33 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void	ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line)
 
 void	ms_destroy(t_ms *shell)
 {
-	// if (shell->current_dir)
-		// free(shell->current_dir);
 	if (shell)
 	{
 		if (shell->env_vars)
@@ -60,12 +58,12 @@ void	ms_destroy(t_ms *shell)
 		if (shell->cur_cmd)
 		{
 			ms_clean(shell->cur_cmd, NULL, NULL);
-			shell->cur_cmd = NULL;		
+			shell->cur_cmd = NULL;
 		}
 		if (shell->pids)
 		{
 			free(shell->pids);
-			shell->pids = NULL;	
+			shell->pids = NULL;
 		}
 		free(shell);
 	}
