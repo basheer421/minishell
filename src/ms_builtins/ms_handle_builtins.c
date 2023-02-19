@@ -44,17 +44,19 @@ int	get_builtin_no(char **cmd)
 	return (0);
 }
 
-int	handle_builtins(char **cmd, t_ms *shell, int builtin_no)
+int	handle_builtins(t_ms *shell, int i, int builtin_no)
 {
 	int		arg_count;
+	char	**cmd;
 
+	cmd = shell->cur_cmd[i]->cmd;
 	arg_count = count_args(cmd);
 	if (cmd && cmd[0])
 	{
 		if (builtin_no == 1)
 			g_exit_status = ms_echo(cmd);
 		else if (builtin_no == 2)
-			g_exit_status = ms_pwd();
+			g_exit_status = ms_pwd(shell);
 		else if (builtin_no == 3)
 			g_exit_status = ms_exit(cmd, arg_count, shell);
 		else if (builtin_no == 4)
@@ -69,34 +71,36 @@ int	handle_builtins(char **cmd, t_ms *shell, int builtin_no)
 	return (builtin_no);
 }
 
-bool	exec_builtin_solo(t_cmd_chunk *chunk, t_ms *shell)
+bool	exec_builtin_solo(t_ms *shell)
 {
 	int	og_stdin;
 	int	og_stdout;
 	int	builtin_no;
+	t_cmd_chunk *cmd_info;
 
-	builtin_no = get_builtin_no(chunk->cmd);
+	cmd_info = shell->cur_cmd[0];
+	builtin_no = get_builtin_no(cmd_info->cmd);
 	if (builtin_no == 0)
 		return (false);
-	if (chunk->in_redir_fd > 0)
+	if (cmd_info->in_redir_fd > 0)
 	{
 		og_stdin = dup(STDIN_FILENO);
-		dup2(chunk->in_redir_fd, STDIN_FILENO);
-		close(chunk->in_redir_fd);
+		dup2(cmd_info->in_redir_fd, STDIN_FILENO);
+		close(cmd_info->in_redir_fd);
 	}
-	if (chunk->out_redir_fd > 1)
+	if (cmd_info->out_redir_fd > 1)
 	{
 		og_stdout = dup(STDOUT_FILENO);
-		dup2(chunk->out_redir_fd, STDOUT_FILENO);
-		close(chunk->out_redir_fd);
+		dup2(cmd_info->out_redir_fd, STDOUT_FILENO);
+		close(cmd_info->out_redir_fd);
 	}
-	handle_builtins(chunk->cmd, shell, builtin_no);
-	if (chunk->in_redir_fd > 0)
+	handle_builtins(shell, 0, builtin_no);
+	if (cmd_info->in_redir_fd > 0)
 	{
 		dup2(og_stdin, STDIN_FILENO);
 		close(og_stdin);
 	}
-	if (chunk->out_redir_fd > 1)
+	if (cmd_info->out_redir_fd > 1)
 	{
 		dup2(og_stdout, STDOUT_FILENO);
 		close(og_stdout);

@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 21:04:34 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/29 20:20:56 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/12 21:24:49 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static t_cmd_chunk	**chunk_init(size_t amount)
 	while (i < amount)
 	{
 		chunks[i] = ft_calloc(1, sizeof(t_cmd_chunk));
-		chunks[i]->inputs = ft_lstnew(NULL);
-		chunks[i]->outputs = ft_lstnew(NULL);
 		if (!chunks[i])
 			exit(EXIT_FAILURE);
+		chunks[i]->inputs = ft_lstnew(NULL);
+		chunks[i]->outputs = ft_lstnew(NULL);
 		i++;
 	}
 	chunks[i] = NULL;
@@ -83,24 +83,24 @@ t_cmd_chunk	**ms_command_chunks_get(char **line_pieces,
 	t_cmd_chunk	**chunks;
 	int			i;
 	int			token;
-	char		*string_head;
+	int			ptr;
 
 	chunks = chunk_init(amount);
 	i = -1;
 	while (++i < (int)amount)
 	{
-		string_head = line_pieces[i];
-		while (string_head && *ft_skip_spaces(string_head))
+		ptr = 0;
+		while (line_pieces[i][ptr] && *ft_skip_spaces(&line_pieces[i][ptr]))
 		{
-			token = token_type(string_head);
-			if (token == -1 && is_err(chunks, i, string_head))
-				return (NULL);
+			token = token_type(&line_pieces[i][ptr]);
+			if (token == -1 && is_err(chunks, i, &line_pieces[i][ptr]))
+				return (ms_clean(chunks, NULL, NULL), NULL);
 			else if (token == 2)
-				chunks[i]->cmd = ms_get_fullcmd(&string_head);
+				chunks[i]->cmd = ms_get_fullcmd(line_pieces[i], &ptr);
 			else if (token == '<' || token == '>')
 				if (!add_back(chunks[i], token,
-						ms_get_next_redirect(&string_head, token)))
-							return (NULL);
+						ms_get_next_redirect(line_pieces[i], token, &ptr)))
+					return (ms_clean(chunks, NULL, NULL), NULL);
 		}
 	}
 	return (chunks);

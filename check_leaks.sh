@@ -1,1 +1,1 @@
-valgrind --suppressions=valgrind_readline_leaks_ignore.txt --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes ./minishell
+valgrind --suppressions="/mnt/c/Users/HP/Documents/Mehrin/42 Abu Dhabi/minishell/valgrind_readline_leaks_ignore.txt" --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes ./minishell

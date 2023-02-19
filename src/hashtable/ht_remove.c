@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ht_remove.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 02:10:28 by bammar            #+#    #+#             */
-/*   Updated: 2022/12/30 17:08:15 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/19 19:29:02 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ void	ht_remove(t_ht *table, const char *key)
 	}
 	while (node->next && !is_samekey(node->next->key, key_value))
 		node = node->next;
+	free(key_value);
 	remove_mid_node(node);
 }

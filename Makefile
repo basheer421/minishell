@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/02/10 18:47:17 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/02/19 17:24:40 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ FILES	=		src/minishell.c \
 				src/ms_line/ms_line_clean.c \
 				src/ms_line/ms_line_read.c \
 				src/ms_line/ms_line_isempty.c \
+				src/ms_line/ms_add_spaces.c \
 				src/ms_line/ms_line_iscomplete.c \
 				src/ms_line/ms_expand_vars_utils.c \
 				src/ms_line/ms_line_expand_vars.c \
@@ -60,6 +61,7 @@ FILES	=		src/minishell.c \
 CC		=	cc
 
 # CFLAGS	=	-Wall -Wextra -Werror -g -Ofast -I/usr/local/opt/readline/include
+# CFLAGS	=	-Wall -Wextra -g -fsanitize=address -Ofast -I/usr/local/opt/readline/include
 CFLAGS	=	-Wall -Wextra -g -Ofast -I/usr/local/opt/readline/include
 
 LINKS	=	-lreadline -L/usr/local/opt/readline/lib

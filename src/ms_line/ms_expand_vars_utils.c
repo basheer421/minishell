@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_expand_vars_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:19:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/11 22:41:25 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/19 19:42:43 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_next_index(char *line, char pos)
+int	get_next_index(char *line, int pos)
 {
 	if (line[pos + 1] == '?')
 		return (pos + 2);

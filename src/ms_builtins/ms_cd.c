@@ -22,11 +22,19 @@ static	char	*set_new_dir(t_ms *sh, int arg_count, char **path)
 		if (!new_dir)
 			printf("cd: HOME not set\n");
 	}
-	else if (path[1] && path[1][0] == '-')
+	else if (path[1] && ft_strncmp(path[1], "-", 2) == 0)
 	{
 		new_dir = (char *)ht_get(sh->env_vars, "OLDPWD");
 		if (!new_dir)
 			printf("cd: OLDPWD not set\n");
+		else
+			printf("%s\n", new_dir);
+	}
+	else if (path[1] && ft_strncmp(path[1], "--", 3) == 0)
+	{
+		new_dir = (char *)ht_get(sh->env_vars, "HOME");
+		if (!new_dir)
+			printf("cd: HOME not set\n");
 	}
 	else
 		new_dir = path[1];

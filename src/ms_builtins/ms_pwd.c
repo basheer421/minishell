@@ -12,14 +12,20 @@
 
 #include "minishell.h"
 
-int	ms_pwd(void)
+int	ms_pwd(t_ms *shell)
 {
 	char	cur_dir[MAXPATHLEN];
+	char	*pwd;
 
 	if (!getcwd(cur_dir, MAXPATHLEN))
 	{
-		perror("pwd");
-		return (EXIT_FAILURE);
+		pwd = (char *)ht_get(shell->env_vars, "PWD");
+		if (!pwd)
+			return (EXIT_FAILURE);
+		printf("%s\n", pwd);
+		return (EXIT_SUCCESS);
+		// perror("pwd");
+		// return (EXIT_FAILURE);
 	}
 	printf("%s\n", cur_dir);
 	return (EXIT_SUCCESS);

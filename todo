@@ -30,3 +30,6 @@ skip past all -n in the beginning
 	eg: -n 
 		-n -n
 		-n -nnnnnn -n -nnn
+
+remaining
+- still reachable leaks in heredoc child proc 
