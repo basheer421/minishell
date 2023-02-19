@@ -16,7 +16,7 @@ int	ms_exec_cmds(t_ms *shell, int pipe_count)
 {
 	bool	cmd_is_builtin;
 
-	redirect_input(shell->cur_cmd);
+	redirect_input(shell);
 	if (g_exit_status == 130)
 		return (ms_clean(shell->cur_cmd, NULL, NULL), 0);
 	redirect_output(shell->cur_cmd);

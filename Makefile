@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/02/12 10:34:47 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/02/19 14:20:17 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ FILES	=		src/minishell.c \
 CC		=	cc
 
 # CFLAGS	=	-Wall -Wextra -Werror -g -Ofast -I/usr/local/opt/readline/include
+# CFLAGS	=	-Wall -Wextra -g -fsanitize=address -Ofast -I/usr/local/opt/readline/include
 CFLAGS	=	-Wall -Wextra -g -Ofast -I/usr/local/opt/readline/include
 
 LINKS	=	-lreadline -L/usr/local/opt/readline/lib

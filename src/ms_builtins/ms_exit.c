@@ -45,7 +45,7 @@ int	ms_exit(char **args, int arg_count, t_ms *shell)
 	{
 		exit_status = g_exit_status;
 	}
-	else if (arg_count > 2)
+	if (arg_count > 2)
 	{
 		printf("exit: too many arguments\n");
 		return (EXIT_FAILURE);

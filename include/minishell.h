@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/12 10:39:39 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/12 17:14:07 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ int			open_file(char *file_name, int open_flags);
 int			is_regular_file(const char *path);
 char		*get_pathname(char *cmd_name, char **envp);
 
-void		redirect_input(t_cmd_chunk **chunks);
+void		redirect_input(t_ms *shell);
 void		redirect_output(t_cmd_chunk **chunks);
 
 void		ms_sigint_handler(int n);

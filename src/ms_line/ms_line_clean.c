@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:31:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/12 10:43:11 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/19 14:50:39 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line)
 			ft_lstclear(&(chunks[i]->inputs), t_file_destroy);
 			ft_lstclear(&(chunks[i]->outputs), t_file_destroy);
 			if (chunks[i]->in_redir_fd > 0)
-				close (chunks[i]->in_redir_fd);
+				close(chunks[i]->in_redir_fd);
 			if (chunks[i]->out_redir_fd > 1)
-				close (chunks[i]->out_redir_fd);
+				close(chunks[i]->out_redir_fd);
 			free(chunks[i]);
 		}
 		free(chunks);
