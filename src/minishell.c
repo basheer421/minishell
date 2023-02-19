@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:39:04 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/18 18:17:17 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/19 21:03:26 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	(void)argc;
 	(void)argv;
-	// printf("exiting here\n");
-	// ms_destroy(shell);
-	// clear_history();
 	return (0);
 }
