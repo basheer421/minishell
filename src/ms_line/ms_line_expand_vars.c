@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_line_expand_vars.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/11 19:21:36 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/20 22:23:01 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,18 @@ static void	tick_inside_vars(t_inside2 *inside, char c, char next)
 		inside->quotes = !inside->quotes;
 	else if (c == '\"' && !inside->quotes)
 		inside->dquotes = !inside->dquotes;
-	else if (c == '$' && !inside->quotes && (ft_isalpha(next) || next == '?'))
+	else if (c == '<' && next == '<'
+		&& !inside->quotes && !inside->dquotes)
+		inside->heredoc = true;
+	else if (inside->heredoc && c == '<'
+		&& !inside->quotes && !inside->dquotes)
+		inside->skipping = true;
+	else if (inside->heredoc && c == ' '
+		&& !inside->skipping
+		&& !inside->quotes && !inside->dquotes)
+		inside->heredoc = false;
+	else if (c == '$' && !inside->quotes
+		&& !inside->heredoc && (ft_isalpha(next) || next == '?'))
 		inside->var = true;
 }
 
@@ -55,10 +66,8 @@ static char	*var_init(t_inside2 *inside, char **line, t_ms *shell, int *c_count)
 {
 	char	*nline;
 
-	inside->dquotes = 0;
-	inside->quotes = 0;
+	ft_bzero(inside, sizeof(t_inside2));
 	inside->value = NULL;
-	inside->var = 0;
 	nline = ft_malloc(len_with_expand(*line, shell) + 1);
 	*c_count = 0;
 	return (nline);
