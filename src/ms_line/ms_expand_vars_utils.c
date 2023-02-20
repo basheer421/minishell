@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_expand_vars_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:19:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/19 19:42:43 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/20 21:36:57 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ static char	*add_tokenquotes(char *str)
 {
 	char	*temp;
 
-	if (*ft_skip_spaces(str) == '\"' || *ft_skip_spaces(str) == '\'')
+	if (ft_strncmp(ft_skip_spaces(str), "\'", 1) == 0
+		|| ft_strncmp(ft_skip_spaces(str), "\"", 1) == 0)
 		return (ft_strdup(str));
 	temp = ft_strfjoin(ft_strdup("\""), ft_strdup(str));
-	temp = ft_strfjoin(ft_strdup(temp), ft_strdup("\""));
+	temp = ft_strfjoin(temp, ft_strdup("\""));
 	return (temp);
 }
 
@@ -41,9 +42,10 @@ static char	*join_split(char **arr)
 	while (arr[++i])
 	{
 		if (arr[i + 1])
-			big = ft_strfjoin(big, ft_strfjoin(arr[i], ft_strdup(" ")));
+			big = ft_strfjoin(big, ft_strfjoin(ft_strdup(arr[i]),
+						ft_strdup(" ")));
 		else
-			big = ft_strfjoin(big, arr[i]);
+			big = ft_strfjoin(big, ft_strdup(arr[i]));
 	}
 	return (big);
 }
@@ -52,6 +54,7 @@ static char	*fix_quotes(char *str, char c)
 {
 	char	**arr;
 	char	*temp;
+	char	*nstr;
 	int		i;
 
 	arr = split_with_no_quotes(str, c);
@@ -64,7 +67,8 @@ static char	*fix_quotes(char *str, char c)
 		arr[i] = add_tokenquotes(arr[i]);
 		free(temp);
 	}
-	return (join_split(arr));
+	nstr = join_split(arr);
+	return (ft_split_destroy(arr), nstr);
 }
 
 char	*value_at(char *line, int pos, t_ms *shell)
