@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:31:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/19 19:30:33 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:38:47 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ void	ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line)
 	if (chunks)
 	{
 		i = -1;
+		// printf("chunks exists!\n");
 		while (chunks[++i])
 		{
+			// printf("chunks[i] exists!\n");
 			ft_split_destroy(chunks[i]->cmd);
 			ft_lstclear(&(chunks[i]->inputs), t_file_destroy);
 			ft_lstclear(&(chunks[i]->outputs), t_file_destroy);
@@ -43,6 +45,7 @@ void	ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line)
 		}
 		free(chunks);
 	}
+	// printf("--%p", chunks);
 	if (string_chunks)
 		ft_split_destroy(string_chunks);
 	if (line)
@@ -66,5 +69,22 @@ void	ms_destroy(t_ms *shell)
 			shell->pids = NULL;
 		}
 		free(shell);
+	}
+}
+
+void	ms_fds_close(t_cmd_chunk **chunks)
+{
+	int	i;
+
+	if (chunks)
+	{
+		i = -1;
+		while (chunks[++i])
+		{
+			if (chunks[i]->in_redir_fd > 0)
+				close(chunks[i]->in_redir_fd);
+			if (chunks[i]->out_redir_fd > 1)
+				close(chunks[i]->out_redir_fd);
+		}
 	}
 }

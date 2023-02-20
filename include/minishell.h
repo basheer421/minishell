@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/19 19:31:03 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/20 16:45:18 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ void		exit_msg(char *head, char *err_msg, int err_code, t_alloced *mem);
 
 // cleanup
 void		ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);
+void		ms_fds_close(t_cmd_chunk **chunks);
 
 // builtins
 int			get_builtin_no(char **cmd);
@@ -292,6 +293,5 @@ void		ms_sigquit_handler(int sig);
 void		ms_child_sigint_handler(int sig);
 void		ms_hdoc_sigint_handler(int sig);
 int			ms_get_sig_status(int sig_no);
-void		ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line);
 
 #endif

@@ -36,7 +36,10 @@ static void	open_op_files(t_cmd_chunk *cmd)
 		node = node->next;
 	}
 }
-
+ 
+// out_redir_fd is set to	-1 if the redirection was invalid - means dont run the cmd
+//							0 if there is no output redir for this chunk - means run the cmd but dont dup anything to the pipe, use the pipes as they are
+//							> 0 if it is a valid redirection
 void	redirect_output(t_cmd_chunk **cmds)
 {
 	int		i;
@@ -49,10 +52,10 @@ void	redirect_output(t_cmd_chunk **cmds)
 		{
 			if (cmds[i]->outputs && !(cmds[i]->outputs->content))
 			{
-				if (!cmds[i + 1]) // is the last command
-					cmds[i]->out_redir_fd = STDOUT_FILENO;
-				else
-					cmds[i]->out_redir_fd = -2;
+				// if (!cmds[i + 1]) // is the last command
+				// 	cmds[i]->out_redir_fd = STDOUT_FILENO;
+				// else
+					cmds[i]->out_redir_fd = 0;
 			}
 			else
 				open_op_files(cmds[i]);

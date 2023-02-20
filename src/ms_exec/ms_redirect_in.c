@@ -36,6 +36,7 @@ static void	run_heredoc(int p[], char *delim, t_ms *shell)
 	close(p[1]);
 	close(p[0]);
 	ms_destroy(shell);
+	// printf("we freed in heredoc\n");
 	exit(g_exit_status);
 }
 
@@ -51,12 +52,13 @@ static int	get_heredoc_pipe(char *delim, t_ms *shell)
 	pid = check_err("fork", fork());
 	if (pid == 0)
 		run_heredoc(p, delim, shell);
-	close(p[1]);
+	// close(p[1]);
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 		g_exit_status = ms_get_sig_status(WTERMSIG(status));
 	else if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
+	close(p[1]);
 	return (p[0]);
 }
 
@@ -169,6 +171,14 @@ int	save_exit_status(t_cmd_chunk *chunk, int old_exit_status)
 // chunks[i]->in_redir_fd is set to -3 if its the first cmd and there's no redir, 
 // 									-2 if its a non-first cmd and there is no input redir, 
 //									-1 if the given redir was an invalid file
+
+// in_redir_fd is set to	case1: -1 if the redirection was invalid - means dont run the cmd
+//							case2: 0 if there is no input redir for this chunk - means run the cmd but dont dup anything to the pipe, use the pipes as they are
+//							case3: > 0 if it is a valid redirection
+// NOTE:	when cmd is the first cmd (i==0) it is a special case,
+//			in_redir_fd value will indicate case2 but we do not use p1[0], 
+//			we instead let the cmd use stdin and not redirect it to the p1[0]
+// 			stdout will be redirected to p2[1] as usual
 void	redirect_input(t_ms *shell)
 {
 	int	i;
@@ -180,14 +190,14 @@ void	redirect_input(t_ms *shell)
 	old_exit_status = g_exit_status;
 	g_exit_status = 0;
 	i = -1;
-	if (cmds[0]->inputs && !(cmds[0]->inputs->content) \
-		&& save_exit_status(cmds[0], old_exit_status))
-		cmds[++i]->in_redir_fd = STDIN_FILENO;
+	// if (cmds[0]->inputs && !(cmds[0]->inputs->content) 
+	// 	&& save_exit_status(cmds[0], old_exit_status))
+	// 	cmds[++i]->in_redir_fd = STDIN_FILENO;
 	while (cmds[++i] && save_exit_status(cmds[i], old_exit_status))
 	{
 		cmds[i]->in_redir_fd = -1;
 		if (cmds[i]->inputs && !(cmds[i]->inputs->content)) // if there are no redirs for this cmd_chunk
-			cmds[i]->in_redir_fd = -2;
+			cmds[i]->in_redir_fd = 0;
 		else
 			check_heredocs(shell, i);
 	}

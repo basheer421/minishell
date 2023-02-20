@@ -24,20 +24,35 @@ static int	exec_cmd(int p1[], int p2[], t_ms *shell, int i)
 	{
 		close(p2[0]);
 		// close(p1[1]);
-		if (shell->cur_cmd[i]->in_redir_fd != 0)
-			dup2(p1[0], STDIN_FILENO);
-		close(p1[0]);
-		if (shell->cur_cmd[i]->out_redir_fd != 1)
-			dup2(p2[1], STDOUT_FILENO);
-		close(p2[1]);
+		if (shell->cur_cmd[i]->in_redir_fd == 0) // there are no redirs
+		{
+			if (i > 0) // and its not the first command
+				dup2(p1[0], STDIN_FILENO);
+			close(p1[0]); // close it regardless because if it got duped then this is useless now, if it didnt get duped it wasnt going to be used anyway
+		}
+		else if (shell->cur_cmd[i]->in_redir_fd > 0)
+		{
+			dup2(shell->cur_cmd[i]->in_redir_fd, STDIN_FILENO);
+			close(p1[0]);
+		}
+		if (shell->cur_cmd[i]->out_redir_fd == 0) // no output redirs
+		{
+			if (shell->cur_cmd[i + 1]) // and its not the last command
+				dup2(p2[1], STDOUT_FILENO);
+			close(p2[1]);
+		}
+		else if (shell->cur_cmd[i]->out_redir_fd > 0)
+		{
+			dup2(shell->cur_cmd[i]->out_redir_fd, STDOUT_FILENO);
+			close(p2[1]);
+		}
+		ms_fds_close(shell->cur_cmd);
 		if (handle_builtins(shell, i, get_builtin_no(shell->cur_cmd[i]->cmd)))
 			exit_msg(NULL, NULL, g_exit_status, set_alloc(p1, p2, shell));
 		c = ms_get_path(p1, p2, shell, i);
 		if (execve(c->path, shell->cur_cmd[i]->cmd, c->envp) == -1)
 			exit_msg("execve", strerror(errno), EXIT_FAILURE, c);
 	}
-	close(p1[0]);
-	close(p2[1]);
 	return (pid);
 }
 
@@ -107,12 +122,14 @@ int	ms_pipex(t_ms *shell, int cmd_count)
 			free(shell->pids);
 			return (EXIT_FAILURE);
 		}
-		redirect_to_pipes(cmds[i], p, pipe_no);
+		// redirect_to_pipes(cmds[i], p, pipe_no);
 		if (cmds[i]->in_redir_fd != -1 && cmds[i]->out_redir_fd != -1)
 			shell->pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], shell, i);
 		else
 			shell->pids[i] = -1;
-		close_pipes_redir(p, pipe_no, cmds[i]);
+		// close_pipes_redir(p, pipe_no, cmds[i]);
+		close(p[pipe_no][0]);
+		close(p[!pipe_no][1]);
 		pipe_no = !pipe_no;
 	}
 	close(p[pipe_no][0]);
