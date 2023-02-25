@@ -99,10 +99,13 @@ static void	export_var(t_ms *shell, char *env_var)
 
 int	ms_export(t_ms *shell, char **args, int arg_count)
 {
-	int	i;
-	int	exit_status;
+	int		i;
+	int		j;
+	int		exit_status;
+	bool	is_valid_identifier;
 
 	i = 0;
+	is_valid_identifier = true;
 	exit_status = EXIT_SUCCESS;
 	if (arg_count == 1)
 		display_sorted_env(shell);
@@ -110,12 +113,8 @@ int	ms_export(t_ms *shell, char **args, int arg_count)
 	{
 		while (args[++i])
 		{
-			if (!args[i][0] || (!ft_isalpha(args[i][0]) && args[i][0] != '_'))
-			{
-				printf("export: \'%s\': not a valid identifier\n", args[i]);
-				if (!args[i + 1])
-					exit_status = EXIT_FAILURE;
-			}
+			if (!ms_is_valid_identifier(args[i], "export"))
+				exit_status = EXIT_FAILURE;
 			else
 				export_var(shell, args[i]);
 		}

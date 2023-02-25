@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/20 22:19:58 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/25 15:39:58 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ int			get_builtin_no(char **cmd);
 int			handle_builtins(t_ms *shell, int i, int builtin_no);
 bool		exec_builtin_solo(t_ms *shell);
 
+bool		ms_is_valid_identifier(char *str, char *func);
 int			ms_echo(char **strs);
 int			ms_pwd(t_ms *shell);
 int			ms_cd(t_ms *shell, char **path, int arg_count);

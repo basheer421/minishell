@@ -18,7 +18,6 @@ static void	run_heredoc(int p[], char *delim, t_ms *shell)
 	int		d_len;
 
 	signal(SIGINT, ms_hdoc_sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
 	d_len = ft_strlen(delim);
 	write(STDOUT_FILENO, "> ", 2);
 	line = get_next_line(STDIN_FILENO);
@@ -49,6 +48,7 @@ static int	get_heredoc_pipe(char *delim, t_ms *shell)
 	int		status;
 
 	check_err("pipe", pipe(p));
+	signal(SIGQUIT, SIG_IGN);
 	pid = check_err("fork", fork());
 	if (pid == 0)
 		run_heredoc(p, delim, shell);

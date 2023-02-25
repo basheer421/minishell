@@ -106,7 +106,7 @@ int	ms_pipex(t_ms *shell, int cmd_count)
 	int			p[2][2];
 	int			i;
 	int			pipe_no;
-	t_cmd_chunk **cmds;
+	t_cmd_chunk	**cmds;
 
 	if (check_err("pipe", pipe(p[0])) == -1)
 		return (EXIT_FAILURE);

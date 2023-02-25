@@ -43,4 +43,4 @@ ours: does not detect it as non numeric, takes atoi value as it is, wrong
 export rule
 export identifiers key part rule:	can only start with alpha or _, and rest 
                                     of the name can only be alphanumeric or _,
-								 	otherwise its an invalid identifier
+								 	otherwise its an invalid identifier \
