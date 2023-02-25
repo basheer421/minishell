@@ -22,10 +22,7 @@
 int	check_err(char *func_name, int ret_value)
 {
 	if (ret_value == -1)
-	{
 		perror(func_name);
-		exit(EXIT_FAILURE);
-	}
 	return (ret_value);
 }
 

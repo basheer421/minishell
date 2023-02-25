@@ -25,14 +25,14 @@ static void	open_op_files(t_cmd_chunk *cmd)
 		open_flags = O_WRONLY | O_TRUNC | O_CREAT;
 		if (output_file->is_extra)
 			open_flags = O_WRONLY | O_APPEND | O_CREAT;
-		cmd->out_redir_fd = open_file(output_file->name, open_flags);
-		if (cmd->out_redir_fd == -1)
+		cmd->out_fd = open_file(output_file->name, open_flags);
+		if (cmd->out_fd == -1)
 		{
 			g_exit_status = 1;
 			break ;
 		}
 		if (node->next)
-			close(cmd->out_redir_fd);
+			close(cmd->out_fd);
 		node = node->next;
 	}
 }
@@ -44,11 +44,11 @@ void	redirect_output(t_cmd_chunk **cmds)
 	i = -1;
 	while (cmds[++i])
 	{
-		cmds[i]->out_redir_fd = -1;
-		if (cmds[i]->in_redir_fd != -1)
+		cmds[i]->out_fd = -1;
+		if (cmds[i]->in_fd != -1)
 		{
 			if (cmds[i]->outputs && !(cmds[i]->outputs->content))
-				cmds[i]->out_redir_fd = 0;
+				cmds[i]->out_fd = 0;
 			else
 				open_op_files(cmds[i]);
 		}

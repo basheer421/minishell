@@ -12,28 +12,28 @@
 
 #include "minishell.h"
 
-static	int	redirect_stdinout(t_cmd_chunk **cmd, int i, int p1[], int p2[])
+static	void	redirect_stdinout(t_cmd_chunk **cmd, int i, int p1[], int p2[])
 {
-	if (cmd[i]->in_redir_fd == 0)
+	if (cmd[i]->in_fd == 0)
 	{
 		if (i > 0)
 			dup2(p1[0], STDIN_FILENO);
 		close(p1[0]);
 	}
-	else if (cmd[i]->in_redir_fd > 0)
+	else if (cmd[i]->in_fd > 0)
 	{
-		dup2(cmd[i]->in_redir_fd, STDIN_FILENO);
+		dup2(cmd[i]->in_fd, STDIN_FILENO);
 		close(p1[0]);
 	}
-	if (cmd[i]->out_redir_fd == 0)
+	if (cmd[i]->out_fd == 0)
 	{
 		if (cmd[i + 1])
 			dup2(p2[1], STDOUT_FILENO);
 		close(p2[1]);
 	}
-	else if (cmd[i]->out_redir_fd > 0)
+	else if (cmd[i]->out_fd > 0)
 	{
-		dup2(cmd[i]->out_redir_fd, STDOUT_FILENO);
+		dup2(cmd[i]->out_fd, STDOUT_FILENO);
 		close(p2[1]);
 	}
 }
@@ -79,28 +79,35 @@ static int	wait_cmds(t_ms *shell, int count)
 	return (1);
 }
 
+static int	exec_init(int p[], t_ms *shell, int cmd_count)
+{
+	if (check_err("pipe", pipe(p)) == -1)
+		return (EXIT_FAILURE);
+	close(p[1]);
+	shell->pids = (int *)malloc(sizeof(int) * (cmd_count));
+	if (!shell->pids)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
 int	ms_pipex(t_ms *shell, int cmd_count)
 {	
 	int			p[2][2];
 	int			i;
 	int			pipe_no;
-	t_cmd_chunk	**cmds;
 
-	if (check_err("pipe", pipe(p[0])) == -1)
+	if (!exec_init(p[0], shell, cmd_count))
 		return (EXIT_FAILURE);
-	close(p[0][1]);
-	shell->pids = (int *)malloc(sizeof(int) * (cmd_count));
 	pipe_no = 0;
 	i = -1;
-	cmds = shell->cur_cmd;
-	while (cmds[++i])
+	while (shell->cur_cmd[++i])
 	{
 		if (check_err("pipe", pipe(p[!pipe_no])) == -1)
 		{
 			free(shell->pids);
 			return (EXIT_FAILURE);
 		}
-		if (cmds[i]->in_redir_fd != -1 && cmds[i]->out_redir_fd != -1)
+		if (shell->cur_cmd[i]->in_fd != -1 && shell->cur_cmd[i]->out_fd != -1)
 			shell->pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], shell, i);
 		else
 			shell->pids[i] = -1;

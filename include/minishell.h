@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/25 17:50:27 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:02:00 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ typedef struct s_cmd_chunk
 	char	**cmd;
 	t_list	*inputs;
 	t_list	*outputs;
-	int		in_redir_fd;
-	int		out_redir_fd;
+	int		in_fd;
+	int		out_fd;
 }			t_cmd_chunk;
 
 /**

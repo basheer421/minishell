@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 22:02:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/25 18:32:33 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:02:35 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ms_sigquit_handler(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-
 	}
 }
 

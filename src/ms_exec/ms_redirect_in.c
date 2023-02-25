@@ -52,16 +52,20 @@ static int	get_heredoc_pipe(char *delim, t_ms *shell)
 	int		pid;
 	int		status;
 
-	check_err("pipe", pipe(p));
+	if (check_err("pipe", pipe(p)) == -1)
+		return (0);
 	signal(SIGQUIT, SIG_IGN);
 	pid = check_err("fork", fork());
 	if (pid == 0)
 		run_heredoc(p, delim, shell);
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
-		g_exit_status = ms_get_sig_status(WTERMSIG(status));
-	else if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
+	else if (pid != -1)
+	{
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status))
+			g_exit_status = ms_get_sig_status(WTERMSIG(status));
+		else if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+	}
 	close(p[1]);
 	return (p[0]);
 }
@@ -80,7 +84,7 @@ static void	check_heredocs(t_ms *shell, int i)
 		if (input_file)
 		{
 			if (input_file->is_extra && !node->next)
-				cmd->in_redir_fd = get_heredoc_pipe(input_file->name, shell);
+				cmd->in_fd = get_heredoc_pipe(input_file->name, shell);
 			else if (input_file->is_extra)
 				close(get_heredoc_pipe(input_file->name, shell));
 		}
@@ -107,7 +111,7 @@ static	void	check_input_files(t_cmd_chunk *cmd)
 				break ;
 			}
 			if (!node->next)
-				cmd->in_redir_fd = infile_fd;
+				cmd->in_fd = infile_fd;
 			else
 				close(infile_fd);
 		}
@@ -127,9 +131,9 @@ void	redirect_input(t_ms *shell)
 	i = -1;
 	while (cmds[++i] && save_exit_status(cmds[i], old_exit_status))
 	{
-		cmds[i]->in_redir_fd = -1;
+		cmds[i]->in_fd = -1;
 		if (cmds[i]->inputs && !(cmds[i]->inputs->content))
-			cmds[i]->in_redir_fd = 0;
+			cmds[i]->in_fd = 0;
 		else
 			check_heredocs(shell, i);
 	}
