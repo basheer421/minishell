@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 21:18:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/01/28 01:16:04 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/25 20:06:01 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static bool	fill_content(t_split_vars *vars)
 		vars->content[i] = ft_substr(start_pos, 0, get_length(vars->line,
 					start_pos, vars->positions[i]));
 		if (!vars->content[i])
-			return (free(vars->positions), free(vars->content), false);
+			return (free(vars->positions),
+				ft_split_destroy(vars->content), false);
 		current_index = vars->positions[i++] + 1;
 	}
 	vars->content[vars->content_size] = NULL;
