@@ -29,8 +29,7 @@ bash: starts heredoc with $POKPO as delim
 << $POP cat 
 ours: takes cat as delim because $POP expands to nothing
 
-env > $Q
-should be ambigious redirect i guess (what an annoying case >_>)
+env > $Qshould be ambigious redirect i guess (what an annoying case >_>)
 
 ----------------------------------------------------------
 exit issue 
