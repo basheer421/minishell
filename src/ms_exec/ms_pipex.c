@@ -96,7 +96,7 @@ int	ms_pipex(t_ms *shell, int cmd_count)
 	int			i;
 	int			pipe_no;
 
-	if (!exec_init(p[0], shell, cmd_count))
+	if (exec_init(p[0], shell, cmd_count) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	pipe_no = 0;
 	i = -1;
