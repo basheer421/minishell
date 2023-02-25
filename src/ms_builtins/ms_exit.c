@@ -20,7 +20,7 @@ static	int	is_invalid_exit_status(char *str)
 	i = -1;
 	while (str[++i])
 		if (!ft_isdigit(str[i]))
-			return (1); // arg is non numeric, exit with err code 2
+			return (1);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 19:56:01 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/19 19:28:51 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:28:34 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,6 @@ t_ms	*ms_init(char **envp)
 	shell = ft_calloc(1, sizeof(t_ms));
 	if (!shell)
 		return (NULL);
-	// shell->current_dir = getcwd(shell->current_dir, 0);
-	// if (!shell->current_dir)
-		// return (NULL);
 	shell->env_vars = ht_new(1);
 	if (!shell->env_vars)
 		return (NULL);

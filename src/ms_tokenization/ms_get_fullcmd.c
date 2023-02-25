@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_get_fullcmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:28:19 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/12 21:25:20 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/25 17:47:43 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	**ms_get_fullcmd(char *line_piece, int *ptr)
 	while (!is_end((line_piece + *ptr)[cmds_length], &inside)
 		&& *ft_skip_spaces((line_piece + *ptr)))
 		cmds_length += tick_inside_vars(&inside,
-										(line_piece + *ptr)[cmds_length]);
+				(line_piece + *ptr)[cmds_length]);
 	if (!ms_contains_cmd((line_piece + *ptr)) || cmds_length == 0)
 		return (NULL);
 	temp = ft_substr((line_piece + *ptr), 0, cmds_length);

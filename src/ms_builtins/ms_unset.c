@@ -20,13 +20,14 @@ int	ms_unset(t_ms *shell, char **strs, int arg_count)
 	i = 0;
 	exit_status = EXIT_SUCCESS;
 	if (arg_count > 1)
+	{
 		while (strs[++i])
 		{
-			// if (!strs[i][0] || (!ft_isalpha(strs[i][0]) && strs[i][0] != '_'))
 			if (!ms_is_valid_identifier(strs[i], "unset"))
 				exit_status = EXIT_FAILURE;
 			else
 				ht_remove(shell->env_vars, strs[i]);
 		}
+	}
 	return (exit_status);
 }

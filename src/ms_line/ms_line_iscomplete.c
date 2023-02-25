@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_line_iscomplete.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:47:00 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/12 21:42:13 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/25 17:46:50 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static bool	unclosed_token(char *line)
 		else if (line[i] == '|' && !inpipe && !inside.dquotes && !inside.quotes)
 			inpipe = true;
 		else if (line[i] != '|' && !ft_is_space(line[i]) && inpipe
-				&& !inside.dquotes && !inside.quotes)
+			&& !inside.dquotes && !inside.quotes)
 			inpipe = false;
 		tick_inside_vars(&inside, line[i]);
 	}
@@ -55,8 +55,8 @@ bool	ms_line_iscomplete(char *line)
 	{
 		g_exit_status = UNEXPECTED_TOKEN;
 		return (ft_putendl_fd("syntax error, unexpected token", 2),
-				free(nline),
-				false);
+			free(nline),
+			false);
 	}
 	return (free(nline), true);
 }

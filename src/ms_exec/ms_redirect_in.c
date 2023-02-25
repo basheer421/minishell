@@ -35,12 +35,17 @@ static void	run_heredoc(int p[], char *delim, t_ms *shell)
 	close(p[1]);
 	close(p[0]);
 	ms_destroy(shell);
-	// printf("we freed in heredoc\n");
 	exit(g_exit_status);
 }
 
-// creates a pipe, writes to it whatever is read from STDIN till delim is input, 
-// returns the read end of the pipe and closes the write end
+/**
+ * @brief	Creates a pipe, writes to it whatever is read from STDIN
+ *  		till delim is input, 
+ * 
+ * @param delim heredoc delimiter
+ * @param shell struct 
+ * @return int returns the read end of the pipe and closes the write end
+ */
 static int	get_heredoc_pipe(char *delim, t_ms *shell)
 {
 	int		p[2];
@@ -52,7 +57,6 @@ static int	get_heredoc_pipe(char *delim, t_ms *shell)
 	pid = check_err("fork", fork());
 	if (pid == 0)
 		run_heredoc(p, delim, shell);
-	// close(p[1]);
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 		g_exit_status = ms_get_sig_status(WTERMSIG(status));
@@ -64,9 +68,9 @@ static int	get_heredoc_pipe(char *delim, t_ms *shell)
 
 static void	check_heredocs(t_ms *shell, int i)
 {
-	t_list	*node;
-	t_file	*input_file;
-	t_cmd_chunk *cmd;
+	t_list		*node;
+	t_file		*input_file;
+	t_cmd_chunk	*cmd;
 
 	cmd = shell->cur_cmd[i];
 	node = cmd->inputs;
@@ -75,7 +79,7 @@ static void	check_heredocs(t_ms *shell, int i)
 		input_file = (t_file *)node->content;
 		if (input_file)
 		{
-			if (input_file->is_extra && !node->next) // is a heredoc and is the last input
+			if (input_file->is_extra && !node->next)
 				cmd->in_redir_fd = get_heredoc_pipe(input_file->name, shell);
 			else if (input_file->is_extra)
 				close(get_heredoc_pipe(input_file->name, shell));
@@ -91,7 +95,7 @@ static	void	check_input_files(t_cmd_chunk *cmd)
 	int		infile_fd;
 
 	node = cmd->inputs;
-	while (node && g_exit_status != 130) // check input files
+	while (node && g_exit_status != 130)
 	{
 		input_file = (t_file *)node->content;
 		if (input_file && !input_file->is_extra)
@@ -111,92 +115,20 @@ static	void	check_input_files(t_cmd_chunk *cmd)
 	}
 }
 
-int	save_exit_status(t_cmd_chunk *chunk, int old_exit_status)
-{
-	if (chunk && chunk->cmd)
-		if ((ft_strncmp(chunk->cmd[0], "exit", 5) == 0) && !chunk->cmd[1])
-		{
-			ft_split_destroy(chunk->cmd);
-			chunk->cmd = ft_malloc(sizeof(char *) * 3);
-			chunk->cmd[0] = ft_strdup("exit");
-			chunk->cmd[1] = ft_itoa(old_exit_status);
-			chunk->cmd[2] = NULL;
-		}
-	return (1);
-}
-
-/*static  void    show_chunks(t_cmd_chunk **chunks)
-{
-	int		i;
-	int		j;
-	t_file	*file;
-	t_list	*node;
-
-	i = -1;
-	printf("\n");
-
-	while (chunks[++i])
-	{
-		printf("chunk %d\n", i);
-		j = -1;
-		if (chunks[i]->cmd)
-			while (chunks[i]->cmd[++j] != NULL)
-				printf("cmds:%s\n", chunks[i]->cmd[j]);
-		node = (t_list *)chunks[i]->inputs;
-		printf("input redirects: \n");
-		while (node)
-		{
-			file = (t_file *)node->content;
-			if (file)
-				printf("%s %d\n", file->name, file->is_extra);
-			else
-				printf("end\n");
-			node = node->next;
-		}
-		node = (t_list *)chunks[i]->outputs;
-		printf("output redirects: \n");
-		while (node)
-		{
-			file = (t_file *)node->content;
-			if (file)
-				printf("%s %d\n", file->name, file->is_extra);
-			else
-				printf("end\n");
-			node = node->next;
-		}
-	}
-	printf("--------------\n\n");
-}*/
-
-// chunks[i]->in_redir_fd is set to -3 if its the first cmd and there's no redir, 
-// 									-2 if its a non-first cmd and there is no input redir, 
-//									-1 if the given redir was an invalid file
-
-// in_redir_fd is set to	case1: -1 if the redirection was invalid - means dont run the cmd
-//							case2: 0 if there is no input redir for this chunk - means run the cmd but dont dup anything to the pipe, use the pipes as they are
-//							case3: > 0 if it is a valid redirection
-// NOTE:	when cmd is the first cmd (i==0) it is a special case,
-//			in_redir_fd value will indicate case2 but we do not use p1[0], 
-//			we instead let the cmd use stdin and not redirect it to the p1[0]
-// 			stdout will be redirected to p2[1] as usual
 void	redirect_input(t_ms *shell)
 {
-	int	i;
-	int	old_exit_status;
-	t_cmd_chunk **cmds;
+	int			i;
+	int			old_exit_status;
+	t_cmd_chunk	**cmds;
 
 	cmds = shell->cur_cmd;
-	// show_chunks(cmds);
 	old_exit_status = g_exit_status;
 	g_exit_status = 0;
 	i = -1;
-	// if (cmds[0]->inputs && !(cmds[0]->inputs->content) 
-	// 	&& save_exit_status(cmds[0], old_exit_status))
-	// 	cmds[++i]->in_redir_fd = STDIN_FILENO;
 	while (cmds[++i] && save_exit_status(cmds[i], old_exit_status))
 	{
 		cmds[i]->in_redir_fd = -1;
-		if (cmds[i]->inputs && !(cmds[i]->inputs->content)) // if there are no redirs for this cmd_chunk
+		if (cmds[i]->inputs && !(cmds[i]->inputs->content))
 			cmds[i]->in_redir_fd = 0;
 		else
 			check_heredocs(shell, i);

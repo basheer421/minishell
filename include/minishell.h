@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/25 15:39:58 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:50:27 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct s_ms
 	t_ht		*env_vars;
 	t_cmd_chunk	**cur_cmd;
 	int			*pids;
-	// char	*current_dir;
 }			t_ms;
 
 /**
@@ -258,6 +257,7 @@ int			check_err(char *func_name, int ret_value);
 int			ms_errno_check(char *err_header, int ret_value);
 int			get_exit_status(int err);
 void		exit_msg(char *head, char *err_msg, int err_code, t_alloced *mem);
+int			save_exit_status(t_cmd_chunk *chunk, int old_exit_status);
 
 // cleanup
 void		ms_clean(t_cmd_chunk **chunks, char **str_chunks, char *line);

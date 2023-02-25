@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 13:10:06 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/19 16:45:16 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:38:54 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,5 @@ t_alloced	*ms_get_path(int p1[], int p2[], t_ms *shell, int i)
 	cmd_info->path = path_name;
 	if (access(path_name, X_OK) != 0)
 		exit_msg(cmd[0], PERMISSION_ERR, 126, cmd_info);
-	inc_shlvl(cmd[0], cmd_info->envp);
-	return (cmd_info);
+	return (inc_shlvl(cmd[0], cmd_info->envp), cmd_info);
 }

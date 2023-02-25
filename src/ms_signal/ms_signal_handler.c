@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 22:02:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/25 14:39:05 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:32:33 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	ms_child_sigint_handler(int sig)
 void	ms_sigquit_handler(int sig)
 {
 	if (sig == SIGQUIT)
-		;
+	{
+
+	}
 }
 
 void	ms_hdoc_sigint_handler(int sig)

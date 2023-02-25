@@ -67,10 +67,3 @@ int	ms_cd(t_ms *shell, char **path, int arg_count)
 	}
 	return (EXIT_FAILURE);
 }
-
-/**
- * @test for PWD and OLDPWD
- * when PWD and OLDPWD are unset, do nothing
- * when PWD is unset and we're changing dir, OLDPWD should be set to an empty string
- * when PWD is set but OLDPWD is unset, OLDPWD must be automatically recreated on cd
- */

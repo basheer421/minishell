@@ -32,7 +32,8 @@ int	check_err(char *func_name, int ret_value)
 /**
  * @brief Displays error message from perror
  * 
- * @param err_header Name of function to use as header for error message (will be freed)
+ * @param err_header Name of function to use as header for error message 
+ * 					(will be freed)
  * @param ret_value Return value of function being called
  * @return int ret_value
  */
@@ -59,7 +60,8 @@ int	get_exit_status(int err)
 }
 
 /**
- * @brief Displays error message to STD_ERR, frees mem and exits the process with err_code
+ * @brief	Displays error message to STD_ERR, frees mem and exits 
+ * 			the process with err_code
  * 
  * @param heading Heading for error message 
  * @param err_msg Error message 
@@ -93,4 +95,20 @@ void	exit_msg(char *heading, char *err_msg, int err_code, t_alloced *mem)
 		free(mem);
 	}
 	exit(err_code);
+}
+
+int	save_exit_status(t_cmd_chunk *chunk, int old_exit_status)
+{
+	if (chunk && chunk->cmd)
+	{
+		if ((ft_strncmp(chunk->cmd[0], "exit", 5) == 0) && !chunk->cmd[1])
+		{
+			ft_split_destroy(chunk->cmd);
+			chunk->cmd = ft_malloc(sizeof(char *) * 3);
+			chunk->cmd[0] = ft_strdup("exit");
+			chunk->cmd[1] = ft_itoa(old_exit_status);
+			chunk->cmd[2] = NULL;
+		}
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 18:31:22 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/20 19:38:47 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:45:50 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ void	ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line)
 	if (chunks)
 	{
 		i = -1;
-		// printf("chunks exists!\n");
 		while (chunks[++i])
 		{
-			// printf("chunks[i] exists!\n");
 			ft_split_destroy(chunks[i]->cmd);
 			ft_lstclear(&(chunks[i]->inputs), t_file_destroy);
 			ft_lstclear(&(chunks[i]->outputs), t_file_destroy);
@@ -45,7 +43,6 @@ void	ms_clean(t_cmd_chunk **chunks, char **string_chunks, char *line)
 		}
 		free(chunks);
 	}
-	// printf("--%p", chunks);
 	if (string_chunks)
 		ft_split_destroy(string_chunks);
 	if (line)

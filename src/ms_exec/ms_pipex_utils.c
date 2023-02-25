@@ -22,11 +22,12 @@ int	open_file(char *file_name, int open_flags)
 	return (file);
 }
 
-int is_regular_file(const char *path)
+int	is_regular_file(const char *path)
 {
-    struct stat path_stat;
-    stat(path, &path_stat);
-    return S_ISREG(path_stat.st_mode);
+	struct stat	path_stat;
+
+	stat(path, &path_stat);
+	return (S_ISREG(path_stat.st_mode));
 }
 
 static void	free_strs(char **args, char *str, int index)
@@ -66,8 +67,11 @@ char	*get_pathname(char *cmd_name, char **envp)
 	int		i;
 
 	paths = parse_path(envp);
-	if (!paths)
+	if (!paths || !paths[0])
+	{
+		ft_split_destroy(paths);
 		return (NULL);
+	}
 	file_name = ft_strjoin("/", cmd_name);
 	i = -1;
 	while (paths[++i])

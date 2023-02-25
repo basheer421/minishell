@@ -6,7 +6,7 @@
 /*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 15:19:16 by mfirdous          #+#    #+#             */
-/*   Updated: 2023/02/25 15:50:29 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/02/25 19:20:38 by mfirdous         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ bool	ms_is_valid_identifier(char *str, char *func)
 		is_valid = false;
 	else if (str[0])
 	{
-		printf("str %s \n", str);
-		while (str[++i])
+		while (str[++i] && str[i] != '=')
 			if (!ft_isalnum(str[i]))
 				is_valid = false;
 	}

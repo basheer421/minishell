@@ -12,6 +12,32 @@
 
 #include "minishell.h"
 
+static	int	redirect_stdinout(t_cmd_chunk **cmd, int i, int p1[], int p2[])
+{
+	if (cmd[i]->in_redir_fd == 0)
+	{
+		if (i > 0)
+			dup2(p1[0], STDIN_FILENO);
+		close(p1[0]);
+	}
+	else if (cmd[i]->in_redir_fd > 0)
+	{
+		dup2(cmd[i]->in_redir_fd, STDIN_FILENO);
+		close(p1[0]);
+	}
+	if (cmd[i]->out_redir_fd == 0)
+	{
+		if (cmd[i + 1])
+			dup2(p2[1], STDOUT_FILENO);
+		close(p2[1]);
+	}
+	else if (cmd[i]->out_redir_fd > 0)
+	{
+		dup2(cmd[i]->out_redir_fd, STDOUT_FILENO);
+		close(p2[1]);
+	}
+}
+
 static int	exec_cmd(int p1[], int p2[], t_ms *shell, int i)
 {
 	int			pid;
@@ -23,29 +49,7 @@ static int	exec_cmd(int p1[], int p2[], t_ms *shell, int i)
 	if (pid == 0)
 	{
 		close(p2[0]);
-		// close(p1[1]);
-		if (shell->cur_cmd[i]->in_redir_fd == 0) // there are no redirs
-		{
-			if (i > 0) // and its not the first command
-				dup2(p1[0], STDIN_FILENO);
-			close(p1[0]); // close it regardless because if it got duped then this is useless now, if it didnt get duped it wasnt going to be used anyway
-		}
-		else if (shell->cur_cmd[i]->in_redir_fd > 0)
-		{
-			dup2(shell->cur_cmd[i]->in_redir_fd, STDIN_FILENO);
-			close(p1[0]);
-		}
-		if (shell->cur_cmd[i]->out_redir_fd == 0) // no output redirs
-		{
-			if (shell->cur_cmd[i + 1]) // and its not the last command
-				dup2(p2[1], STDOUT_FILENO);
-			close(p2[1]);
-		}
-		else if (shell->cur_cmd[i]->out_redir_fd > 0)
-		{
-			dup2(shell->cur_cmd[i]->out_redir_fd, STDOUT_FILENO);
-			close(p2[1]);
-		}
+		redirect_stdinout(shell->cur_cmd, i, p1, p2);
 		ms_fds_close(shell->cur_cmd);
 		if (handle_builtins(shell, i, get_builtin_no(shell->cur_cmd[i]->cmd)))
 			exit_msg(NULL, NULL, g_exit_status, set_alloc(p1, p2, shell));
@@ -75,32 +79,6 @@ static int	wait_cmds(t_ms *shell, int count)
 	return (1);
 }
 
-// if redirection happened, then we need to close the pipe fds explicitly
-static void	redirect_to_pipes(t_cmd_chunk *cmd, int pipes[2][2], int pipe_no)
-{
-	// printf("in = %d, out = %d\n", cmd->in_redir_fd, cmd->out_redir_fd);
-	if (cmd->in_redir_fd > 0)
-	{
-		dup2(cmd->in_redir_fd, pipes[pipe_no][0]);
-		// if (cmd->in_redir_fd != 0)
-			close(cmd->in_redir_fd);
-	}
-	if (cmd->out_redir_fd > 1)
-	{
-		dup2(cmd->out_redir_fd, pipes[!pipe_no][1]);
-		// if (cmd->out_redir_fd != 1)
-			close(cmd->out_redir_fd);
-	}
-}
-
-void	close_pipes_redir(int pipes[2][2], int pipe_no, t_cmd_chunk *cmd)
-{
-	if (cmd->in_redir_fd >= 0)
-		close(pipes[pipe_no][0]);
-	if (cmd->out_redir_fd >= 0)
-		close(pipes[!pipe_no][1]);
-}
-
 int	ms_pipex(t_ms *shell, int cmd_count)
 {	
 	int			p[2][2];
@@ -122,12 +100,10 @@ int	ms_pipex(t_ms *shell, int cmd_count)
 			free(shell->pids);
 			return (EXIT_FAILURE);
 		}
-		// redirect_to_pipes(cmds[i], p, pipe_no);
 		if (cmds[i]->in_redir_fd != -1 && cmds[i]->out_redir_fd != -1)
 			shell->pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], shell, i);
 		else
 			shell->pids[i] = -1;
-		// close_pipes_redir(p, pipe_no, cmds[i]);
 		close(p[pipe_no][0]);
 		close(p[!pipe_no][1]);
 		pipe_no = !pipe_no;

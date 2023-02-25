@@ -24,8 +24,6 @@ int	ms_pwd(t_ms *shell)
 			return (EXIT_FAILURE);
 		printf("%s\n", pwd);
 		return (EXIT_SUCCESS);
-		// perror("pwd");
-		// return (EXIT_FAILURE);
 	}
 	printf("%s\n", cur_dir);
 	return (EXIT_SUCCESS);
