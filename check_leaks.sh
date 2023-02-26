@@ -1,1 +1,1 @@
-valgrind --suppressions="valgrind_readline_leaks_ignore.txt" --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes ./minishell
+valgrind --suppressions="/home/vscode/src/valgrind_readline_leaks_ignore.txt" --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes ./minishell
