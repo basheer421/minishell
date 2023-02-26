@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/02/25 18:24:34 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/02/26 17:54:24 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ FILES	=		src/minishell.c \
 				src/ms_builtins/ms_unset.c \
 				src/ms_builtins/ms_exit.c \
 				src/ms_builtins/ms_is_valid_identifier.c \
+				src/ms_builtins/ms_builtinredir_utils.c \
 				src/ms_command_chunk/ms_command_chunks_get.c \
 				src/ms_error/ms_error_utils.c \
 				src/ms_exec/ms_exec_cmds.c \
