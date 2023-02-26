@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 21:19:11 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/20 21:36:57 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/26 15:03:48 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,11 @@ static char	*fix_quotes(char *str, char c)
 	char	*nstr;
 	int		i;
 
+	if (!str)
+		return (ft_strdup("\'\'"));
 	arr = split_with_no_quotes(str, c);
 	if (!arr)
-		exit(EXIT_FAILURE);
+		return (ft_strdup("\'\'"));
 	i = -1;
 	while (arr[++i])
 	{
@@ -83,9 +85,7 @@ char	*value_at(char *line, int pos, t_ms *shell)
 	{
 		val = ht_get(shell->env_vars, var);
 		free(var);
-		if (!val)
-			return (ft_strdup("\0"));
 		return (fix_quotes(val, ' '));
 	}
-	return (free(var), ft_strdup("\0"));
+	return (free(var), fix_quotes(NULL, ' '));
 }

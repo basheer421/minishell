@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/20 22:23:01 by bammar           ###   ########.fr       */
+/*   Updated: 2023/02/26 14:53:01 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ static int	len_with_expand(char *line, t_ms *shell)
 		if (inside.var)
 		{
 			value = value_at(line, i, shell);
-			if (!value)
-				exit(EXIT_FAILURE);
 			total += ft_strlen(value);
 			free(value);
 			inside.var = false;
