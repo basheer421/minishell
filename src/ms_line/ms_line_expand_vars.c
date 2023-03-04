@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 14:30:45 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/26 14:53:01 by bammar           ###   ########.fr       */
+/*   Updated: 2023/03/04 16:42:43 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	len_with_expand(char *line, t_ms *shell)
 		tick_inside_vars(&inside, line[i], line[i + 1]);
 		if (inside.var)
 		{
-			value = value_at(line, i, shell);
+			value = value_at(line, i, shell, !inside.dquotes);
 			total += ft_strlen(value);
 			free(value);
 			inside.var = false;
@@ -85,7 +85,7 @@ void	ms_line_expand_vars(char **line, t_ms *shell)
 		tick_inside_vars(&inside, line[0][i], line[0][i + 1]);
 		if (inside.var)
 		{
-			inside.value = value_at(*line, i, shell);
+			inside.value = value_at(*line, i, shell, !inside.dquotes);
 			ft_memcpy(nline + c_count, inside.value, ft_strlen(inside.value));
 			c_count += ft_strlen(inside.value);
 			free(inside.value);

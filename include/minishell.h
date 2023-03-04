@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/02/25 20:02:00 by mfirdous         ###   ########.fr       */
+/*   Updated: 2023/03/04 16:41:42 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ void		ms_line_expand_vars(char **line, t_ms *shell);
 int			get_next_index(char *line, int pos);
 
 // Helper for line_expand
-char		*value_at(char *line, int pos, t_ms *shell);
+char		*value_at(char *line, int pos, t_ms *shell, bool wrap);
 
 /**
  * @brief Counts how many pipes which is not contained inside quotations.
