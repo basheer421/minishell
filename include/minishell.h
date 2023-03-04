@@ -6,7 +6,7 @@
 /*   By: bammar <bammar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 22:30:21 by bammar            #+#    #+#             */
-/*   Updated: 2023/03/04 16:41:42 by bammar           ###   ########.fr       */
+/*   Updated: 2023/03/04 18:03:53 by bammar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,8 @@ void		ms_fds_close(t_cmd_chunk **chunks);
 int			get_builtin_no(char **cmd);
 int			handle_builtins(t_ms *shell, int i, int builtin_no);
 bool		exec_builtin_solo(t_ms *shell);
+void		restore_stdinout(t_cmd_chunk *cmd_info, int og_in, int og_out);
+void		redir_stdinout(t_cmd_chunk *cmd_info, int *og_in, int *og_out);
 
 bool		ms_is_valid_identifier(char *str, char *func);
 int			ms_echo(char **strs);

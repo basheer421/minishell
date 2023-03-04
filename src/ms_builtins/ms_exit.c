@@ -17,6 +17,8 @@ static	int	is_invalid_exit_status(char *str)
 {
 	int	i;
 
+	if (!str[0])
+		return (1);
 	i = -1;
 	while (str[++i])
 		if (!ft_isdigit(str[i]))

@@ -71,20 +71,6 @@ int	handle_builtins(t_ms *shell, int i, int builtin_no)
 	return (builtin_no);
 }
 
-static void	restore_stdinout(t_cmd_chunk *cmd_info, int og_stdin, int og_stdout)
-{
-	if (cmd_info->in_fd > 0)
-	{
-		dup2(og_stdin, STDIN_FILENO);
-		close(og_stdin);
-	}
-	if (cmd_info->out_fd > 1)
-	{
-		dup2(og_stdout, STDOUT_FILENO);
-		close(og_stdout);
-	}
-}
-
 bool	exec_builtin_solo(t_ms *shell)
 {
 	int			og_stdin;
@@ -98,18 +84,9 @@ bool	exec_builtin_solo(t_ms *shell)
 	og_stdout = 0;
 	if (builtin_no == 0)
 		return (false);
-	if (cmd_info->in_fd > 0)
-	{
-		og_stdin = dup(STDIN_FILENO);
-		dup2(cmd_info->in_fd, STDIN_FILENO);
-		close(cmd_info->in_fd);
-	}
-	if (cmd_info->out_fd > 1)
-	{
-		og_stdout = dup(STDOUT_FILENO);
-		dup2(cmd_info->out_fd, STDOUT_FILENO);
-		close(cmd_info->out_fd);
-	}
+	if (cmd_info->in_fd == -1 || cmd_info->out_fd == -1)
+		return (true);
+	redir_stdinout(cmd_info, &og_stdin, &og_stdout);
 	handle_builtins(shell, 0, builtin_no);
 	return (restore_stdinout(cmd_info, og_stdin, og_stdout), true);
 }
