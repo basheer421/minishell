@@ -109,15 +109,7 @@ int	ms_pipex(t_ms *shell, int cmd_count)
 			free(shell->pids);
 			return (EXIT_FAILURE);
 		}
-		// if (shell->cur_cmd[i]->in_fd != -1 && shell->cur_cmd[i]->out_fd != -1)
-		// {
-			shell->pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], shell, i);
-		// }
-		// else
-		// {
-			// printf("%d cmd wont run\n", i);
-			// shell->pids[i] = -1;
-		// }
+		shell->pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], shell, i);
 		close(p[pipe_no][0]);
 		close(p[!pipe_no][1]);
 		pipe_no = !pipe_no;
