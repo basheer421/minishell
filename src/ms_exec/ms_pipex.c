@@ -51,6 +51,8 @@ static int	exec_cmd(int p1[], int p2[], t_ms *shell, int i)
 		close(p2[0]);
 		redirect_stdinout(shell->cur_cmd, i, p1, p2);
 		ms_fds_close(shell->cur_cmd);
+		if (shell->cur_cmd[i]->in_fd == -1 || shell->cur_cmd[i]->out_fd == -1)
+			exit_msg(NULL, NULL, g_exit_status, set_alloc(p1, p2, shell));
 		if (handle_builtins(shell, i, get_builtin_no(shell->cur_cmd[i]->cmd)))
 			exit_msg(NULL, NULL, g_exit_status, set_alloc(p1, p2, shell));
 		c = ms_get_path(p1, p2, shell, i);
@@ -107,10 +109,15 @@ int	ms_pipex(t_ms *shell, int cmd_count)
 			free(shell->pids);
 			return (EXIT_FAILURE);
 		}
-		if (shell->cur_cmd[i]->in_fd != -1 && shell->cur_cmd[i]->out_fd != -1)
+		// if (shell->cur_cmd[i]->in_fd != -1 && shell->cur_cmd[i]->out_fd != -1)
+		// {
 			shell->pids[i] = exec_cmd(p[pipe_no], p[!pipe_no], shell, i);
-		else
-			shell->pids[i] = -1;
+		// }
+		// else
+		// {
+			// printf("%d cmd wont run\n", i);
+			// shell->pids[i] = -1;
+		// }
 		close(p[pipe_no][0]);
 		close(p[!pipe_no][1]);
 		pipe_no = !pipe_no;

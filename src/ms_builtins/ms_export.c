@@ -25,9 +25,12 @@ static	char	**dup_env_vars(t_ms *shell)
 	i = -1;
 	while (env)
 	{
-		len = ft_strlen(env->key) + 1;
-		arr[++i] = (char *)ft_malloc(sizeof(char) * len);
-		ft_strlcpy(arr[i], env->key, len);
+		if (env->key)
+		{
+			len = ft_strlen(env->key) + 1;
+			arr[++i] = (char *)ft_malloc(sizeof(char) * len);
+			ft_strlcpy(arr[i], env->key, len);
+		}
 		env = env->next;
 	}
 	arr[++i] = NULL;
@@ -44,7 +47,7 @@ static	char	**sort_lexical(t_ms *shell)
 
 	keys = dup_env_vars(shell);
 	i = -1;
-	while (keys[++i + 1])
+	while (keys[++i] && keys[i + 1])
 	{
 		j = i + 1;
 		while (keys[++j])

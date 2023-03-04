@@ -6,7 +6,7 @@
 #    By: mfirdous <mfirdous@student.42abudhabi.a    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/24 22:32:59 by bammar            #+#    #+#              #
-#    Updated: 2023/02/26 17:54:24 by mfirdous         ###   ########.fr        #
+#    Updated: 2023/03/04 13:52:12 by mfirdous         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,7 +62,7 @@ FILES	=		src/minishell.c \
 
 CC		=	cc
 
-CFLAGS	=	-Wall -Wextra -Werror -I/usr/local/opt/readline/include
+CFLAGS	=	-Wall -Wextra -Werror -I/usr/local/opt/readline/include -g3
 
 LINKS	=	-lreadline -L/usr/local/opt/readline/lib
 
